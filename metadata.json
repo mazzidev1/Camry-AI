@@ -1,0 +1,6 @@
+{
+  "name": "Camry OS",
+  "description": "Camry OS local AI appliance and signal engine",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
