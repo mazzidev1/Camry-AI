@@ -203,9 +203,6 @@ interface AppContextType {
   addCustomAgent: (agent: Omit<Agent, 'likes'>) => void;
   reorderAgents: (newAgents: Agent[]) => void;
   
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-  
   activeAgent: string | null;
   setActiveAgent: (id: string | null) => void;
   
@@ -242,25 +239,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [agentsList, setAgentsList] = useState<Agent[]>(INITIAL_AGENTS);
   const [installedAgents, setInstalledAgents] = useState<string[]>(['meeting', 'legal']);
   const [activeAgent, setActiveAgent] = useState<string | null>(null);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  const toggleTheme = () => {
-    setTheme(prev => {
-      const next = prev === 'light' ? 'dark' : 'light';
-      showToast(`Switched to ${next === 'light' ? 'Light Paper' : 'Dark Graphite'} theme`);
-      return next;
-    });
-  };
-
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('theme-dark');
-      document.documentElement.classList.remove('theme-light');
-    } else {
-      document.documentElement.classList.add('theme-light');
-      document.documentElement.classList.remove('theme-dark');
-    }
-  }, [theme]);
 
   const reorderAgents = (newAgents: Agent[]) => {
     setAgentsList(newAgents);
@@ -450,8 +428,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       addCustomAgent,
       rollbackAgentVersion,
       reorderAgents,
-      theme,
-      toggleTheme,
       activeAgent,
       setActiveAgent,
       chatHistory,

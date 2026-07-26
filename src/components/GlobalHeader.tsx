@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAppContext, AVAILABLE_MODELS } from '../store/AppContext';
-import { Search, Bot, Cpu, ArrowRight, Check, Sparkles, X, Activity, Menu, Sun, Moon } from 'lucide-react';
+import { Search, Bot, Cpu, ArrowRight, Check, Sparkles, X, Activity, Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const GlobalHeader: React.FC = () => {
@@ -17,9 +17,7 @@ export const GlobalHeader: React.FC = () => {
     installModel,
     isMobileMenuOpen,
     setIsMobileMenuOpen,
-    showToast,
-    theme,
-    toggleTheme
+    showToast
   } = useAppContext();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -225,27 +223,6 @@ export const GlobalHeader: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-
-      {/* Right controls */}
-      <div className="flex items-center gap-2 sm:gap-3">
-        <button
-          onClick={toggleTheme}
-          className="p-1.5 sm:p-2 rounded-lg border border-black/10 hover:bg-black/5 text-camry-blackout transition-all flex items-center gap-1.5 text-xs font-martian"
-          title={`Switch to ${theme === 'light' ? 'Dark Graphite' : 'Light Paper'} Theme`}
-        >
-          {theme === 'light' ? (
-            <>
-              <Moon size={15} className="text-camry-blackout" />
-              <span className="hidden sm:inline text-[10px] uppercase font-bold tracking-wider">Dark</span>
-            </>
-          ) : (
-            <>
-              <Sun size={15} className="text-amber-400" />
-              <span className="hidden sm:inline text-[10px] uppercase font-bold tracking-wider">Light Paper</span>
-            </>
-          )}
-        </button>
       </div>
     </header>
   );

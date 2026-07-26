@@ -14,33 +14,6 @@
   --font-martian: "Martian Mono", monospace;
 }
 
-/* Theme switching rules: Light Paper vs Dark Graphite */
-.theme-dark {
-  --color-camry-paper: #121418;
-  --color-camry-blackout: #EDEBE4;
-  --color-camry-graphite: #222731;
-}
-
-.theme-dark .bg-white {
-  background-color: #1A1E26 !important;
-  color: #F3F1EC !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-.theme-dark .text-camry-blackout {
-  color: #F3F1EC !important;
-}
-
-.theme-dark .border-black\/5,
-.theme-dark .border-black\/10,
-.theme-dark .border-black\/20 {
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.theme-dark .bg-camry-paper {
-  background-color: #121418 !important;
-}
-
 body {
   font-family: var(--font-poppins);
   background-color: #888888; /* Desktop background */

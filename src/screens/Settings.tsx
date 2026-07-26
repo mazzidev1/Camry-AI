@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../store/AppContext';
-import { ChevronRight, Shield, Power, Monitor, HardDrive, Wifi, Network, Key, ArrowLeft, Copy, Eye, EyeOff, Check, Terminal, Lock, Download, Upload, FileCode, Sun, Moon, Palette } from 'lucide-react';
+import { ChevronRight, Shield, Power, Monitor, HardDrive, Wifi, Network, Key, ArrowLeft, Copy, Eye, EyeOff, Check, Terminal, Lock, Download, Upload, FileCode } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 
 export const Settings: React.FC = () => {
-  const { settingsView, setSettingsView, showToast, exportConfig, importConfig, theme, toggleTheme } = useAppContext();
+  const { settingsView, setSettingsView, showToast, exportConfig, importConfig } = useAppContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,36 +72,6 @@ export const Settings: React.FC = () => {
                       title="Privacy Policy"
                       right={<ChevronRight size={16} className="text-camry-graphite/40" />}
                       onClick={() => setSettingsView('privacy')}
-                    />
-                  </div>
-                </div>
-
-                {/* Appearance & Theme Settings */}
-                <div>
-                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider">APPEARANCE & THEME</div>
-                  <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
-                    <SettingRow 
-                      icon={<Palette size={18} className="text-camry-deep-carrier" />}
-                      title="Theme Mode"
-                      subtitle={theme === 'light' ? 'Light Paper (#EDEBE4) palette active' : 'Dark Graphite (#121418) palette active'}
-                      right={
-                        <button
-                          onClick={toggleTheme}
-                          className="px-3 py-1.5 bg-camry-blackout text-white text-xs font-martian rounded-lg hover:bg-camry-graphite transition-all flex items-center gap-1.5 shadow-sm"
-                        >
-                          {theme === 'light' ? (
-                            <>
-                              <Moon size={14} className="text-camry-paper" />
-                              <span>Switch to Dark</span>
-                            </>
-                          ) : (
-                            <>
-                              <Sun size={14} className="text-amber-400" />
-                              <span>Switch to Light Paper</span>
-                            </>
-                          )}
-                        </button>
-                      }
                     />
                   </div>
                 </div>
