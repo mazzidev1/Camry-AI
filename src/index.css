@@ -7,13 +7,15 @@
   --color-camry-carrier: #9BD1FF;
   --color-camry-deep-carrier: #2B7BB9;
   
-  --font-bricolage: "Bricolage Grotesque", sans-serif;
+  --font-sans: "Poppins", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-bricolage: "Poppins", sans-serif;
+  --font-familjen: "Poppins", sans-serif;
   --font-martian: "Martian Mono", monospace;
-  --font-familjen: "Familjen Grotesk", sans-serif;
 }
 
 body {
-  font-family: var(--font-familjen);
+  font-family: var(--font-poppins);
   background-color: #888888; /* Desktop background */
 }
 

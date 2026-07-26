@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppContext, AVAILABLE_AGENTS } from '../store/AppContext';
-import { MessageSquare, Grid, Box, BarChart2, PanelLeftClose } from 'lucide-react';
+import { MessageSquare, Grid, Box, BarChart2, PanelLeftClose, Battery, BatteryCharging, BatteryLow, Zap } from 'lucide-react';
 import { CamryLogo } from './CamryLogo';
 
 export const Sidebar: React.FC = () => {
@@ -10,20 +10,31 @@ export const Sidebar: React.FC = () => {
     installedAgents, 
     setActiveAgent,
     activeAgent,
+    batteryLevel,
+    isCharging,
+    setIsMobileMenuOpen,
     showToast
   } = useAppContext();
+
+  const handleNav = (screen: any, agentId: string | null = null) => {
+    setActiveAgent(agentId);
+    setCurrentScreen(screen);
+    setIsMobileMenuOpen(false);
+  };
+
+  // Color logic for battery
+  const getBatteryColorClass = () => {
+    if (batteryLevel > 50) return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+    if (batteryLevel > 20) return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
+    return 'text-red-400 bg-red-500/10 border-red-500/30 animate-pulse';
+  };
 
   return (
     <div className="w-[240px] flex-shrink-0 flex flex-col h-full bg-camry-blackout text-white/60 font-familjen pt-4 pb-4">
       
-      {/* Traffic Lights & Collapse */}
-      <div className="flex items-center px-4 mb-6">
-        <div className="flex gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
-          <div className="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
-          <div className="w-3 h-3 rounded-full bg-[#27C93F]"></div>
-        </div>
-        <button onClick={() => showToast("Collapse not available in preview")} className="ml-auto text-white/40 hover:text-white transition-colors">
+      {/* Top Collapse control */}
+      <div className="flex items-center justify-end px-4 mb-4">
+        <button onClick={() => showToast("Collapse not available in preview")} className="text-white/40 hover:text-white transition-colors">
           <PanelLeftClose size={16} />
         </button>
       </div>
@@ -31,9 +42,6 @@ export const Sidebar: React.FC = () => {
       {/* Brand Identity / Logo Header */}
       <div className="px-4 mb-6 pb-4 border-b border-white/10">
         <CamryLogo variant="light" size="md" />
-        <div className="font-martian text-[9px] text-white/40 tracking-widest uppercase mt-1">
-          Signal, delivered.
-        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-3 space-y-6">
@@ -44,10 +52,7 @@ export const Sidebar: React.FC = () => {
             icon={<MessageSquare size={18} />} 
             label="Chat" 
             isActive={currentScreen === 'chat' && !activeAgent}
-            onClick={() => {
-              setActiveAgent(null);
-              setCurrentScreen('chat');
-            }}
+            onClick={() => handleNav('chat', null)}
           />
         </div>
 
@@ -63,10 +68,7 @@ export const Sidebar: React.FC = () => {
                 return (
                   <button
                     key={agentId}
-                    onClick={() => {
-                      setActiveAgent(agentId);
-                      setCurrentScreen('chat');
-                    }}
+                    onClick={() => handleNav('chat', agentId)}
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
                       ${isActive 
                         ? 'bg-camry-carrier/10 text-camry-carrier font-medium' 
@@ -88,32 +90,50 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Lower Nav */}
-      <div className="px-3 space-y-1 mt-auto pb-6">
+      <div className="px-3 space-y-1 mt-auto pb-4">
         <NavItem 
           icon={<Grid size={18} />} 
           label="Agent Store" 
           isActive={currentScreen === 'agentStore'}
-          onClick={() => setCurrentScreen('agentStore')}
+          onClick={() => handleNav('agentStore')}
         />
         <NavItem 
           icon={<Box size={18} />} 
           label="Model Store" 
           isActive={currentScreen === 'modelStore'}
-          onClick={() => setCurrentScreen('modelStore')}
+          onClick={() => handleNav('modelStore')}
         />
         <NavItem 
           icon={<BarChart2 size={18} />} 
           label="Dashboard" 
           isActive={currentScreen === 'dashboard'}
-          onClick={() => setCurrentScreen('dashboard')}
+          onClick={() => handleNav('dashboard')}
         />
       </div>
 
-      {/* Profile & Status */}
-      <div className="px-3">
+      {/* Profile, Status & Battery Rail Component */}
+      <div className="px-3 space-y-3">
+        {/* Persistent Battery Indicator */}
+        <div className={`flex items-center justify-between px-3 py-2 rounded-lg border transition-all ${getBatteryColorClass()}`}>
+          <div className="flex items-center gap-2 font-martian text-[11px] font-semibold">
+            {isCharging ? (
+              <BatteryCharging size={16} />
+            ) : batteryLevel <= 20 ? (
+              <BatteryLow size={16} />
+            ) : (
+              <Battery size={16} />
+            )}
+            <span>{batteryLevel}% PWR</span>
+          </div>
+          <div className="flex items-center gap-1 font-martian text-[9px] opacity-80 uppercase tracking-widest">
+            {isCharging && <Zap size={10} className="fill-current" />}
+            <span>{batteryLevel <= 20 ? 'LOW POWER' : 'ON-PREM'}</span>
+          </div>
+        </div>
+
         <button 
-          onClick={() => setCurrentScreen('settings')}
-          className={`w-full flex items-center gap-3 p-2 rounded-lg transition-all mb-4
+          onClick={() => handleNav('settings')}
+          className={`w-full flex items-center gap-3 p-2 rounded-lg transition-all
             ${currentScreen === 'settings' 
               ? 'bg-camry-carrier/10' 
               : 'hover:bg-white/5'
@@ -141,13 +161,13 @@ const NavItem = ({ icon, label, isActive, onClick }: { icon: React.ReactNode, la
   return (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
+      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-150 active:scale-[0.98]
         ${isActive 
-          ? 'bg-camry-carrier/10 text-camry-carrier font-medium' 
-          : 'hover:bg-white/5 hover:text-white/90'
+          ? 'bg-camry-carrier/10 text-camry-carrier font-medium border border-camry-carrier/20' 
+          : 'hover:bg-white/10 hover:text-white hover:translate-x-0.5 border border-transparent'
         }`}
     >
-      {icon}
+      <span className="transition-transform group-hover:scale-110">{icon}</span>
       <span>{label}</span>
     </button>
   );

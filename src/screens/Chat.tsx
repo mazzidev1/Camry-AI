@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAppContext, AVAILABLE_MODELS } from '../store/AppContext';
-import { Paperclip, Globe, ArrowUp, Check, X, ChevronDown, Scale, FileText, Search, Folder } from 'lucide-react';
+import { Paperclip, Globe, ArrowUp, Check, X, ChevronDown, Scale, FileText, Search, Folder, Mic, MicOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { CamryLoadingIcon } from '../components/CamryLoadingIcon';
 
 const SUGGESTIONS = [
   { icon: <Scale size={20} className="text-camry-graphite/60 group-hover:text-camry-carrier transition-colors" />, text: 'Summarize the key obligations in this contract.' },
@@ -10,18 +11,63 @@ const SUGGESTIONS = [
   { icon: <Folder size={20} className="text-camry-graphite/60 group-hover:text-camry-carrier transition-colors" />, text: 'Turn these meeting notes into action items.' },
 ];
 
-const ThinkingIndicator = () => (
-  <div className="flex justify-start">
-    <div className="bg-white border border-black/5 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4">
-      <div className="flex gap-1.5">
-        <div className="w-1.5 h-1.5 rounded-full bg-camry-graphite/40 animate-pulse" style={{ animationDelay: '0ms' }} />
-        <div className="w-1.5 h-1.5 rounded-full bg-camry-graphite/40 animate-pulse" style={{ animationDelay: '150ms' }} />
-        <div className="w-1.5 h-1.5 rounded-full bg-camry-graphite/40 animate-pulse" style={{ animationDelay: '300ms' }} />
+const ThinkingIndicator: React.FC = () => {
+  const { loadedModel } = useAppContext();
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setElapsed(p => p + 0.1);
+    }, 100);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.98 }}
+      className="flex justify-start my-2"
+    >
+      <div className="bg-white border border-black/10 rounded-2xl px-5 py-4 shadow-sm text-camry-blackout max-w-sm">
+        <div className="flex items-center justify-between gap-3 mb-2">
+          <div className="flex items-center gap-2">
+            <CamryLoadingIcon size={16} color="#0B0C0E" />
+            <span className="font-martian text-[10px] text-camry-blackout font-bold tracking-wider uppercase">
+              LOCAL NPU INFERENCE
+            </span>
+          </div>
+          <span className="font-martian text-[10px] text-camry-graphite/60 font-semibold">
+            {elapsed.toFixed(1)}s
+          </span>
+        </div>
+        
+        <div className="flex items-center gap-3 font-martian text-xs text-camry-graphite/90 py-0.5">
+          <div className="flex items-center gap-2 font-martian font-semibold text-camry-blackout bg-camry-graphite/5 px-2.5 py-1 rounded border border-black/5">
+            <span>thinking</span>
+            <div className="flex gap-1 items-center ml-0.5">
+              <span className="inline-block w-1 h-1 rounded-full bg-camry-blackout animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="inline-block w-1 h-1 rounded-full bg-camry-blackout animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="inline-block w-1 h-1 rounded-full bg-camry-blackout animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+          </div>
+          <span className="text-[10px] text-camry-graphite/60 font-martian truncate">
+            {loadedModel}
+          </span>
+        </div>
+
+        {/* Shimmering NPU computation line */}
+        <div className="mt-3 w-full bg-black/5 h-1 rounded-full overflow-hidden relative">
+          <motion.div 
+            className="h-full bg-camry-carrier rounded-full"
+            animate={{ x: ['-100%', '100%'] }}
+            transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+          />
+        </div>
       </div>
-      <span className="font-martian text-xs text-camry-graphite/50 tracking-wider">THINKING...</span>
-    </div>
-  </div>
-);
+    </motion.div>
+  );
+};
 
 export const Chat: React.FC = () => {
   const { chatHistory, addMessage, loadedModel, setLoadedModel, installedModels, activeAgent, allAgents, showToast } = useAppContext();
@@ -31,6 +77,61 @@ export const Chat: React.FC = () => {
   const [showModelPopover, setShowModelPopover] = useState(false);
   const [loadingModel, setLoadingModel] = useState<string | null>(null);
   const [isThinking, setIsThinking] = useState(false);
+  
+  // Voice-to-Text state (Web Speech API)
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      showToast('Voice dictation paused');
+      return;
+    }
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      showToast('Web Speech API is not supported in this browser environment');
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event: any) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        if (transcript.trim()) {
+          setInput(prev => prev ? `${prev} ${transcript}` : transcript);
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+        showToast(`Dictation status: ${event.error}`);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+      recognitionRef.current = recognition;
+      setIsListening(true);
+      showToast('Listening... Speak to dictate your message');
+    } catch (err) {
+      console.error('Failed to start speech recognition:', err);
+      showToast('Could not initialize speech recognition microphone input');
+      setIsListening(false);
+    }
+  };
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -52,9 +153,12 @@ export const Chat: React.FC = () => {
     setInput('');
     setIsThinking(true);
     
+    const activeAgentObj = activeAgent ? allAgents.find(a => a.id === activeAgent) : null;
+    
+    let responseText = '';
+    let responseModel = loadedModel;
+
     try {
-      const activeAgentObj = activeAgent ? allAgents.find(a => a.id === activeAgent) : null;
-      
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -66,25 +170,33 @@ export const Chat: React.FC = () => {
         }),
       });
 
-      const data = await response.json();
-      setIsThinking(false);
-
-      addMessage({
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: data.text || 'No response returned.',
-        model: data.model || loadedModel,
-      });
-    } catch (err) {
-      console.error("Chat error:", err);
-      setIsThinking(false);
-      addMessage({
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: `Executed on Camry ONE local NPU engine. High-precision answer generated for query: "${text.slice(0, 40)}..."`,
-        model: loadedModel,
-      });
+      if (response.ok) {
+        const data = await response.json();
+        responseText = data.text || 'No response returned.';
+        responseModel = data.model || loadedModel;
+      } else {
+        try {
+          const errData = await response.json();
+          responseText = errData.error || `Server returned status ${response.status}. Please verify your GEMINI_API_KEY environment variable on Vercel.`;
+        } catch {
+          responseText = `Could not reach backend server (Status ${response.status}). If deployed on Vercel, ensure GEMINI_API_KEY is configured in your project's Environment Variables.`;
+        }
+      }
+    } catch (fetchErr) {
+      console.warn("Fetch failed, using local engine fallback:", fetchErr);
+      responseText = `Processed on Camry Local Engine.\n\nRegarding "${text}":\n\nQuery executed on-device. If you are deploying on Vercel, configure \`GEMINI_API_KEY\` under Vercel Settings -> Environment Variables to connect live Gemini AI responses.`;
     }
+
+    setIsThinking(false);
+
+    addMessage({
+      id: (Date.now() + 1).toString(),
+      role: 'assistant',
+      content: responseText,
+      model: responseModel,
+    });
+
+    showToast(`Agent response computed`, 'task_complete', 'COMPUTATION FINISHED');
   };
 
   const handleLoadModel = (modelId: string) => {
@@ -143,7 +255,7 @@ export const Chat: React.FC = () => {
       </div>
 
       {/* Footer Composer Area */}
-      <div className={`absolute bottom-0 left-0 right-0 p-8 flex flex-col items-center justify-end bg-gradient-to-t from-camry-paper via-camry-paper to-transparent transition-all duration-500 ${isEmpty ? 'top-1/4' : ''}`}>
+      <div className={`absolute bottom-0 left-0 right-0 p-3 sm:p-6 md:p-8 flex flex-col items-center justify-end bg-gradient-to-t from-camry-paper via-camry-paper to-transparent transition-all duration-500 ${isEmpty ? 'top-1/4' : ''}`}>
         <div className="max-w-2xl w-full relative">
           
           <div className="relative bg-white rounded-xl shadow-sm border border-black/10 flex flex-col transition-shadow focus-within:shadow-md focus-within:border-camry-carrier/50">
@@ -169,6 +281,21 @@ export const Chat: React.FC = () => {
                   className="p-1.5 text-camry-graphite/50 hover:text-camry-blackout rounded-md transition-colors"
                 >
                   <Paperclip size={18} />
+                </button>
+
+                {/* Voice-to-Text Dictation Toggle */}
+                <button
+                  type="button"
+                  onClick={toggleListening}
+                  className={`p-1.5 px-2.5 rounded-md transition-all flex items-center gap-1.5 text-xs font-martian ${
+                    isListening 
+                      ? 'bg-red-500 text-white animate-pulse shadow-md font-semibold' 
+                      : 'bg-camry-graphite/5 hover:bg-camry-graphite/10 text-camry-graphite/80 border border-black/5'
+                  }`}
+                  title={isListening ? 'Stop voice dictation' : 'Dictate message with voice (Web Speech API)'}
+                >
+                  {isListening ? <MicOff size={14} /> : <Mic size={14} />}
+                  <span>{isListening ? 'Listening...' : 'Dictate'}</span>
                 </button>
                 <div className="relative">
                   <button 
@@ -296,15 +423,15 @@ export const Chat: React.FC = () => {
 
           {/* Suggestions */}
           {isEmpty && (
-            <div className="mt-8 grid grid-cols-2 gap-3">
+            <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
               {SUGGESTIONS.map((s, i) => (
                 <button 
                   key={i}
                   onClick={() => setInput(s.text)}
-                  className="text-left p-4 rounded-xl border border-black/5 bg-white shadow-sm hover:shadow-md hover:border-black/10 transition-all group flex items-start gap-3"
+                  className="text-left p-3.5 sm:p-4 rounded-xl border border-black/5 bg-white shadow-sm hover:shadow-md hover:border-black/10 transition-all group flex items-start gap-3"
                 >
-                  <span className="text-xl flex-shrink-0 mt-0.5">{s.icon}</span>
-                  <span className="font-familjen text-sm text-camry-graphite/80 group-hover:text-camry-blackout transition-colors">{s.text}</span>
+                  <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">{s.icon}</span>
+                  <span className="font-familjen text-xs sm:text-sm text-camry-graphite/80 group-hover:text-camry-blackout transition-colors leading-snug">{s.text}</span>
                 </button>
               ))}
             </div>

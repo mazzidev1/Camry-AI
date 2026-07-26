@@ -1,16 +1,75 @@
 import React, { useState } from 'react';
-import { useAppContext, Agent } from '../store/AppContext';
-import { Grid, Heart, Scale, FileText, Activity, Landmark, Settings, TrendingUp, Edit3, Globe, Plus, Search, Trash2, Check, X, Bot } from 'lucide-react';
+import { useAppContext, Agent, AgentVersion } from '../store/AppContext';
+import { Grid, Heart, Scale, FileText, Activity, Landmark, Settings, TrendingUp, Edit3, Globe, Plus, Search, Trash2, Check, X, Bot, History, RotateCcw, BarChart3, Cpu, Zap, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
+
+// Telemetry datasets for agents
+const AGENT_TELEMETRY_DATA: Record<string, Array<{ time: string; tokens: number; requests: number }>> = {
+  all: [
+    { time: '09:00', tokens: 12400, requests: 82 },
+    { time: '10:00', tokens: 18900, requests: 124 },
+    { time: '11:00', tokens: 26500, requests: 189 },
+    { time: '12:00', tokens: 34200, requests: 240 },
+    { time: '13:00', tokens: 41800, requests: 310 },
+    { time: '14:00', tokens: 52100, requests: 412 },
+    { time: '15:00', tokens: 68400, requests: 520 },
+  ],
+  legal: [
+    { time: '09:00', tokens: 4200, requests: 28 },
+    { time: '10:00', tokens: 6800, requests: 45 },
+    { time: '11:00', tokens: 9500, requests: 62 },
+    { time: '12:00', tokens: 13400, requests: 88 },
+    { time: '13:00', tokens: 17200, requests: 110 },
+    { time: '14:00', tokens: 22800, requests: 154 },
+    { time: '15:00', tokens: 29100, requests: 198 },
+  ],
+  contract: [
+    { time: '09:00', tokens: 3800, requests: 24 },
+    { time: '10:00', tokens: 5900, requests: 39 },
+    { time: '11:00', tokens: 8100, requests: 52 },
+    { time: '12:00', tokens: 10800, requests: 71 },
+    { time: '13:00', tokens: 13500, requests: 90 },
+    { time: '14:00', tokens: 16900, requests: 118 },
+    { time: '15:00', tokens: 21400, requests: 146 },
+  ],
+  meeting: [
+    { time: '09:00', tokens: 3100, requests: 22 },
+    { time: '10:00', tokens: 5400, requests: 38 },
+    { time: '11:00', tokens: 8200, requests: 59 },
+    { time: '12:00', tokens: 11000, requests: 78 },
+    { time: '13:00', tokens: 13900, requests: 98 },
+    { time: '14:00', tokens: 17500, requests: 126 },
+    { time: '15:00', tokens: 21800, requests: 160 },
+  ],
+  medical: [
+    { time: '09:00', tokens: 2100, requests: 14 },
+    { time: '10:00', tokens: 3800, requests: 26 },
+    { time: '11:00', tokens: 5100, requests: 37 },
+    { time: '12:00', tokens: 6200, requests: 46 },
+    { time: '13:00', tokens: 7300, requests: 58 },
+    { time: '14:00', tokens: 8900, requests: 72 },
+    { time: '15:00', tokens: 11200, requests: 92 },
+  ],
+};
 
 export const AgentStore: React.FC = () => {
-  const { allAgents, installedAgents, installAgent, uninstallAgent, addCustomAgent, setCurrentScreen, setActiveAgent } = useAppContext();
+  const { allAgents, installedAgents, installAgent, uninstallAgent, addCustomAgent, rollbackAgentVersion, setCurrentScreen, setActiveAgent } = useAppContext();
   
   const [downloading, setDownloading] = useState<string | null>(null);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [activeCat, setActiveCat] = useState('All');
+  const [statusFilter, setStatusFilter] = useState<'All' | 'Active' | 'Idle' | 'Error'>('All');
   const [searchQuery, setSearchQuery] = useState('');
   
+  // Analytics state
+  const [selectedAnalyticsAgent, setSelectedAnalyticsAgent] = useState<string>('all');
+  const [showAnalyticsPanel, setShowAnalyticsPanel] = useState<boolean>(true);
+
+  // Version History Modal state
+  const [selectedAgentForHistory, setSelectedAgentForHistory] = useState<Agent | null>(null);
+  const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false);
+
   // Custom Agent Creation Modal
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newAgentName, setNewAgentName] = useState('');
@@ -28,13 +87,23 @@ export const AgentStore: React.FC = () => {
     return 'Other';
   };
 
+  const getAgentStatus = (agent: Agent): 'active' | 'idle' | 'error' => {
+    if (agent.status) return agent.status;
+    return 'idle';
+  };
+
   const filteredAgents = allAgents.filter(a => {
     const cat = getAgentCat(a);
+    const status = getAgentStatus(a);
     const matchesCat = activeCat === 'All' || cat === activeCat;
+    const matchesStatus = statusFilter === 'All' || 
+      (statusFilter === 'Active' && status === 'active') ||
+      (statusFilter === 'Idle' && status === 'idle') ||
+      (statusFilter === 'Error' && status === 'error');
     const matchesSearch = searchQuery === '' || 
       a.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
       a.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCat && matchesSearch;
+    return matchesCat && matchesStatus && matchesSearch;
   });
 
   const handleInstall = (id: string) => {
@@ -111,21 +180,147 @@ export const AgentStore: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex gap-2">
-          {['All', 'Legal', 'Medical', 'Government', 'Industrial', 'Finance', 'Other'].map(cat => (
-            <button 
-              key={cat}
-              onClick={() => setActiveCat(cat)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium border transition-colors ${activeCat === cat ? 'bg-camry-blackout text-white border-transparent' : 'bg-white border-black/10 text-camry-graphite hover:bg-camry-graphite/5'}`}
-            >
-              {cat}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex gap-2">
+            {['All', 'Legal', 'Medical', 'Government', 'Industrial', 'Finance', 'Other'].map(cat => (
+              <button 
+                key={cat}
+                onClick={() => setActiveCat(cat)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${activeCat === cat ? 'bg-camry-blackout text-white border-transparent' : 'bg-white border-black/10 text-camry-graphite hover:bg-camry-graphite/5'}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Status Filter */}
+          <div className="flex items-center gap-1.5 bg-black/5 p-1 rounded-lg">
+            <span className="font-martian text-[10px] text-camry-graphite/60 px-2 uppercase tracking-wider">Status:</span>
+            {(['All', 'Active', 'Idle', 'Error'] as const).map(st => (
+              <button
+                key={st}
+                onClick={() => setStatusFilter(st)}
+                className={`px-2.5 py-1 rounded-md text-xs font-martian transition-all ${
+                  statusFilter === st 
+                    ? 'bg-white text-camry-blackout shadow-sm font-semibold' 
+                    : 'text-camry-graphite/60 hover:text-black'
+                }`}
+              >
+                {st === 'Active' && <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5" />}
+                {st === 'Idle' && <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5" />}
+                {st === 'Error' && <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5" />}
+                {st}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-8 pt-6">
         
+        {/* AGENT TELEMETRY & DATA VISUALIZATION (RECHARTS) */}
+        <div className="bg-white border border-black/10 rounded-2xl p-6 shadow-sm mb-8">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-camry-blackout text-white flex items-center justify-center shadow-sm">
+                <BarChart3 size={20} />
+              </div>
+              <div>
+                <h2 className="text-xl font-bricolage text-camry-blackout">Agent Telemetry & Usage Analytics</h2>
+                <p className="font-familjen text-xs text-camry-graphite/60">Live breakdown of tokens consumed and requests handled on Camry NPU</p>
+              </div>
+            </div>
+
+            {/* Agent Telemetry Selector & Toggle */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 bg-camry-graphite/5 p-1.5 rounded-lg border border-black/5">
+                <span className="font-martian text-[10px] text-camry-graphite/60 px-1 uppercase tracking-wider">Agent:</span>
+                <select 
+                  value={selectedAnalyticsAgent}
+                  onChange={(e) => setSelectedAnalyticsAgent(e.target.value)}
+                  className="bg-white border border-black/10 rounded px-2.5 py-1 text-xs font-martian font-medium text-camry-blackout focus:outline-none focus:border-camry-deep-carrier cursor-pointer"
+                >
+                  <option value="all">All Agents Aggregate</option>
+                  {allAgents.map(a => (
+                    <option key={a.id} value={a.id}>{a.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <button 
+                onClick={() => setShowAnalyticsPanel(!showAnalyticsPanel)}
+                className="text-xs font-martian px-3 py-1.5 rounded-lg border border-black/10 hover:bg-black/5 text-camry-graphite transition-colors"
+              >
+                {showAnalyticsPanel ? 'Hide Chart' : 'Show Chart'}
+              </button>
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {showAnalyticsPanel && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="space-y-6"
+              >
+                {/* Analytics Metric Cards */}
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-martian text-[10px] text-blue-700 font-semibold uppercase tracking-wider">Tokens Consumed</span>
+                      <Zap size={14} className="text-blue-600" />
+                    </div>
+                    <div className="font-martian text-2xl text-blue-950 font-bold">
+                      {((AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all'])[6]?.tokens || 68400).toLocaleString()}
+                    </div>
+                    <div className="font-familjen text-xs text-blue-600/80 mt-1">Local NPU context cache</div>
+                  </div>
+
+                  <div className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-martian text-[10px] text-emerald-700 font-semibold uppercase tracking-wider">Requests Handled</span>
+                      <Cpu size={14} className="text-emerald-600" />
+                    </div>
+                    <div className="font-martian text-2xl text-emerald-950 font-bold">
+                      {(AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all'])[6]?.requests || 520}
+                    </div>
+                    <div className="font-familjen text-xs text-emerald-600/80 mt-1">100% on-device inference</div>
+                  </div>
+
+                  <div className="p-4 bg-purple-50/50 border border-purple-100 rounded-xl">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-martian text-[10px] text-purple-700 font-semibold uppercase tracking-wider">Avg Latency</span>
+                      <Activity size={14} className="text-purple-600" />
+                    </div>
+                    <div className="font-martian text-2xl text-purple-950 font-bold">14.2 ms</div>
+                    <div className="font-familjen text-xs text-purple-600/80 mt-1">Zero network hop overhead</div>
+                  </div>
+                </div>
+
+                {/* Recharts Line Chart */}
+                <div className="h-64 w-full pt-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all']} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                      <XAxis dataKey="time" stroke="#64748b" fontSize={11} tickLine={false} />
+                      <YAxis yAxisId="left" stroke="#3b82f6" fontSize={11} tickLine={false} axisLine={false} />
+                      <YAxis yAxisId="right" orientation="right" stroke="#10b981" fontSize={11} tickLine={false} axisLine={false} />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#18181b', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '12px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+                        itemStyle={{ color: '#fff' }}
+                      />
+                      <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+                      <Line yAxisId="left" type="monotone" dataKey="tokens" name="Tokens Consumed" stroke="#3b82f6" strokeWidth={2.5} activeDot={{ r: 6 }} dot={{ r: 3 }} />
+                      <Line yAxisId="right" type="monotone" dataKey="requests" name="Requests Handled" stroke="#10b981" strokeWidth={2.5} activeDot={{ r: 6 }} dot={{ r: 3 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
         {/* Featured Banners */}
         <div className="grid grid-cols-2 gap-6 mb-8">
           <div className="bg-camry-graphite text-white rounded-2xl p-6 relative overflow-hidden flex flex-col justify-end min-h-[150px] shadow-lg">
@@ -145,6 +340,7 @@ export const AgentStore: React.FC = () => {
           {filteredAgents.map(agent => {
             const isInstalled = installedAgents.includes(agent.id);
             const isDownloading = downloading === agent.id;
+            const status = getAgentStatus(agent);
 
             return (
               <div key={agent.id} className="bg-white rounded-xl p-5 border border-black/5 shadow-sm hover:shadow-md transition-all flex flex-col h-full group relative">
@@ -161,19 +357,70 @@ export const AgentStore: React.FC = () => {
                     {agent.id.startsWith('custom-') && <Bot size={24} className="text-camry-deep-carrier" />}
                   </div>
 
-                  {isInstalled && (
-                    <span className="inline-flex items-center gap-1 font-martian text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200">
-                      <Check size={12} /> INSTALLED
-                    </span>
-                  )}
+                  {/* Visual Status Indicator & Installed Tag */}
+                  <div className="flex flex-col items-end gap-1">
+                    {isInstalled ? (
+                      <span className="inline-flex items-center gap-1 font-martian text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200">
+                        <Check size={12} /> INSTALLED
+                      </span>
+                    ) : null}
+
+                    {/* Agent Status Badge */}
+                    <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-martian text-[10px] border ${
+                      status === 'active' 
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
+                        : status === 'error'
+                        ? 'bg-red-50 text-red-700 border-red-200'
+                        : 'bg-amber-50 text-amber-800 border-amber-200'
+                    }`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${
+                        status === 'active' ? 'bg-emerald-500 animate-pulse' :
+                        status === 'error' ? 'bg-red-500 animate-ping' : 'bg-amber-400'
+                      }`} />
+                      <span className="capitalize">{status}</span>
+                    </div>
+                  </div>
                 </div>
                 
-                <h3 className="font-bricolage text-lg text-camry-blackout mb-1">{agent.name}</h3>
-                <p className="font-familjen text-sm text-camry-graphite/70 flex-1 leading-relaxed mb-4">{agent.description}</p>
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="font-bricolage text-lg text-camry-blackout">{agent.name}</h3>
+                  <span className="font-martian text-[10px] bg-black/5 px-2 py-0.5 rounded text-camry-graphite/60">
+                    {agent.currentVersion || 'v1.0.0'}
+                  </span>
+                </div>
+
+                <p className="font-familjen text-sm text-camry-graphite/70 flex-1 leading-relaxed mb-3">{agent.description}</p>
                 
+                {/* Status Reason Banner */}
+                {agent.statusReason && (
+                  <div className={`text-[10px] font-martian px-2.5 py-1 rounded mb-3 ${
+                    status === 'error' ? 'bg-red-50 text-red-600 border border-red-100' :
+                    status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                    'bg-camry-graphite/5 text-camry-graphite/60'
+                  }`}>
+                    <span className="font-semibold uppercase tracking-wider mr-1">NPU Status:</span>
+                    {agent.statusReason}
+                  </div>
+                )}
+
                 <div className="mt-auto pt-3 border-t border-black/5 flex items-center justify-between">
-                  <div className="flex items-center gap-1 text-camry-graphite/40 font-martian text-xs">
-                    <Heart size={14} /> {agent.likes}
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 text-camry-graphite/40 font-martian text-xs">
+                      <Heart size={14} /> {agent.likes}
+                    </div>
+
+                    {/* Version History Button */}
+                    <button
+                      onClick={() => {
+                        setSelectedAgentForHistory(agent);
+                        setShowHistoryModal(true);
+                      }}
+                      className="p-1 rounded hover:bg-black/5 text-camry-graphite/60 hover:text-black transition-colors flex items-center gap-1 text-[11px] font-martian"
+                      title="View Version History & Rollback"
+                    >
+                      <History size={13} />
+                      <span>History</span>
+                    </button>
                   </div>
                   
                   {isDownloading ? (
@@ -301,6 +548,110 @@ export const AgentStore: React.FC = () => {
                   </button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Version History & Rollback Modal */}
+      <AnimatePresence>
+        {showHistoryModal && selectedAgentForHistory && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-black/10 text-camry-blackout relative max-h-[85vh] flex flex-col"
+            >
+              <div className="flex items-center justify-between pb-4 mb-4 border-b border-black/10">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-camry-blackout text-white rounded-xl">
+                    <History size={18} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bricolage">{selectedAgentForHistory.name} — Version History</h3>
+                    <p className="font-familjen text-xs text-camry-graphite/60">
+                      View prompt iterations and restore previous agent configurations on-device
+                    </p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setShowHistoryModal(false)} 
+                  className="p-1 rounded-lg hover:bg-black/5 text-camry-graphite/60 hover:text-black transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Version Timeline */}
+              <div className="flex-1 overflow-y-auto space-y-4 pr-1">
+                {(selectedAgentForHistory.versionHistory || [
+                  { version: selectedAgentForHistory.currentVersion || 'v1.0.0', updatedAt: '2026-07-20', prompt: selectedAgentForHistory.systemPrompt || 'Default agent system prompt.', changes: 'Initial release on Camry ONE NPU.', author: 'Camry System' }
+                ]).map((ver) => {
+                  const isCurrent = (selectedAgentForHistory.currentVersion || 'v1.0.0') === ver.version;
+
+                  return (
+                    <div 
+                      key={ver.version} 
+                      className={`p-4 rounded-xl border transition-all ${
+                        isCurrent 
+                          ? 'bg-emerald-50/60 border-emerald-200 shadow-sm' 
+                          : 'bg-camry-graphite/5 border-black/5 hover:border-black/15'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2.5 py-0.5 rounded font-martian text-xs font-bold ${
+                            isCurrent ? 'bg-emerald-600 text-white' : 'bg-camry-blackout text-white'
+                          }`}>
+                            {ver.version}
+                          </span>
+                          {isCurrent && (
+                            <span className="font-martian text-[10px] text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-semibold">
+                              ACTIVE VERSION
+                            </span>
+                          )}
+                          <span className="font-familjen text-xs text-camry-graphite/60">
+                            • Released {ver.updatedAt} by {ver.author}
+                          </span>
+                        </div>
+
+                        {!isCurrent && (
+                          <button
+                            onClick={() => {
+                              rollbackAgentVersion(selectedAgentForHistory.id, ver.version);
+                              setShowHistoryModal(false);
+                            }}
+                            className="px-3 py-1 rounded bg-camry-blackout text-white text-xs font-martian hover:bg-camry-graphite transition-all flex items-center gap-1.5 shadow-sm"
+                          >
+                            <RotateCcw size={12} />
+                            <span>Rollback</span>
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="text-xs font-familjen text-camry-blackout font-medium mb-2">
+                        <span className="font-martian text-[10px] text-camry-graphite/60 uppercase tracking-wider block">Changelog:</span>
+                        {ver.changes}
+                      </div>
+
+                      <div className="bg-white/80 p-3 rounded-lg border border-black/5 font-mono text-[11px] text-camry-graphite leading-relaxed">
+                        <span className="font-martian text-[10px] text-camry-graphite/50 uppercase tracking-wider block mb-1">System Prompt:</span>
+                        "{ver.prompt}"
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="pt-4 mt-4 border-t border-black/10 flex justify-end">
+                <button
+                  onClick={() => setShowHistoryModal(false)}
+                  className="px-4 py-2 rounded-lg text-xs font-medium bg-camry-blackout text-white hover:bg-camry-graphite"
+                >
+                  Close History
+                </button>
+              </div>
             </motion.div>
           </div>
         )}

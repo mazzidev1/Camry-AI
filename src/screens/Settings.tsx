@@ -1,10 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../store/AppContext';
-import { ChevronRight, Shield, Power, Monitor, HardDrive, Wifi, Network, Key, ArrowLeft, Copy, Eye, EyeOff, Check, Terminal, Lock } from 'lucide-react';
+import { ChevronRight, Shield, Power, Monitor, HardDrive, Wifi, Network, Key, ArrowLeft, Copy, Eye, EyeOff, Check, Terminal, Lock, Download, Upload, FileCode } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 
 export const Settings: React.FC = () => {
-  const { settingsView, setSettingsView, showToast } = useAppContext();
+  const { settingsView, setSettingsView, showToast, exportConfig, importConfig } = useAppContext();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      if (content) {
+        importConfig(content);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
 
   return (
     <div className="flex-1 h-full flex flex-col bg-camry-paper overflow-hidden relative">
@@ -57,6 +72,47 @@ export const Settings: React.FC = () => {
                       title="Privacy Policy"
                       right={<ChevronRight size={16} className="text-camry-graphite/40" />}
                       onClick={() => setSettingsView('privacy')}
+                    />
+                  </div>
+                </div>
+
+                {/* Backup & Portability Settings */}
+                <div>
+                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider">BACKUP & PORTABILITY</div>
+                  <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
+                    <SettingRow 
+                      icon={<Download size={18} className="text-camry-carrier" />}
+                      title="Export Configuration & Agents"
+                      subtitle="Save system preferences and agents to JSON file"
+                      right={
+                        <button 
+                          onClick={exportConfig}
+                          className="px-3 py-1.5 bg-camry-blackout text-white text-xs font-martian rounded-lg hover:bg-camry-graphite transition-colors shadow-sm"
+                        >
+                          Export JSON
+                        </button>
+                      }
+                    />
+                    <div className="h-[1px] bg-black/5 ml-12"></div>
+                    <SettingRow 
+                      icon={<Upload size={18} className="text-camry-graphite/60" />}
+                      title="Import Configuration"
+                      subtitle="Restore settings from a JSON backup file"
+                      right={
+                        <button 
+                          onClick={() => fileInputRef.current?.click()}
+                          className="px-3 py-1.5 bg-camry-graphite/10 text-camry-blackout text-xs font-martian rounded-lg hover:bg-camry-graphite/20 transition-colors"
+                        >
+                          Restore
+                        </button>
+                      }
+                    />
+                    <input 
+                      ref={fileInputRef}
+                      type="file" 
+                      accept=".json"
+                      onChange={handleFileUpload}
+                      className="hidden"
                     />
                   </div>
                 </div>

@@ -13,7 +13,7 @@ export const CamryLogo: React.FC<CamryLogoProps> = ({
   size = 'md',
   className = ''
 }) => {
-  // Colors based on PDF specification:
+  // Colors based on PDF & Brand specification:
   // Blackout: #0B0C0E
   // Paper: #EDEBE4
   // Carrier Blue: #9BD1FF
@@ -24,6 +24,10 @@ export const CamryLogo: React.FC<CamryLogoProps> = ({
     return '#EDEBE4'; // light
   };
 
+  const getBlueDotColor = () => {
+    return '#9BD1FF'; // Camry Carrier Blue
+  };
+
   const getTextColor = () => {
     if (variant === 'dark') return 'text-camry-blackout';
     if (variant === 'carrier') return 'text-camry-carrier';
@@ -31,36 +35,39 @@ export const CamryLogo: React.FC<CamryLogoProps> = ({
   };
 
   const dimensions = {
-    sm: { svg: 18, text: 'text-base', gap: 'gap-2' },
-    md: { svg: 24, text: 'text-xl', gap: 'gap-2.5' },
-    lg: { svg: 36, text: 'text-3xl', gap: 'gap-3.5' }
+    sm: { width: 26, height: 18, text: 'text-base', gap: 'gap-2' },
+    md: { width: 34, height: 24, text: 'text-xl', gap: 'gap-2.5' },
+    lg: { width: 48, height: 34, text: 'text-3xl', gap: 'gap-3.5' }
   }[size];
 
   const markColor = getMarkColor();
+  const blueDotColor = getBlueDotColor();
 
-  // "The Signal" - Morse C logo mark:
-  // Row 1: square dot + dash
-  // Row 2: square dot
-  // Row 3: square dot + dash
+  // Camry Logo Mark matching the exact brand icon:
+  // - Left: 2 dots (top markColor, bottom carrier blue #9BD1FF)
+  // - Center: 3 rounded horizontal pill bars
+  // - Right: 2 dots (top & bottom markColor)
   const MarkSVG = (
     <svg 
-      width={dimensions.svg} 
-      height={dimensions.svg} 
-      viewBox="0 0 32 32" 
+      width={dimensions.width} 
+      height={dimensions.height} 
+      viewBox="0 0 38 24" 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
       className="flex-shrink-0"
     >
-      {/* Row 1 */}
-      <rect x="2" y="3" width="6" height="6" rx="1" fill={markColor} />
-      <rect x="11" y="3" width="18" height="6" rx="1" fill={markColor} />
-      
-      {/* Row 2 */}
-      <rect x="2" y="13" width="6" height="6" rx="1" fill={markColor} />
-      
-      {/* Row 3 */}
-      <rect x="2" y="23" width="6" height="6" rx="1" fill={markColor} />
-      <rect x="11" y="23" width="18" height="6" rx="1" fill={markColor} />
+      {/* Left Dots */}
+      <circle cx="3" cy="7.5" r="2.5" fill={markColor} />
+      <circle cx="3" cy="16.5" r="2.5" fill={blueDotColor} />
+
+      {/* Center 3 Pill Bars */}
+      <rect x="9" y="2" width="18" height="5" rx="2.5" fill={markColor} />
+      <rect x="9" y="9.5" width="18" height="5" rx="2.5" fill={markColor} />
+      <rect x="9" y="17" width="18" height="5" rx="2.5" fill={markColor} />
+
+      {/* Right Dots */}
+      <circle cx="32" cy="4.5" r="2.5" fill={markColor} />
+      <circle cx="32" cy="19.5" r="2.5" fill={markColor} />
     </svg>
   );
 
