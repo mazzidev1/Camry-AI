@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../store/AppContext';
-import { ChevronRight, Shield, Power, Monitor, HardDrive, Wifi, Network, Key, ArrowLeft, Copy, Eye, EyeOff, Check, Terminal, Lock, Download, Upload, FileCode } from 'lucide-react';
+import { ChevronRight, Shield, Power, Monitor, HardDrive, Wifi, Network, Key, ArrowLeft, Copy, Eye, EyeOff, Check, Terminal, Lock, Download, Upload, FileCode, Sun, Moon, Palette } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 
 export const Settings: React.FC = () => {
-  const { settingsView, setSettingsView, showToast, exportConfig, importConfig } = useAppContext();
+  const { settingsView, setSettingsView, showToast, exportConfig, importConfig, theme, toggleTheme } = useAppContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,12 +33,12 @@ export const Settings: React.FC = () => {
             className="absolute inset-0 flex flex-col"
           >
             {/* Header */}
-            <div className="p-8 pb-4 flex-shrink-0 bg-camry-paper z-10">
-              <h1 className="text-2xl font-bricolage text-camry-blackout">Settings</h1>
+            <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex-shrink-0 bg-camry-paper z-10">
+              <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Settings</h1>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-8 pb-12">
-              <div className="max-w-2xl space-y-8">
+            <div className="flex-1 overflow-y-auto px-4 sm:px-8 pb-8 sm:pb-12">
+              <div className="max-w-2xl w-full space-y-6 sm:space-y-8">
                 
                 {/* Account */}
                 <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
@@ -72,6 +72,36 @@ export const Settings: React.FC = () => {
                       title="Privacy Policy"
                       right={<ChevronRight size={16} className="text-camry-graphite/40" />}
                       onClick={() => setSettingsView('privacy')}
+                    />
+                  </div>
+                </div>
+
+                {/* Appearance & Theme Settings */}
+                <div>
+                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider">APPEARANCE & THEME</div>
+                  <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
+                    <SettingRow 
+                      icon={<Palette size={18} className="text-camry-deep-carrier" />}
+                      title="Theme Mode"
+                      subtitle={theme === 'light' ? 'Light Paper (#EDEBE4) palette active' : 'Dark Graphite (#121418) palette active'}
+                      right={
+                        <button
+                          onClick={toggleTheme}
+                          className="px-3 py-1.5 bg-camry-blackout text-white text-xs font-martian rounded-lg hover:bg-camry-graphite transition-all flex items-center gap-1.5 shadow-sm"
+                        >
+                          {theme === 'light' ? (
+                            <>
+                              <Moon size={14} className="text-camry-paper" />
+                              <span>Switch to Dark</span>
+                            </>
+                          ) : (
+                            <>
+                              <Sun size={14} className="text-amber-400" />
+                              <span>Switch to Light Paper</span>
+                            </>
+                          )}
+                        </button>
+                      }
                     />
                   </div>
                 </div>
@@ -311,28 +341,28 @@ const ApiKeySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   return (
     <>
-      <div className="p-8 pb-4 flex items-center gap-4">
+      <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
         <button onClick={onBack} className="p-2 hover:bg-black/5 rounded-full transition-colors text-camry-graphite/60 hover:text-black">
           <ArrowLeft size={20} />
         </button>
-        <Key size={20} className="text-camry-blackout" />
-        <h1 className="text-2xl font-bricolage text-camry-blackout">API key</h1>
+        <Key size={20} className="text-camry-blackout flex-shrink-0" />
+        <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">API key</h1>
       </div>
 
-      <div className="px-16 pt-8 max-w-3xl">
-        <div className="font-martian text-xs text-camry-graphite/50 mb-4 tracking-wider">API KEY</div>
+      <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
+        <div className="font-martian text-xs text-camry-graphite/50 mb-3 tracking-wider">API KEY</div>
         
-        <div className="bg-white border border-black/5 rounded-xl shadow-sm p-6 space-y-8">
+        <div className="bg-white border border-black/5 rounded-xl shadow-sm p-4 sm:p-6 space-y-6 sm:space-y-8">
           
           <div>
             <label className="block text-sm font-medium text-camry-graphite mb-2">API Base URL</label>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 bg-camry-graphite/5 border border-black/5 rounded-lg px-4 py-3 font-martian text-sm text-camry-blackout">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex-1 bg-camry-graphite/5 border border-black/5 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 font-martian text-xs sm:text-sm text-camry-blackout truncate">
                 {baseUrl}
               </div>
               <button 
                 onClick={handleCopyUrl}
-                className="w-11 h-11 flex items-center justify-center rounded-lg border border-black/10 bg-white hover:bg-black/5 hover:border-black/20 transition-all text-camry-graphite/60 relative"
+                className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg border border-black/10 bg-white hover:bg-black/5 hover:border-black/20 transition-all text-camry-graphite/60 flex-shrink-0"
               >
                 <Copy size={18} />
               </button>
@@ -341,29 +371,29 @@ const ApiKeySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
           <div>
             <label className="block text-sm font-medium text-camry-graphite mb-2">API Key</label>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 bg-camry-graphite/5 border border-black/5 rounded-lg px-4 py-3 font-martian text-sm text-camry-blackout flex items-center justify-between">
-                <span>{showKey ? apiKey : '••••••••••••••••••••••••••••••••••••'}</span>
-                <button onClick={() => setShowKey(!showKey)} className="text-camry-graphite/40 hover:text-black">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex-1 bg-camry-graphite/5 border border-black/5 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 font-martian text-xs sm:text-sm text-camry-blackout flex items-center justify-between min-w-0">
+                <span className="truncate mr-2">{showKey ? apiKey : '••••••••••••••••••••••••••••••••••••'}</span>
+                <button onClick={() => setShowKey(!showKey)} className="text-camry-graphite/40 hover:text-black flex-shrink-0">
                   {showKey ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               <button 
                 onClick={handleCopyKey}
-                className="w-11 h-11 flex items-center justify-center rounded-lg border border-black/10 bg-white hover:bg-black/5 hover:border-black/20 transition-all text-camry-graphite/60 relative"
+                className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg border border-black/10 bg-white hover:bg-black/5 hover:border-black/20 transition-all text-camry-graphite/60 flex-shrink-0"
               >
                 <Copy size={18} />
               </button>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-black/5 flex items-center justify-between">
-            <p className="font-familjen text-sm text-camry-graphite/60">
+          <div className="pt-4 border-t border-black/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p className="font-familjen text-xs sm:text-sm text-camry-graphite/60">
               Point any OpenAI-compatible tool at your Camry device. Nothing leaves the building.
             </p>
             <button 
               onClick={() => setShowRegenModal(true)}
-              className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors whitespace-nowrap"
+              className="px-3.5 py-2 text-xs sm:text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors whitespace-nowrap w-fit"
             >
               Regenerate key
             </button>
@@ -375,20 +405,20 @@ const ApiKeySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       {/* Regen Confirm Modal */}
       <AnimatePresence>
         {showRegenModal && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-camry-paper/80 backdrop-blur-sm">
+          <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-camry-paper/80 backdrop-blur-sm">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-xl shadow-xl p-6 max-w-sm w-full"
+              className="bg-white border border-black/10 rounded-xl shadow-xl p-5 sm:p-6 max-w-sm w-full"
             >
-              <h3 className="font-bricolage text-xl text-camry-blackout mb-2">Regenerate API key?</h3>
-              <p className="font-familjen text-sm text-camry-graphite/70 mb-6">
+              <h3 className="font-bricolage text-lg sm:text-xl text-camry-blackout mb-2">Regenerate API key?</h3>
+              <p className="font-familjen text-xs sm:text-sm text-camry-graphite/70 mb-6">
                 Any applications using the current key will immediately lose access to Camry. This action cannot be undone.
               </p>
               <div className="flex items-center gap-3 justify-end">
-                <button onClick={() => setShowRegenModal(false)} className="px-4 py-2 rounded-lg text-sm font-medium hover:bg-black/5">Cancel</button>
-                <button onClick={() => setShowRegenModal(false)} className="px-4 py-2 rounded-lg text-sm font-medium bg-red-600 text-white hover:bg-red-700">Regenerate</button>
+                <button onClick={() => setShowRegenModal(false)} className="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium hover:bg-black/5">Cancel</button>
+                <button onClick={() => setShowRegenModal(false)} className="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium bg-red-600 text-white hover:bg-red-700">Regenerate</button>
               </div>
             </motion.div>
           </div>
@@ -447,29 +477,29 @@ const DeveloperConsoleSubScreen: React.FC<{ onBack: () => void }> = ({ onBack })
 
   return (
     <>
-      <div className="p-8 pb-4 flex items-center gap-4 flex-shrink-0">
+      <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3 flex-shrink-0">
         <button onClick={onBack} className="p-2 hover:bg-black/5 rounded-full transition-colors text-camry-graphite/60 hover:text-black">
           <ArrowLeft size={20} />
         </button>
-        <Terminal size={20} className="text-camry-blackout" />
-        <h1 className="text-2xl font-bricolage text-camry-blackout">Developer Console</h1>
+        <Terminal size={20} className="text-camry-blackout flex-shrink-0" />
+        <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Developer Console</h1>
         <div className="ml-auto flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-camry-carrier animate-pulse shadow-[0_0_8px_rgba(155,209,255,0.6)]" />
           <span className="font-martian text-[10px] text-camry-graphite/70 tracking-wider">LIVE</span>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col p-8 items-center justify-start">
-        <div className="w-full max-w-4xl h-[500px] bg-camry-graphite border border-black/10 rounded-xl flex flex-col shadow-sm overflow-hidden relative">
+      <div className="flex-1 flex flex-col p-4 sm:p-8 items-center justify-start overflow-hidden">
+        <div className="w-full max-w-4xl h-[380px] sm:h-[500px] bg-camry-graphite border border-black/10 rounded-xl flex flex-col shadow-sm overflow-hidden relative">
           
           <div className="flex items-center px-4 py-3 border-b border-black/20 bg-black/20 flex-shrink-0">
             <span className="font-martian text-xs text-white/50">camry-syslogd</span>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6 font-martian text-[11px] leading-loose text-camry-carrier/80" ref={scrollRef}>
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 font-martian text-[10px] sm:text-[11px] leading-loose text-camry-carrier/80" ref={scrollRef}>
             {logs.map((log, i) => (
-              <div key={i} className="mb-1 opacity-80 hover:opacity-100 transition-opacity">
-                <span className="text-white/40 mr-4">›</span>
+              <div key={i} className="mb-1 opacity-80 hover:opacity-100 transition-opacity break-all">
+                <span className="text-white/40 mr-2 sm:mr-4">›</span>
                 {log}
               </div>
             ))}
@@ -486,24 +516,24 @@ const DeveloperConsoleSubScreen: React.FC<{ onBack: () => void }> = ({ onBack })
 const DeviceInfoSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
-      <div className="p-8 pb-4 flex items-center gap-4">
+      <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
         <button onClick={onBack} className="p-2 hover:bg-black/5 rounded-full transition-colors text-camry-graphite/60 hover:text-black">
           <ArrowLeft size={20} />
         </button>
-        <Monitor size={20} className="text-camry-blackout" />
-        <h1 className="text-2xl font-bricolage text-camry-blackout">Device Information</h1>
+        <Monitor size={20} className="text-camry-blackout flex-shrink-0" />
+        <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Device Information</h1>
       </div>
-      <div className="px-16 pt-8 max-w-3xl">
+      <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
         <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
-          <SettingRow title="Model" right={<span className="text-sm font-martian text-camry-graphite/60">Camry Gen 1</span>} />
+          <SettingRow title="Model" right={<span className="text-xs sm:text-sm font-martian text-camry-graphite/60">Camry Gen 1</span>} />
           <div className="h-[1px] bg-black/5 ml-4"></div>
-          <SettingRow title="Serial Number" right={<span className="text-sm font-martian text-camry-graphite/60">C1-X992-0041</span>} />
+          <SettingRow title="Serial Number" right={<span className="text-xs sm:text-sm font-martian text-camry-graphite/60">C1-X992-0041</span>} />
           <div className="h-[1px] bg-black/5 ml-4"></div>
-          <SettingRow title="Firmware" right={<span className="text-sm font-martian text-camry-graphite/60">v1.0.3 (Stable)</span>} />
+          <SettingRow title="Firmware" right={<span className="text-xs sm:text-sm font-martian text-camry-graphite/60">v1.0.3 (Stable)</span>} />
           <div className="h-[1px] bg-black/5 ml-4"></div>
-          <SettingRow title="NPU Core" right={<span className="text-sm font-martian text-camry-graphite/60">Tensor V2 - 40 TOPS</span>} />
+          <SettingRow title="NPU Core" right={<span className="text-xs sm:text-sm font-martian text-camry-graphite/60">Tensor V2 - 40 TOPS</span>} />
           <div className="h-[1px] bg-black/5 ml-4"></div>
-          <SettingRow title="RAM" right={<span className="text-sm font-martian text-camry-graphite/60">32GB LPDDR5X</span>} />
+          <SettingRow title="RAM" right={<span className="text-xs sm:text-sm font-martian text-camry-graphite/60">32GB LPDDR5X</span>} />
         </div>
       </div>
     </>
@@ -513,18 +543,18 @@ const DeviceInfoSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 const StorageSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
-      <div className="p-8 pb-4 flex items-center gap-4">
+      <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
         <button onClick={onBack} className="p-2 hover:bg-black/5 rounded-full transition-colors text-camry-graphite/60 hover:text-black">
           <ArrowLeft size={20} />
         </button>
-        <HardDrive size={20} className="text-camry-blackout" />
-        <h1 className="text-2xl font-bricolage text-camry-blackout">Storage Space</h1>
+        <HardDrive size={20} className="text-camry-blackout flex-shrink-0" />
+        <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Storage Space</h1>
       </div>
-      <div className="px-16 pt-8 max-w-3xl">
-        <div className="bg-white border border-black/5 rounded-xl shadow-sm p-8">
+      <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
+        <div className="bg-white border border-black/5 rounded-xl shadow-sm p-4 sm:p-8">
           <div className="flex items-end justify-between mb-2">
-            <span className="font-bricolage text-3xl text-camry-blackout">142 GB</span>
-            <span className="font-martian text-sm text-camry-graphite/60">of 1000 GB used</span>
+            <span className="font-bricolage text-2xl sm:text-3xl text-camry-blackout">142 GB</span>
+            <span className="font-martian text-xs sm:text-sm text-camry-graphite/60">of 1000 GB used</span>
           </div>
           <div className="w-full h-3 bg-camry-graphite/10 rounded-full overflow-hidden flex mb-6">
             <div className="h-full bg-camry-carrier" style={{ width: '10%' }}></div>
@@ -532,15 +562,15 @@ const StorageSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <div className="h-full bg-emerald-400" style={{ width: '1.2%' }}></div>
           </div>
           <div className="space-y-4">
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-xs sm:text-sm">
               <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-sm bg-camry-carrier"></div><span className="text-camry-graphite font-medium">Models</span></div>
               <span className="font-martian text-camry-graphite/60">100 GB</span>
             </div>
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-xs sm:text-sm">
               <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-sm bg-indigo-400"></div><span className="text-camry-graphite font-medium">System</span></div>
               <span className="font-martian text-camry-graphite/60">30 GB</span>
             </div>
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-xs sm:text-sm">
               <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-sm bg-emerald-400"></div><span className="text-camry-graphite font-medium">User Data</span></div>
               <span className="font-martian text-camry-graphite/60">12 GB</span>
             </div>
@@ -554,24 +584,24 @@ const StorageSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 const WifiSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
-      <div className="p-8 pb-4 flex items-center gap-4">
+      <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
         <button onClick={onBack} className="p-2 hover:bg-black/5 rounded-full transition-colors text-camry-graphite/60 hover:text-black">
           <ArrowLeft size={20} />
         </button>
-        <Wifi size={20} className="text-camry-blackout" />
-        <h1 className="text-2xl font-bricolage text-camry-blackout">Wi-Fi</h1>
+        <Wifi size={20} className="text-camry-blackout flex-shrink-0" />
+        <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Wi-Fi</h1>
       </div>
-      <div className="px-16 pt-8 max-w-3xl">
-        <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden mb-8">
+      <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
+        <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden mb-6 sm:mb-8">
           <SettingRow title="Wi-Fi" right={<Toggle defaultChecked />} />
         </div>
         <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider">KNOWN NETWORKS</div>
         <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
-          <SettingRow title="Nuvious-Corp-5G" right={<span className="text-sm font-medium text-camry-carrier">Connected</span>} />
+          <SettingRow title="Nuvious-Corp-5G" right={<span className="text-xs sm:text-sm font-medium text-camry-carrier">Connected</span>} />
           <div className="h-[1px] bg-black/5 ml-4"></div>
           <SettingRow title="Nuvious-Guest" right={<Lock size={16} className="text-camry-graphite/40" />} />
           <div className="h-[1px] bg-black/5 ml-4"></div>
-          <SettingRow title="Starbucks WiFi" right={<span className="text-sm text-camry-graphite/40">Saved</span>} />
+          <SettingRow title="Starbucks WiFi" right={<span className="text-xs sm:text-sm text-camry-graphite/40">Saved</span>} />
         </div>
       </div>
     </>
@@ -602,20 +632,20 @@ const UpdateSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   return (
     <>
-      <div className="p-8 pb-4 flex items-center gap-4">
+      <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
         <button onClick={onBack} className="p-2 hover:bg-black/5 rounded-full transition-colors text-camry-graphite/60 hover:text-black">
           <ArrowLeft size={20} />
         </button>
-        <ArrowLeft size={20} className="text-camry-blackout rotate-90" />
-        <h1 className="text-2xl font-bricolage text-camry-blackout">Software Update</h1>
+        <ArrowLeft size={20} className="text-camry-blackout rotate-90 flex-shrink-0" />
+        <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Software Update</h1>
       </div>
-      <div className="px-16 pt-8 max-w-3xl">
-        <div className="bg-white border border-black/5 rounded-xl shadow-sm p-8 text-center">
-          <div className="w-16 h-16 mx-auto bg-camry-graphite/5 rounded-full flex items-center justify-center mb-4">
-            <ArrowLeft size={32} className="text-camry-carrier rotate-90" />
+      <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
+        <div className="bg-white border border-black/5 rounded-xl shadow-sm p-5 sm:p-8 text-center">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto bg-camry-graphite/5 rounded-full flex items-center justify-center mb-4">
+            <ArrowLeft size={28} className="text-camry-carrier rotate-90" />
           </div>
-          <h2 className="text-xl font-bricolage text-camry-blackout mb-2">Camry OS v1.0.4 is available</h2>
-          <p className="text-camry-graphite/60 text-sm mb-8">This update includes performance improvements for local model inference and various bug fixes.</p>
+          <h2 className="text-lg sm:text-xl font-bricolage text-camry-blackout mb-2">Camry OS v1.0.4 is available</h2>
+          <p className="text-camry-graphite/60 text-xs sm:text-sm mb-6 sm:mb-8">This update includes performance improvements for local model inference and various bug fixes.</p>
           
           {isUpdating ? (
             <div className="max-w-md mx-auto">
@@ -630,7 +660,7 @@ const UpdateSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           ) : (
             <button 
               onClick={startUpdate}
-              className="px-6 py-3 bg-camry-blackout text-white rounded-lg font-medium hover:bg-camry-graphite transition-colors"
+              className="px-5 py-2.5 sm:px-6 sm:py-3 bg-camry-blackout text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-camry-graphite transition-colors"
             >
               Download & Install
             </button>
@@ -644,25 +674,25 @@ const UpdateSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 const PrivacySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
-      <div className="p-8 pb-4 flex items-center gap-4">
+      <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
         <button onClick={onBack} className="p-2 hover:bg-black/5 rounded-full transition-colors text-camry-graphite/60 hover:text-black">
           <ArrowLeft size={20} />
         </button>
-        <Shield size={20} className="text-camry-blackout" />
-        <h1 className="text-2xl font-bricolage text-camry-blackout">Privacy Policy</h1>
+        <Shield size={20} className="text-camry-blackout flex-shrink-0" />
+        <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Privacy Policy</h1>
       </div>
-      <div className="px-16 pt-8 max-w-3xl">
-        <div className="bg-white border border-black/5 rounded-xl shadow-sm p-8 prose prose-sm text-camry-graphite">
-          <h3 className="font-bricolage text-lg text-camry-blackout mb-4">Your Data Stays With You.</h3>
-          <p className="mb-4">
+      <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
+        <div className="bg-white border border-black/5 rounded-xl shadow-sm p-5 sm:p-8 prose prose-sm text-camry-graphite">
+          <h3 className="font-bricolage text-base sm:text-lg text-camry-blackout mb-3">Your Data Stays With You.</h3>
+          <p className="mb-3 text-xs sm:text-sm">
             The Camry device is designed as a local-first appliance. By default, all AI models execute locally on the device's internal Neural Processing Unit (NPU).
           </p>
-          <p className="mb-4">
+          <p className="mb-3 text-xs sm:text-sm">
             - <strong>No telemetry</strong> is sent to Nuvious servers.<br/>
             - <strong>No conversational data</strong> leaves the device unless you explicitly configure a remote endpoint API key.<br/>
             - <strong>Models are downloaded directly</strong> to the local storage layer and air-gapped from cloud synchronization by default.
           </p>
-          <p>
+          <p className="text-xs sm:text-sm">
             You are in complete control of your digital footprint. For more details on specific model licenses, please refer to the documentation included with each downloaded artifact.
           </p>
         </div>
@@ -678,16 +708,16 @@ const SettingRow = ({ icon, title, subtitle, right, onClick }: any) => {
   return (
     <Component 
       onClick={onClick}
-      className={`w-full flex items-center justify-between p-4 ${onClick ? 'hover:bg-camry-graphite/5 transition-colors text-left cursor-pointer' : ''}`}
+      className={`w-full flex items-center justify-between p-3.5 sm:p-4 gap-3 ${onClick ? 'hover:bg-camry-graphite/5 transition-colors text-left cursor-pointer' : ''}`}
     >
-      <div className="flex items-center gap-4">
-        {icon && <div>{icon}</div>}
-        <div>
-          <div className="font-medium text-camry-blackout">{title}</div>
-          {subtitle && <div className="text-xs text-camry-graphite/50 font-martian mt-0.5">{subtitle}</div>}
+      <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+        {icon && <div className="flex-shrink-0">{icon}</div>}
+        <div className="min-w-0 flex-1">
+          <div className="font-medium text-camry-blackout text-xs sm:text-sm truncate">{title}</div>
+          {subtitle && <div className="text-[10px] sm:text-xs text-camry-graphite/50 font-martian mt-0.5 truncate">{subtitle}</div>}
         </div>
       </div>
-      <div>{right}</div>
+      <div className="flex-shrink-0 ml-2">{right}</div>
     </Component>
   );
 };

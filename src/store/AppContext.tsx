@@ -201,7 +201,10 @@ interface AppContextType {
   installAgent: (id: string) => void;
   uninstallAgent: (id: string) => void;
   addCustomAgent: (agent: Omit<Agent, 'likes'>) => void;
-  rollbackAgentVersion: (agentId: string, version: string) => void;
+  reorderAgents: (newAgents: Agent[]) => void;
+  
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
   
   activeAgent: string | null;
   setActiveAgent: (id: string | null) => void;
@@ -239,6 +242,30 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [agentsList, setAgentsList] = useState<Agent[]>(INITIAL_AGENTS);
   const [installedAgents, setInstalledAgents] = useState<string[]>(['meeting', 'legal']);
   const [activeAgent, setActiveAgent] = useState<string | null>(null);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  const toggleTheme = () => {
+    setTheme(prev => {
+      const next = prev === 'light' ? 'dark' : 'light';
+      showToast(`Switched to ${next === 'light' ? 'Light Paper' : 'Dark Graphite'} theme`);
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('theme-dark');
+      document.documentElement.classList.remove('theme-light');
+    } else {
+      document.documentElement.classList.add('theme-light');
+      document.documentElement.classList.remove('theme-dark');
+    }
+  }, [theme]);
+
+  const reorderAgents = (newAgents: Agent[]) => {
+    setAgentsList(newAgents);
+    showToast(`Agent priority order updated`);
+  };
   
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
   const [settingsView, setSettingsView] = useState<'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy'>('main');
@@ -422,6 +449,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       uninstallAgent,
       addCustomAgent,
       rollbackAgentVersion,
+      reorderAgents,
+      theme,
+      toggleTheme,
       activeAgent,
       setActiveAgent,
       chatHistory,

@@ -174,15 +174,15 @@ export const Dashboard: React.FC = () => {
     return (
       <button 
         onClick={() => setActiveTab(id)}
-        className={`flex-1 text-left p-4 rounded-xl border transition-all ${
+        className={`flex-1 text-left p-2.5 sm:p-4 rounded-xl border transition-all ${
           isActive 
             ? 'bg-white border-camry-carrier shadow-sm' 
             : 'bg-camry-graphite/5 border-transparent hover:bg-camry-graphite/10'
         }`}
       >
-        <div className="font-martian text-xs text-camry-graphite/60 mb-1">{id}</div>
-        <div className={`font-martian text-4xl tracking-tight ${isActive ? 'text-camry-carrier' : 'text-camry-blackout'}`}>
-          {value}<span className="text-lg text-camry-graphite/40 ml-1">%</span>
+        <div className="font-martian text-[10px] sm:text-xs text-camry-graphite/60 mb-0.5 sm:mb-1">{id}</div>
+        <div className={`font-martian text-xl sm:text-3xl md:text-4xl tracking-tight ${isActive ? 'text-camry-carrier' : 'text-camry-blackout'}`}>
+          {value}<span className="text-xs sm:text-lg text-camry-graphite/40 ml-0.5 sm:ml-1">%</span>
         </div>
       </button>
     );
@@ -214,78 +214,78 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="flex-1 h-full flex flex-col bg-camry-paper overflow-hidden">
       {/* Header */}
-      <div className="p-8 pb-4 flex-shrink-0 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <BarChart2 className="text-camry-blackout" size={24} />
-          <h1 className="text-2xl font-bricolage text-camry-blackout">Dashboard</h1>
+      <div className="p-4 sm:p-8 pb-4 flex-shrink-0 flex justify-between items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <BarChart2 className="text-camry-blackout flex-shrink-0" size={22} />
+          <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Dashboard</h1>
         </div>
 
         {/* Manual Refresh Button */}
         <button
           onClick={handleRefresh}
           disabled={isRefreshing}
-          className="flex items-center gap-2 px-3 py-1.5 bg-white border border-black/10 rounded-lg text-xs font-martian text-camry-graphite hover:bg-camry-graphite/5 transition-all shadow-sm disabled:opacity-60"
+          className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 bg-white border border-black/10 rounded-lg text-xs font-martian text-camry-graphite hover:bg-camry-graphite/5 transition-all shadow-sm disabled:opacity-60 flex-shrink-0"
         >
           {isRefreshing ? (
             <>
               <Loader2 size={14} className="animate-spin text-camry-deep-carrier" />
-              <span>Fetching state...</span>
+              <span className="hidden xs:inline">Fetching...</span>
             </>
           ) : (
             <>
               <RefreshCw size={14} className="text-camry-blackout" />
-              <span>Refresh State</span>
+              <span className="hidden xs:inline">Refresh State</span>
             </>
           )}
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-8 pb-8">
-        <div className="max-w-4xl space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-8 pb-8">
+        <div className="max-w-4xl space-y-4 sm:space-y-6">
           
           {/* Telemetry Tabs with Live Breathing Hardware Values */}
-          <div className="flex gap-4">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4">
             {getStatTab('NPU', npuValue.toFixed(1))}
             {getStatTab('SOC', socValue.toFixed(1))}
             {getStatTab('RAM', ramValue.toFixed(1))}
           </div>
 
           {/* REAL-TIME HARDWARE PERFORMANCE METRICS CHART */}
-          <div className="bg-white border border-black/10 rounded-xl p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
               <div className="flex items-center gap-2">
-                <Cpu size={18} className="text-camry-deep-carrier" />
-                <h3 className="font-bricolage text-lg text-camry-blackout">Real-Time Hardware Performance Metrics</h3>
+                <Cpu size={18} className="text-camry-deep-carrier flex-shrink-0" />
+                <h3 className="font-bricolage text-base sm:text-lg text-camry-blackout leading-tight">Real-Time Hardware Performance Metrics</h3>
               </div>
-              <div className="flex items-center gap-2 font-martian text-[10px] text-camry-graphite/60 bg-black/5 px-2.5 py-1 rounded-md">
+              <div className="flex items-center gap-2 font-martian text-[10px] text-camry-graphite/60 bg-black/5 px-2.5 py-1 rounded-md w-fit">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span>LIVE TELEMETRY</span>
               </div>
             </div>
 
             {/* Metrics Key Indicators */}
-            <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
               <div className="p-3 bg-blue-50/50 border border-blue-100 rounded-lg">
-                <div className="font-martian text-[10px] text-blue-700 font-semibold uppercase tracking-wider mb-1">CPU Usage</div>
-                <div className="font-martian text-2xl text-blue-900 font-bold">{latestMetric.cpu}%</div>
+                <div className="font-martian text-[10px] text-blue-700 font-semibold uppercase tracking-wider mb-0.5">CPU Usage</div>
+                <div className="font-martian text-xl sm:text-2xl text-blue-900 font-bold">{latestMetric.cpu}%</div>
                 <div className="font-familjen text-xs text-blue-600/70 mt-0.5">8 Cores @ 3.8GHz</div>
               </div>
 
               <div className="p-3 bg-emerald-50/50 border border-emerald-100 rounded-lg">
-                <div className="font-martian text-[10px] text-emerald-700 font-semibold uppercase tracking-wider mb-1">Memory (RAM/VRAM)</div>
-                <div className="font-martian text-2xl text-emerald-900 font-bold">{latestMetric.memory}%</div>
+                <div className="font-martian text-[10px] text-emerald-700 font-semibold uppercase tracking-wider mb-0.5">Memory (RAM/VRAM)</div>
+                <div className="font-martian text-xl sm:text-2xl text-emerald-900 font-bold">{latestMetric.memory}%</div>
                 <div className="font-familjen text-xs text-emerald-600/70 mt-0.5">{((latestMetric.memory / 100) * 32).toFixed(1)} GB / 32 GB Used</div>
               </div>
 
               <div className="p-3 bg-purple-50/50 border border-purple-100 rounded-lg">
-                <div className="font-martian text-[10px] text-purple-700 font-semibold uppercase tracking-wider mb-1">NPU TOPS Load</div>
-                <div className="font-martian text-2xl text-purple-900 font-bold">{latestMetric.npu}%</div>
+                <div className="font-martian text-[10px] text-purple-700 font-semibold uppercase tracking-wider mb-0.5">NPU TOPS Load</div>
+                <div className="font-martian text-xl sm:text-2xl text-purple-900 font-bold">{latestMetric.npu}%</div>
                 <div className="font-familjen text-xs text-purple-600/70 mt-0.5">{((latestMetric.npu / 100) * 40).toFixed(1)} TOPS Active</div>
               </div>
             </div>
 
             {/* Real-time Hardware Chart (SVG Data Visualization) */}
-            <div className="relative h-40 bg-camry-blackout rounded-lg p-4 overflow-hidden border border-white/10 flex flex-col justify-between">
+            <div className="relative h-36 sm:h-40 bg-camry-blackout rounded-lg p-3 sm:p-4 overflow-hidden border border-white/10 flex flex-col justify-between">
               <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
               
               <svg className="w-full h-full overflow-visible" viewBox="0 0 600 140" preserveAspectRatio="none">
@@ -318,32 +318,32 @@ export const Dashboard: React.FC = () => {
               </svg>
 
               {/* Chart Legend */}
-              <div className="flex items-center justify-between font-martian text-[10px] text-white/60 pt-2 z-10 border-t border-white/10 mt-2">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2.5 h-2.5 bg-blue-500 rounded-sm" />
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between font-martian text-[10px] text-white/60 pt-2 z-10 border-t border-white/10 mt-2 gap-1.5">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-blue-500 rounded-sm" />
                     <span className="text-white">CPU %</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2.5 h-2.5 bg-emerald-500 rounded-sm" />
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-sm" />
                     <span className="text-white">Memory %</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2.5 h-2.5 bg-purple-500 rounded-sm" />
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-purple-500 rounded-sm" />
                     <span className="text-white">NPU %</span>
                   </div>
                 </div>
-                <span>Last updated: {metricsHistory[metricsHistory.length - 1]?.time}</span>
+                <span className="text-[9px] sm:text-[10px] opacity-80">Last updated: {metricsHistory[metricsHistory.length - 1]?.time}</span>
               </div>
             </div>
           </div>
 
           {/* SYSTEM LOGS COMPONENT */}
-          <div className="bg-white border border-black/10 rounded-xl p-6 shadow-sm">
+          <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
               <div className="flex items-center gap-2">
                 <Terminal size={18} className="text-camry-blackout" />
-                <h3 className="font-bricolage text-lg text-camry-blackout">System Logs</h3>
+                <h3 className="font-bricolage text-base sm:text-lg text-camry-blackout">System Logs</h3>
                 <span className="font-martian text-[10px] bg-camry-blackout text-white px-2 py-0.5 rounded">
                   {filteredLogs.length} Events
                 </span>
@@ -390,13 +390,13 @@ export const Dashboard: React.FC = () => {
             {/* Live Log Terminal Output */}
             <div 
               ref={logsScrollRef}
-              className="bg-camry-blackout rounded-lg p-4 h-56 overflow-y-auto font-martian text-xs leading-relaxed text-camry-paper border border-white/10 space-y-1.5"
+              className="bg-camry-blackout rounded-lg p-3 sm:p-4 h-56 overflow-y-auto font-martian text-xs leading-relaxed text-camry-paper border border-white/10 space-y-1.5"
             >
               {filteredLogs.length === 0 ? (
                 <div className="text-white/40 italic p-4 text-center">No system logs in this filter view.</div>
               ) : (
                 filteredLogs.map(log => (
-                  <div key={log.id} className="flex items-start gap-3 hover:bg-white/5 p-1 rounded transition-colors">
+                  <div key={log.id} className="flex items-start gap-2 sm:gap-3 hover:bg-white/5 p-1 rounded transition-colors">
                     <span className="text-white/40 text-[10px] whitespace-nowrap pt-0.5">{log.timestamp}</span>
                     <span className={`px-1.5 py-0.2 text-[9px] rounded font-bold uppercase whitespace-nowrap ${
                       log.category === 'WARN' ? 'bg-red-900/80 text-red-200 border border-red-700' :
@@ -406,7 +406,7 @@ export const Dashboard: React.FC = () => {
                     }`}>
                       [{log.category}]
                     </span>
-                    <span className="text-white/90 text-xs flex-1 break-words">{log.message}</span>
+                    <span className="text-white/90 text-[11px] sm:text-xs flex-1 break-words">{log.message}</span>
                   </div>
                 ))
               )}
@@ -414,15 +414,15 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Device Strip */}
-          <div className="bg-camry-graphite/5 border border-black/5 rounded-lg p-3 flex justify-between items-center font-martian text-xs text-camry-graphite/60">
+          <div className="bg-camry-graphite/5 border border-black/5 rounded-lg p-3 flex flex-wrap justify-between items-center gap-2 font-martian text-[10px] sm:text-xs text-camry-graphite/60">
             <span>CAMRY ONE</span>
-            <span className="w-1 h-1 rounded-full bg-black/10"></span>
+            <span className="w-1 h-1 rounded-full bg-black/10 hidden sm:inline-block"></span>
             <span>256GB</span>
-            <span className="w-1 h-1 rounded-full bg-black/10"></span>
+            <span className="w-1 h-1 rounded-full bg-black/10 hidden sm:inline-block"></span>
             <span>FW 1.0.3</span>
-            <span className="w-1 h-1 rounded-full bg-black/10"></span>
+            <span className="w-1 h-1 rounded-full bg-black/10 hidden sm:inline-block"></span>
             <span>UPTIME 4d 12h</span>
-            <span className="w-1 h-1 rounded-full bg-black/10"></span>
+            <span className="w-1 h-1 rounded-full bg-black/10 hidden sm:inline-block"></span>
             <span>65W</span>
           </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppContext, Agent, AgentVersion } from '../store/AppContext';
-import { Grid, Heart, Scale, FileText, Activity, Landmark, Settings, TrendingUp, Edit3, Globe, Plus, Search, Trash2, Check, X, Bot, History, RotateCcw, BarChart3, Cpu, Zap, Eye } from 'lucide-react';
+import { Grid, Heart, Scale, FileText, Activity, Landmark, Settings, TrendingUp, Edit3, Globe, Plus, Search, Trash2, Check, X, Bot, History, RotateCcw, BarChart3, Cpu, Zap, Eye, GripVertical, Move } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
 
@@ -54,13 +54,29 @@ const AGENT_TELEMETRY_DATA: Record<string, Array<{ time: string; tokens: number;
 };
 
 export const AgentStore: React.FC = () => {
-  const { allAgents, installedAgents, installAgent, uninstallAgent, addCustomAgent, rollbackAgentVersion, setCurrentScreen, setActiveAgent } = useAppContext();
+  const { allAgents, installedAgents, installAgent, uninstallAgent, addCustomAgent, rollbackAgentVersion, reorderAgents, setCurrentScreen, setActiveAgent } = useAppContext();
   
   const [downloading, setDownloading] = useState<string | null>(null);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [activeCat, setActiveCat] = useState('All');
   const [statusFilter, setStatusFilter] = useState<'All' | 'Active' | 'Idle' | 'Error'>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Drag and drop reordering state
+  const [draggedAgentId, setDraggedAgentId] = useState<string | null>(null);
+  const [dragOverAgentId, setDragOverAgentId] = useState<string | null>(null);
+
+  const handleReorderAgents = (sourceId: string, targetId: string) => {
+    if (sourceId === targetId) return;
+    const sourceIdx = allAgents.findIndex(a => a.id === sourceId);
+    const targetIdx = allAgents.findIndex(a => a.id === targetId);
+    if (sourceIdx === -1 || targetIdx === -1) return;
+
+    const updated = [...allAgents];
+    const [moved] = updated.splice(sourceIdx, 1);
+    updated.splice(targetIdx, 0, moved);
+    reorderAgents(updated);
+  };
   
   // Analytics state
   const [selectedAnalyticsAgent, setSelectedAnalyticsAgent] = useState<string>('all');
@@ -95,7 +111,8 @@ export const AgentStore: React.FC = () => {
   const filteredAgents = allAgents.filter(a => {
     const cat = getAgentCat(a);
     const status = getAgentStatus(a);
-    const matchesCat = activeCat === 'All' || cat === activeCat;
+    const isInstalled = installedAgents.includes(a.id);
+    const matchesCat = activeCat === 'All' || (activeCat === 'Installed' ? isInstalled : cat === activeCat);
     const matchesStatus = statusFilter === 'All' || 
       (statusFilter === 'Active' && status === 'active') ||
       (statusFilter === 'Idle' && status === 'idle') ||
@@ -149,30 +166,30 @@ export const AgentStore: React.FC = () => {
   return (
     <div className="flex-1 h-full flex flex-col bg-camry-paper overflow-hidden relative">
       {/* Header */}
-      <div className="p-8 pb-4 border-b border-black/5 bg-camry-paper/50 z-10 flex-shrink-0">
-        <div className="flex items-center justify-between mb-4">
+      <div className="p-4 sm:p-8 pb-4 border-b border-black/5 bg-camry-paper/50 z-10 flex-shrink-0 space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Grid className="text-camry-blackout" size={24} />
-            <h1 className="text-2xl font-bricolage text-camry-blackout">Agent Store</h1>
+            <Grid className="text-camry-blackout flex-shrink-0" size={22} />
+            <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Agent Store</h1>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Search input */}
-            <div className="relative">
+            <div className="relative flex-1 sm:flex-none">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-camry-graphite/40" />
               <input 
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search agents..."
-                className="pl-8 pr-3 py-1.5 bg-white border border-black/10 rounded-lg text-xs font-familjen focus:outline-none focus:border-camry-deep-carrier w-48"
+                className="w-full sm:w-48 pl-8 pr-3 py-1.5 bg-white border border-black/10 rounded-lg text-xs font-familjen focus:outline-none focus:border-camry-deep-carrier"
               />
             </div>
 
             {/* Create Custom Agent Button */}
             <button
               onClick={() => setShowCreateModal(true)}
-              className="flex items-center gap-2 px-3 py-1.5 bg-camry-blackout text-white rounded-lg text-xs font-medium hover:bg-camry-graphite transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-camry-blackout text-white rounded-lg text-xs font-medium hover:bg-camry-graphite transition-all shadow-sm flex-shrink-0"
             >
               <Plus size={14} />
               <span>Build Agent</span>
@@ -180,13 +197,13 @@ export const AgentStore: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex gap-2">
-            {['All', 'Legal', 'Medical', 'Government', 'Industrial', 'Finance', 'Other'].map(cat => (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex gap-1.5 overflow-x-auto pb-1 sm:pb-0 no-scrollbar flex-nowrap sm:flex-wrap">
+            {['All', 'Installed', 'Legal', 'Medical', 'Government', 'Industrial', 'Finance', 'Other'].map(cat => (
               <button 
                 key={cat}
                 onClick={() => setActiveCat(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${activeCat === cat ? 'bg-camry-blackout text-white border-transparent' : 'bg-white border-black/10 text-camry-graphite hover:bg-camry-graphite/5'}`}
+                className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors whitespace-nowrap flex-shrink-0 ${activeCat === cat ? 'bg-camry-blackout text-white border-transparent' : 'bg-white border-black/10 text-camry-graphite hover:bg-camry-graphite/5'}`}
               >
                 {cat}
               </button>
@@ -194,21 +211,21 @@ export const AgentStore: React.FC = () => {
           </div>
 
           {/* Status Filter */}
-          <div className="flex items-center gap-1.5 bg-black/5 p-1 rounded-lg">
-            <span className="font-martian text-[10px] text-camry-graphite/60 px-2 uppercase tracking-wider">Status:</span>
+          <div className="flex items-center gap-1 bg-black/5 p-1 rounded-lg w-fit">
+            <span className="font-martian text-[9px] sm:text-[10px] text-camry-graphite/60 px-1.5 uppercase tracking-wider">Status:</span>
             {(['All', 'Active', 'Idle', 'Error'] as const).map(st => (
               <button
                 key={st}
                 onClick={() => setStatusFilter(st)}
-                className={`px-2.5 py-1 rounded-md text-xs font-martian transition-all ${
+                className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-martian transition-all ${
                   statusFilter === st 
                     ? 'bg-white text-camry-blackout shadow-sm font-semibold' 
                     : 'text-camry-graphite/60 hover:text-black'
                 }`}
               >
-                {st === 'Active' && <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5" />}
-                {st === 'Idle' && <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5" />}
-                {st === 'Error' && <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5" />}
+                {st === 'Active' && <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1" />}
+                {st === 'Idle' && <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-400 mr-1" />}
+                {st === 'Error' && <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 mr-1" />}
                 {st}
               </button>
             ))}
@@ -216,29 +233,29 @@ export const AgentStore: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-8 pt-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-8 pt-4 sm:pt-6">
         
         {/* AGENT TELEMETRY & DATA VISUALIZATION (RECHARTS) */}
-        <div className="bg-white border border-black/10 rounded-2xl p-6 shadow-sm mb-8">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-camry-blackout text-white flex items-center justify-center shadow-sm">
-                <BarChart3 size={20} />
+        <div className="bg-white border border-black/10 rounded-2xl p-3.5 sm:p-6 shadow-sm mb-6 sm:mb-8 overflow-hidden">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 sm:mb-6">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-camry-blackout text-white flex items-center justify-center shadow-sm flex-shrink-0">
+                <BarChart3 size={18} />
               </div>
-              <div>
-                <h2 className="text-xl font-bricolage text-camry-blackout">Agent Telemetry & Usage Analytics</h2>
-                <p className="font-familjen text-xs text-camry-graphite/60">Live breakdown of tokens consumed and requests handled on Camry NPU</p>
+              <div className="min-w-0">
+                <h2 className="text-base sm:text-xl font-bricolage text-camry-blackout leading-snug truncate">Agent Telemetry & Usage Analytics</h2>
+                <p className="font-familjen text-[11px] sm:text-xs text-camry-graphite/60 truncate">Live breakdown of tokens consumed and requests handled on Camry NPU</p>
               </div>
             </div>
 
             {/* Agent Telemetry Selector & Toggle */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-camry-graphite/5 p-1.5 rounded-lg border border-black/5">
-                <span className="font-martian text-[10px] text-camry-graphite/60 px-1 uppercase tracking-wider">Agent:</span>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-between lg:justify-end min-w-0 max-w-full">
+              <div className="flex items-center gap-1.5 bg-camry-graphite/5 p-1 sm:p-1.5 rounded-lg border border-black/5 min-w-0 max-w-full">
+                <span className="font-martian text-[9px] sm:text-[10px] text-camry-graphite/60 px-1 uppercase tracking-wider flex-shrink-0">AGENT:</span>
                 <select 
                   value={selectedAnalyticsAgent}
                   onChange={(e) => setSelectedAnalyticsAgent(e.target.value)}
-                  className="bg-white border border-black/10 rounded px-2.5 py-1 text-xs font-martian font-medium text-camry-blackout focus:outline-none focus:border-camry-deep-carrier cursor-pointer"
+                  className="bg-white border border-black/10 rounded px-2 py-0.5 sm:px-2.5 sm:py-1 text-xs font-martian font-medium text-camry-blackout focus:outline-none focus:border-camry-deep-carrier cursor-pointer max-w-[130px] xs:max-w-[170px] sm:max-w-xs truncate"
                 >
                   <option value="all">All Agents Aggregate</option>
                   {allAgents.map(a => (
@@ -249,7 +266,7 @@ export const AgentStore: React.FC = () => {
 
               <button 
                 onClick={() => setShowAnalyticsPanel(!showAnalyticsPanel)}
-                className="text-xs font-martian px-3 py-1.5 rounded-lg border border-black/10 hover:bg-black/5 text-camry-graphite transition-colors"
+                className="text-xs font-martian px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-black/10 hover:bg-black/5 text-camry-graphite transition-colors flex-shrink-0 whitespace-nowrap"
               >
                 {showAnalyticsPanel ? 'Hide Chart' : 'Show Chart'}
               </button>
@@ -262,57 +279,57 @@ export const AgentStore: React.FC = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="space-y-6"
+                className="space-y-4 sm:space-y-6"
               >
                 {/* Analytics Metric Cards */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="p-3 sm:p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-martian text-[10px] text-blue-700 font-semibold uppercase tracking-wider">Tokens Consumed</span>
                       <Zap size={14} className="text-blue-600" />
                     </div>
-                    <div className="font-martian text-2xl text-blue-950 font-bold">
+                    <div className="font-martian text-xl sm:text-2xl text-blue-950 font-bold">
                       {((AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all'])[6]?.tokens || 68400).toLocaleString()}
                     </div>
-                    <div className="font-familjen text-xs text-blue-600/80 mt-1">Local NPU context cache</div>
+                    <div className="font-familjen text-xs text-blue-600/80 mt-0.5">Local NPU context cache</div>
                   </div>
 
-                  <div className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
+                  <div className="p-3 sm:p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-martian text-[10px] text-emerald-700 font-semibold uppercase tracking-wider">Requests Handled</span>
                       <Cpu size={14} className="text-emerald-600" />
                     </div>
-                    <div className="font-martian text-2xl text-emerald-950 font-bold">
+                    <div className="font-martian text-xl sm:text-2xl text-emerald-950 font-bold">
                       {(AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all'])[6]?.requests || 520}
                     </div>
-                    <div className="font-familjen text-xs text-emerald-600/80 mt-1">100% on-device inference</div>
+                    <div className="font-familjen text-xs text-emerald-600/80 mt-0.5">100% on-device inference</div>
                   </div>
 
-                  <div className="p-4 bg-purple-50/50 border border-purple-100 rounded-xl">
+                  <div className="p-3 sm:p-4 bg-purple-50/50 border border-purple-100 rounded-xl">
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-martian text-[10px] text-purple-700 font-semibold uppercase tracking-wider">Avg Latency</span>
                       <Activity size={14} className="text-purple-600" />
                     </div>
-                    <div className="font-martian text-2xl text-purple-950 font-bold">14.2 ms</div>
-                    <div className="font-familjen text-xs text-purple-600/80 mt-1">Zero network hop overhead</div>
+                    <div className="font-martian text-xl sm:text-2xl text-purple-950 font-bold">14.2 ms</div>
+                    <div className="font-familjen text-xs text-purple-600/80 mt-0.5">Zero network hop overhead</div>
                   </div>
                 </div>
 
                 {/* Recharts Line Chart */}
-                <div className="h-64 w-full pt-2">
+                <div className="h-48 sm:h-64 w-full pt-2">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all']} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
+                    <LineChart data={AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all']} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                      <XAxis dataKey="time" stroke="#64748b" fontSize={11} tickLine={false} />
-                      <YAxis yAxisId="left" stroke="#3b82f6" fontSize={11} tickLine={false} axisLine={false} />
-                      <YAxis yAxisId="right" orientation="right" stroke="#10b981" fontSize={11} tickLine={false} axisLine={false} />
+                      <XAxis dataKey="time" stroke="#64748b" fontSize={10} tickLine={false} />
+                      <YAxis yAxisId="left" stroke="#3b82f6" fontSize={10} tickLine={false} axisLine={false} />
+                      <YAxis yAxisId="right" orientation="right" stroke="#10b981" fontSize={10} tickLine={false} axisLine={false} />
                       <Tooltip 
-                        contentStyle={{ backgroundColor: '#18181b', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '12px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+                        contentStyle={{ backgroundColor: '#18181b', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '11px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                         itemStyle={{ color: '#fff' }}
                       />
-                      <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                      <Line yAxisId="left" type="monotone" dataKey="tokens" name="Tokens Consumed" stroke="#3b82f6" strokeWidth={2.5} activeDot={{ r: 6 }} dot={{ r: 3 }} />
-                      <Line yAxisId="right" type="monotone" dataKey="requests" name="Requests Handled" stroke="#10b981" strokeWidth={2.5} activeDot={{ r: 6 }} dot={{ r: 3 }} />
+                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
+                      <Line yAxisId="left" type="monotone" dataKey="tokens" name="Tokens" stroke="#3b82f6" strokeWidth={2} activeDot={{ r: 5 }} dot={{ r: 2 }} />
+                      <Line yAxisId="right" type="monotone" dataKey="requests" name="Requests" stroke="#10b981" strokeWidth={2} activeDot={{ r: 5 }} dot={{ r: 2 }} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -322,51 +339,108 @@ export const AgentStore: React.FC = () => {
         </div>
 
         {/* Featured Banners */}
-        <div className="grid grid-cols-2 gap-6 mb-8">
-          <div className="bg-camry-graphite text-white rounded-2xl p-6 relative overflow-hidden flex flex-col justify-end min-h-[150px] shadow-lg">
-            <div className="absolute top-4 right-4 px-2 py-1 bg-camry-blackout rounded text-[10px] font-martian tracking-wider text-white/70">INTELLIGENCE, ON-PREMISE.</div>
-            <h2 className="text-xl font-bricolage mb-2 relative z-10">The legal team's<br/>private AI.</h2>
-            <div className="w-12 h-1 bg-camry-carrier rounded-full"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="bg-camry-graphite text-white rounded-2xl p-5 sm:p-6 relative overflow-hidden flex flex-col justify-end min-h-[130px] sm:min-h-[150px] shadow-md">
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 py-0.5 bg-camry-blackout rounded text-[9px] sm:text-[10px] font-martian tracking-wider text-white/70">INTELLIGENCE, ON-PREMISE.</div>
+            <h2 className="text-lg sm:text-xl font-bricolage mb-2 relative z-10 leading-tight">The legal team's<br className="hidden xs:inline"/> private AI.</h2>
+            <div className="w-10 h-1 bg-camry-carrier rounded-full"></div>
           </div>
-          <div className="bg-camry-blackout text-white rounded-2xl p-6 relative overflow-hidden flex flex-col justify-end min-h-[150px] shadow-lg">
-             <div className="absolute top-4 right-4 px-2 py-1 bg-white/10 rounded text-[10px] font-martian tracking-wider text-white/70">INTELLIGENCE, ON-PREMISE.</div>
-            <h2 className="text-xl font-bricolage mb-2 relative z-10">Patient data that<br/>never leaves the building.</h2>
-            <div className="w-12 h-1 bg-camry-carrier rounded-full"></div>
+          <div className="bg-camry-blackout text-white rounded-2xl p-5 sm:p-6 relative overflow-hidden flex flex-col justify-end min-h-[130px] sm:min-h-[150px] shadow-md">
+             <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 py-0.5 bg-white/10 rounded text-[9px] sm:text-[10px] font-martian tracking-wider text-white/70">INTELLIGENCE, ON-PREMISE.</div>
+            <h2 className="text-lg sm:text-xl font-bricolage mb-2 relative z-10 leading-tight">Patient data that<br className="hidden xs:inline"/> never leaves the building.</h2>
+            <div className="w-10 h-1 bg-camry-carrier rounded-full"></div>
           </div>
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-3 gap-6 pb-8">
+        {activeCat === 'Installed' && (
+          <div className="mb-4 p-3 bg-camry-carrier/10 border border-camry-deep-carrier/20 rounded-xl flex items-center justify-between font-martian text-xs text-camry-blackout shadow-sm">
+            <div className="flex items-center gap-2.5">
+              <Move size={16} className="text-camry-deep-carrier flex-shrink-0" />
+              <span>Drag & drop agent cards by the handle <GripVertical size={14} className="inline-block text-camry-graphite/70" /> to customize priority order.</span>
+            </div>
+            <span className="text-[10px] text-camry-graphite/60 bg-white/60 px-2 py-0.5 rounded border border-black/5">
+              {filteredAgents.length} Installed
+            </span>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 pb-8">
           {filteredAgents.map(agent => {
             const isInstalled = installedAgents.includes(agent.id);
             const isDownloading = downloading === agent.id;
             const status = getAgentStatus(agent);
 
             return (
-              <div key={agent.id} className="bg-white rounded-xl p-5 border border-black/5 shadow-sm hover:shadow-md transition-all flex flex-col h-full group relative">
-                <div className="flex justify-between items-start mb-3">
-                  <div className="w-12 h-12 rounded-xl bg-camry-graphite/5 flex items-center justify-center transition-colors group-hover:bg-camry-carrier/10">
-                    {agent.id === 'legal' && <Scale size={24} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
-                    {agent.id === 'contract' && <FileText size={24} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
-                    {agent.id === 'medical' && <Activity size={24} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
-                    {agent.id === 'gov' && <Landmark size={24} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
-                    {agent.id === 'industrial' && <Settings size={24} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
-                    {agent.id === 'finance' && <TrendingUp size={24} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
-                    {agent.id === 'meeting' && <Edit3 size={24} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
-                    {agent.id === 'translator' && <Globe size={24} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
-                    {agent.id.startsWith('custom-') && <Bot size={24} className="text-camry-deep-carrier" />}
+              <div 
+                key={agent.id} 
+                draggable={true}
+                onDragStart={(e) => {
+                  setDraggedAgentId(agent.id);
+                  e.dataTransfer.setData('text/plain', agent.id);
+                  e.dataTransfer.effectAllowed = 'move';
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = 'move';
+                  if (dragOverAgentId !== agent.id) {
+                    setDragOverAgentId(agent.id);
+                  }
+                }}
+                onDragLeave={() => {
+                  if (dragOverAgentId === agent.id) {
+                    setDragOverAgentId(null);
+                  }
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const sourceId = e.dataTransfer.getData('text/plain') || draggedAgentId;
+                  if (sourceId && sourceId !== agent.id) {
+                    handleReorderAgents(sourceId, agent.id);
+                  }
+                  setDraggedAgentId(null);
+                  setDragOverAgentId(null);
+                }}
+                onDragEnd={() => {
+                  setDraggedAgentId(null);
+                  setDragOverAgentId(null);
+                }}
+                className={`bg-white rounded-xl p-4 sm:p-5 border transition-all flex flex-col h-full group relative ${
+                  draggedAgentId === agent.id ? 'opacity-30 border-dashed border-camry-deep-carrier scale-[0.98]' :
+                  dragOverAgentId === agent.id ? 'border-2 border-camry-deep-carrier bg-camry-carrier/10 scale-[1.02] shadow-lg' : 'border-black/5 shadow-sm hover:shadow-md'
+                }`}
+              >
+                <div className="flex justify-between items-start mb-3 gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div 
+                      className="cursor-grab active:cursor-grabbing p-1 rounded hover:bg-black/5 text-camry-graphite/40 hover:text-black transition-colors flex-shrink-0"
+                      title="Drag to reorder agent priority"
+                    >
+                      <GripVertical size={16} />
+                    </div>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-camry-graphite/5 flex items-center justify-center transition-colors group-hover:bg-camry-carrier/10 flex-shrink-0">
+                      {agent.id === 'legal' && <Scale size={22} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
+                      {agent.id === 'contract' && <FileText size={22} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
+                      {agent.id === 'medical' && <Activity size={22} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
+                      {agent.id === 'gov' && <Landmark size={22} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
+                      {agent.id === 'industrial' && <Settings size={22} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
+                      {agent.id === 'finance' && <TrendingUp size={22} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
+                      {agent.id === 'meeting' && <Edit3 size={22} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
+                      {agent.id === 'translator' && <Globe size={22} className="text-camry-graphite/70 group-hover:text-camry-carrier transition-colors" />}
+                      {agent.id.startsWith('custom-') && <Bot size={22} className="text-camry-deep-carrier" />}
+                    </div>
                   </div>
 
                   {/* Visual Status Indicator & Installed Tag */}
-                  <div className="flex flex-col items-end gap-1">
+                  <div className="flex flex-wrap justify-end items-center gap-1">
                     {isInstalled ? (
-                      <span className="inline-flex items-center gap-1 font-martian text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200">
-                        <Check size={12} /> INSTALLED
+                      <span className="inline-flex items-center gap-1 font-martian text-[9px] sm:text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200">
+                        <Check size={11} /> INSTALLED
                       </span>
                     ) : null}
 
                     {/* Agent Status Badge */}
-                    <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-martian text-[10px] border ${
+                    <div className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded font-martian text-[9px] sm:text-[10px] border ${
                       status === 'active' 
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
                         : status === 'error'
@@ -382,18 +456,18 @@ export const AgentStore: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="font-bricolage text-lg text-camry-blackout">{agent.name}</h3>
-                  <span className="font-martian text-[10px] bg-black/5 px-2 py-0.5 rounded text-camry-graphite/60">
+                <div className="flex items-center justify-between mb-1 gap-2">
+                  <h3 className="font-bricolage text-base sm:text-lg text-camry-blackout font-medium">{agent.name}</h3>
+                  <span className="font-martian text-[9px] sm:text-[10px] bg-black/5 px-1.5 py-0.5 rounded text-camry-graphite/60 flex-shrink-0">
                     {agent.currentVersion || 'v1.0.0'}
                   </span>
                 </div>
 
-                <p className="font-familjen text-sm text-camry-graphite/70 flex-1 leading-relaxed mb-3">{agent.description}</p>
+                <p className="font-familjen text-xs sm:text-sm text-camry-graphite/70 flex-1 leading-relaxed mb-3">{agent.description}</p>
                 
                 {/* Status Reason Banner */}
                 {agent.statusReason && (
-                  <div className={`text-[10px] font-martian px-2.5 py-1 rounded mb-3 ${
+                  <div className={`text-[9px] sm:text-[10px] font-martian px-2 py-1 rounded mb-3 break-words ${
                     status === 'error' ? 'bg-red-50 text-red-600 border border-red-100' :
                     status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
                     'bg-camry-graphite/5 text-camry-graphite/60'
@@ -403,10 +477,10 @@ export const AgentStore: React.FC = () => {
                   </div>
                 )}
 
-                <div className="mt-auto pt-3 border-t border-black/5 flex items-center justify-between">
+                <div className="mt-auto pt-3 border-t border-black/5 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1 text-camry-graphite/40 font-martian text-xs">
-                      <Heart size={14} /> {agent.likes}
+                      <Heart size={13} /> {agent.likes}
                     </div>
 
                     {/* Version History Button */}
@@ -415,7 +489,7 @@ export const AgentStore: React.FC = () => {
                         setSelectedAgentForHistory(agent);
                         setShowHistoryModal(true);
                       }}
-                      className="p-1 rounded hover:bg-black/5 text-camry-graphite/60 hover:text-black transition-colors flex items-center gap-1 text-[11px] font-martian"
+                      className="p-1 rounded hover:bg-black/5 text-camry-graphite/60 hover:text-black transition-colors flex items-center gap-1 text-[10px] sm:text-[11px] font-martian"
                       title="View Version History & Rollback"
                     >
                       <History size={13} />

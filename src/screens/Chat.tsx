@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAppContext, AVAILABLE_MODELS } from '../store/AppContext';
-import { Paperclip, Globe, ArrowUp, Check, X, ChevronDown, Scale, FileText, Search, Folder, Mic, MicOff } from 'lucide-react';
+import { Paperclip, Globe, ArrowUp, Check, X, ChevronDown, Scale, FileText, Search, Folder, Mic, MicOff, Copy, Volume2, VolumeX, ThumbsUp, ThumbsDown, RotateCw, Hand, AudioLines } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CamryLoadingIcon } from '../components/CamryLoadingIcon';
 
@@ -78,9 +78,102 @@ export const Chat: React.FC = () => {
   const [loadingModel, setLoadingModel] = useState<string | null>(null);
   const [isThinking, setIsThinking] = useState(false);
   
-  // Voice-to-Text state (Web Speech API)
+  // Voice-to-Text & Mic options state
   const [isListening, setIsListening] = useState(false);
+  const [showMicPopover, setShowMicPopover] = useState(false);
+  const [selectedMicDevice, setSelectedMicDevice] = useState('Default - MacBook Pro Microphone ...');
+  const [holdToRecord, setHoldToRecord] = useState(true);
+  const [audioLevel, setAudioLevel] = useState(65);
   const recognitionRef = useRef<any>(null);
+
+  // Animate audio level indicator when mic popover is open or dictating
+  useEffect(() => {
+    let timer: any;
+    if (showMicPopover || isListening) {
+      timer = setInterval(() => {
+        setAudioLevel(Math.floor(Math.random() * 50) + 35);
+      }, 180);
+    }
+    return () => clearInterval(timer);
+  }, [showMicPopover, isListening]);
+
+  // Message Action Bar state
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<Record<string, 'up' | 'down'>>({});
+
+  const handleCopy = (id: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    showToast('Response copied to clipboard');
+    setTimeout(() => {
+      setCopiedId(prev => (prev === id ? null : prev));
+    }, 2000);
+  };
+
+  const handleSpeak = (id: string, text: string) => {
+    if (!('speechSynthesis' in window)) {
+      showToast('Text-to-speech not supported in this browser environment');
+      return;
+    }
+
+    if (speakingId === id) {
+      window.speechSynthesis.cancel();
+      setSpeakingId(null);
+      showToast('Speech stopped');
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = () => setSpeakingId(null);
+    utterance.onerror = () => setSpeakingId(null);
+
+    setSpeakingId(id);
+    window.speechSynthesis.speak(utterance);
+    showToast('Reading response aloud...');
+  };
+
+  const handleFeedback = (id: string, type: 'up' | 'down') => {
+    setFeedback(prev => {
+      const current = prev[id];
+      if (current === type) {
+        const copy = { ...prev };
+        delete copy[id];
+        showToast('Feedback removed');
+        return copy;
+      }
+      showToast(type === 'up' ? 'Feedback saved: Helpful response' : 'Feedback saved: Unhelpful response');
+      return { ...prev, [id]: type };
+    });
+  };
+
+  const handleRegenerate = (msgId: string) => {
+    const idx = chatHistory.findIndex(m => m.id === msgId);
+    let userPrompt = '';
+
+    if (idx !== -1) {
+      for (let i = idx - 1; i >= 0; i--) {
+        if (chatHistory[i].role === 'user') {
+          userPrompt = chatHistory[i].content;
+          break;
+        }
+      }
+    }
+
+    if (!userPrompt) {
+      const lastUserMsg = [...chatHistory].reverse().find(m => m.role === 'user');
+      if (lastUserMsg) userPrompt = lastUserMsg.content;
+    }
+
+    if (!userPrompt) {
+      showToast('No prompt found to regenerate response');
+      return;
+    }
+
+    showToast('Regenerating answer...');
+    handleSend(userPrompt);
+  };
 
   const toggleListening = () => {
     if (isListening) {
@@ -217,13 +310,13 @@ export const Chat: React.FC = () => {
       {/* Top right compose / new chat icon could go here */}
 
       {/* Main Chat Area */}
-      <div className="flex-1 overflow-y-auto p-8 pb-32 flex flex-col items-center">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-8 pb-36 sm:pb-32 flex flex-col items-center">
         {isEmpty ? (
-          <div className="flex-1 flex flex-col items-center justify-center max-w-2xl w-full text-center pb-20">
+          <div className="flex-1 flex flex-col items-center justify-center max-w-2xl w-full text-center py-6 sm:pb-20">
             {activeAgent ? (
-              <h2 className="text-3xl font-bricolage tracking-tight mb-2 opacity-80">{activeAgent.toUpperCase()}</h2>
+              <h2 className="text-xl sm:text-3xl font-bricolage tracking-tight mb-2 opacity-80">{activeAgent.toUpperCase()}</h2>
             ) : (
-              <h1 className="text-5xl font-bricolage tracking-tight mb-12 opacity-80">camry</h1>
+              <h1 className="text-3xl sm:text-5xl font-bricolage tracking-tight mb-4 sm:mb-12 opacity-80">camry</h1>
             )}
             {/* The empty state input is handled by the absolute positioned footer when empty, but we can structure it so footer is always at bottom, just centered when empty */}
           </div>
@@ -231,7 +324,7 @@ export const Chat: React.FC = () => {
           <div className="max-w-3xl w-full space-y-6">
             {chatHistory.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] rounded-2xl px-5 py-4 ${
+                <div className={`max-w-[90%] sm:max-w-[80%] rounded-2xl px-3.5 py-3 sm:px-5 sm:py-4 ${
                   msg.role === 'user' 
                     ? 'bg-camry-graphite text-camry-paper' 
                     : 'bg-white border border-black/5 shadow-sm text-camry-blackout'
@@ -244,7 +337,64 @@ export const Chat: React.FC = () => {
                       <span className="font-martian text-[10px] text-camry-graphite/50">{msg.model}</span>
                     </div>
                   )}
-                  <p className="font-familjen leading-relaxed">{msg.content}</p>
+                  <p className="font-familjen leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+
+                  {/* Functional Action Bar under Assistant Answers */}
+                  {msg.role === 'assistant' && (
+                    <div className="flex items-center gap-1 sm:gap-1.5 mt-3 pt-2.5 border-t border-black/5 text-camry-graphite/70">
+                      <button
+                        onClick={() => handleCopy(msg.id, msg.content)}
+                        className="p-1.5 rounded-md hover:bg-black/5 hover:text-camry-blackout transition-colors flex items-center justify-center text-camry-graphite/80"
+                        title="Copy response"
+                      >
+                        {copiedId === msg.id ? <Check size={15} className="text-emerald-600" /> : <Copy size={15} />}
+                      </button>
+
+                      <button
+                        onClick={() => handleSpeak(msg.id, msg.content)}
+                        className={`p-1.5 rounded-md transition-colors flex items-center justify-center ${
+                          speakingId === msg.id 
+                            ? 'bg-black/10 text-camry-blackout animate-pulse' 
+                            : 'text-camry-graphite/80 hover:bg-black/5 hover:text-camry-blackout'
+                        }`}
+                        title={speakingId === msg.id ? 'Stop reading' : 'Read aloud'}
+                      >
+                        {speakingId === msg.id ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                      </button>
+
+                      <button
+                        onClick={() => handleFeedback(msg.id, 'up')}
+                        className={`p-1.5 rounded-md transition-colors flex items-center justify-center ${
+                          feedback[msg.id] === 'up' 
+                            ? 'bg-emerald-50 text-emerald-600 font-bold' 
+                            : 'text-camry-graphite/80 hover:bg-black/5 hover:text-camry-blackout'
+                        }`}
+                        title="Good response"
+                      >
+                        <ThumbsUp size={15} className={feedback[msg.id] === 'up' ? 'fill-emerald-600' : ''} />
+                      </button>
+
+                      <button
+                        onClick={() => handleFeedback(msg.id, 'down')}
+                        className={`p-1.5 rounded-md transition-colors flex items-center justify-center ${
+                          feedback[msg.id] === 'down' 
+                            ? 'bg-red-50 text-red-600 font-bold' 
+                            : 'text-camry-graphite/80 hover:bg-black/5 hover:text-camry-blackout'
+                        }`}
+                        title="Bad response"
+                      >
+                        <ThumbsDown size={15} className={feedback[msg.id] === 'down' ? 'fill-red-600' : ''} />
+                      </button>
+
+                      <button
+                        onClick={() => handleRegenerate(msg.id)}
+                        className="p-1.5 rounded-md text-camry-graphite/80 hover:bg-black/5 hover:text-camry-blackout transition-colors flex items-center justify-center"
+                        title="Regenerate response"
+                      >
+                        <RotateCw size={15} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -255,10 +405,10 @@ export const Chat: React.FC = () => {
       </div>
 
       {/* Footer Composer Area */}
-      <div className={`absolute bottom-0 left-0 right-0 p-3 sm:p-6 md:p-8 flex flex-col items-center justify-end bg-gradient-to-t from-camry-paper via-camry-paper to-transparent transition-all duration-500 ${isEmpty ? 'top-1/4' : ''}`}>
+      <div className={`absolute bottom-0 left-0 right-0 p-2 sm:p-6 md:p-8 flex flex-col items-center justify-end bg-gradient-to-t from-camry-paper via-camry-paper to-transparent transition-all duration-500 ${isEmpty ? 'top-1/4' : ''}`}>
         <div className="max-w-2xl w-full relative">
           
-          <div className="relative bg-white rounded-xl shadow-sm border border-black/10 flex flex-col transition-shadow focus-within:shadow-md focus-within:border-camry-carrier/50">
+          <div className="relative bg-white rounded-xl shadow-sm border border-black/10 flex flex-col transition-shadow focus-within:shadow-md focus-within:border-camry-carrier/50 p-2 sm:p-3">
             <textarea 
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -269,46 +419,48 @@ export const Chat: React.FC = () => {
                 }
               }}
               placeholder="Ask anything..."
-              className="w-full bg-transparent p-4 pb-12 outline-none resize-none font-familjen placeholder-camry-graphite/40"
-              rows={isEmpty ? 3 : 1}
+              className="w-full bg-transparent p-2 sm:p-3 pb-12 sm:pb-12 outline-none resize-none font-familjen placeholder-camry-graphite/40 text-sm sm:text-base"
+              rows={isEmpty ? 3 : 2}
             />
             
-            <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center">
+            <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex flex-wrap justify-between items-center gap-1.5 pt-1 border-t border-black/5">
               {/* Left Actions */}
-              <div className="flex gap-2 relative">
+              <div className="flex items-center gap-1 sm:gap-2 relative flex-wrap">
                 <button 
                   onClick={() => showToast("File attachments not available in preview")}
                   className="p-1.5 text-camry-graphite/50 hover:text-camry-blackout rounded-md transition-colors"
+                  title="Attach file"
                 >
-                  <Paperclip size={18} />
+                  <Paperclip size={16} />
                 </button>
 
                 {/* Voice-to-Text Dictation Toggle */}
                 <button
                   type="button"
                   onClick={toggleListening}
-                  className={`p-1.5 px-2.5 rounded-md transition-all flex items-center gap-1.5 text-xs font-martian ${
+                  className={`p-1 sm:p-1.5 px-2 sm:px-2.5 rounded-md transition-all flex items-center gap-1 text-[11px] sm:text-xs font-martian ${
                     isListening 
                       ? 'bg-red-500 text-white animate-pulse shadow-md font-semibold' 
                       : 'bg-camry-graphite/5 hover:bg-camry-graphite/10 text-camry-graphite/80 border border-black/5'
                   }`}
                   title={isListening ? 'Stop voice dictation' : 'Dictate message with voice (Web Speech API)'}
                 >
-                  {isListening ? <MicOff size={14} /> : <Mic size={14} />}
-                  <span>{isListening ? 'Listening...' : 'Dictate'}</span>
+                  {isListening ? <MicOff size={13} /> : <Mic size={13} />}
+                  <span className="hidden xs:inline">{isListening ? 'Listening...' : 'Dictate'}</span>
                 </button>
+
                 <div className="relative">
                   <button 
                     onClick={() => setShowWebPopover(!showWebPopover)}
-                    className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium transition-colors border ${
+                    className={`flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-xs font-medium transition-colors border ${
                       isWebMode 
                         ? 'bg-blue-50 border-blue-200 text-blue-700' 
                         : 'bg-camry-graphite/5 border-transparent text-camry-graphite/70 hover:bg-camry-graphite/10'
                     }`}
                   >
-                    <Globe size={14} />
-                    {isWebMode ? 'Web' : 'On-device'}
-                    <ChevronDown size={12} />
+                    <Globe size={13} />
+                    <span>{isWebMode ? 'Web' : 'On-device'}</span>
+                    <ChevronDown size={11} />
                   </button>
 
                   <AnimatePresence>
@@ -338,16 +490,17 @@ export const Chat: React.FC = () => {
               </div>
 
               {/* Right Actions */}
-              <div className="flex items-center gap-3 relative">
+              <div className="flex items-center gap-1.5 sm:gap-2 relative ml-auto flex-wrap justify-end">
                 
-                {/* Model Selector */}
-                <div>
+                {/* Model Selector with Size Badge */}
+                <div className="relative">
                   <button 
                     onClick={() => setShowModelPopover(!showModelPopover)}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-camry-graphite/5 rounded-md text-camry-graphite/70 hover:bg-camry-graphite/10 transition-colors group"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 bg-camry-graphite/5 hover:bg-camry-graphite/10 rounded-lg text-camry-blackout transition-colors group border border-black/5"
                   >
-                    <span className="font-martian text-xs">{loadedModel}</span>
-                    <ChevronDown size={14} className="group-hover:text-camry-blackout transition-colors" />
+                    <span className="font-martian text-xs font-semibold">{loadedModel}</span>
+                    <span className="text-[10px] text-camry-graphite/70 font-martian px-1.5 py-0.5 bg-white/80 rounded border border-black/5 font-medium">Medium</span>
+                    <ChevronDown size={13} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors flex-shrink-0" />
                   </button>
 
                   {/* Switch Model Popover */}
@@ -359,10 +512,10 @@ export const Chat: React.FC = () => {
                           initial={{ opacity: 0, y: 5, scale: 0.98 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 5, scale: 0.98 }}
-                          className="absolute bottom-full right-0 mb-2 w-[340px] bg-white border border-black/10 rounded-xl shadow-xl z-30 overflow-hidden flex flex-col"
+                          className="absolute bottom-full right-0 mb-2 w-[280px] sm:w-[340px] bg-white border border-black/10 rounded-xl shadow-xl z-30 overflow-hidden flex flex-col"
                         >
                           <div className="flex items-center justify-between p-3 border-b border-black/5 bg-camry-paper/50">
-                            <span className="font-bricolage font-medium">Switch Model</span>
+                            <span className="font-bricolage font-medium text-sm">Switch Model</span>
                             <button onClick={() => setShowModelPopover(false)} className="text-camry-graphite/50 hover:text-black">
                               <X size={16} />
                             </button>
@@ -373,14 +526,17 @@ export const Chat: React.FC = () => {
                               const isInstalled = installedModels.includes(m.id);
                               const isLoading = loadingModel === m.id;
                               
-                              if (!isInstalled && !isLoading && !isLoaded) return null; // Only show installed in this popover typically, but let's show all that are available as requested or just the ones in memory. Actually spec says: Models to list... currently loaded has checkmark. Not loaded has "Load" button.
+                              if (!isInstalled && !isLoading && !isLoaded) return null;
                               
                               return (
                                 <div key={m.id} className={`flex items-center justify-between p-2 rounded-lg ${isLoaded ? 'bg-camry-carrier/10' : 'hover:bg-camry-graphite/5'}`}>
-                                  <span className="font-martian text-xs text-camry-blackout truncate max-w-[200px]">{m.id}</span>
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span className="font-martian text-xs text-camry-blackout truncate">{m.id}</span>
+                                    <span className="text-[9px] font-martian text-camry-graphite/60 px-1 bg-black/5 rounded">Medium</span>
+                                  </div>
                                   
                                   {isLoaded ? (
-                                    <Check size={16} className="text-camry-deep-carrier" />
+                                    <Check size={16} className="text-camry-deep-carrier flex-shrink-0" />
                                   ) : isLoading ? (
                                     <div className="flex items-center gap-2">
                                       <div className="w-12 h-1 bg-camry-graphite/10 rounded-full overflow-hidden">
@@ -405,6 +561,120 @@ export const Chat: React.FC = () => {
                     )}
                   </AnimatePresence>
                 </div>
+
+                {/* Split Mic Controls Button & Popover */}
+                <div className="relative">
+                  <div className="flex items-center bg-camry-graphite/10 hover:bg-camry-graphite/15 rounded-lg border border-black/5 overflow-hidden text-camry-blackout">
+                    <button
+                      type="button"
+                      onClick={() => setShowMicPopover(!showMicPopover)}
+                      className="px-1.5 py-1.5 hover:bg-black/10 transition-colors text-camry-graphite/80"
+                      title="Microphone input settings"
+                    >
+                      <ChevronDown size={14} />
+                    </button>
+                    <div className="w-[1px] h-4 bg-black/10" />
+                    <button
+                      type="button"
+                      onClick={toggleListening}
+                      className={`px-2 py-1.5 transition-colors flex items-center justify-center ${
+                        isListening ? 'bg-red-500 text-white animate-pulse' : 'hover:bg-black/10 text-camry-blackout'
+                      }`}
+                      title={isListening ? 'Stop recording' : 'Start voice recording'}
+                    >
+                      {isListening ? <MicOff size={15} /> : <Mic size={15} />}
+                    </button>
+                  </div>
+
+                  {/* Microphone Settings Popover Modal (Matching User Image 2) */}
+                  <AnimatePresence>
+                    {showMicPopover && (
+                      <>
+                        <div className="fixed inset-0 z-30" onClick={() => setShowMicPopover(false)} />
+                        <motion.div
+                          initial={{ opacity: 0, y: 6, scale: 0.96 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                          className="absolute bottom-full right-0 mb-2.5 z-40 bg-[#282828] text-white p-3.5 rounded-2xl border border-white/10 shadow-2xl w-72 space-y-3 font-familjen text-xs"
+                        >
+                          {/* Top audio level visualizer */}
+                          <div className="flex items-center gap-2.5">
+                            <Mic size={15} className="text-white/80 flex-shrink-0" />
+                            <div className="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
+                              <div 
+                                className="h-full bg-blue-500 rounded-full transition-all duration-150"
+                                style={{ width: `${audioLevel}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Microphone device selection list */}
+                          <div className="space-y-1">
+                            <button
+                              type="button"
+                              onClick={() => setSelectedMicDevice('Default - MacBook Pro Microphone ...')}
+                              className={`w-full flex items-center justify-between p-2 rounded-lg text-left transition-colors ${
+                                selectedMicDevice.includes('Default') ? 'bg-white/10 text-white font-medium' : 'text-white/70 hover:bg-white/5'
+                              }`}
+                            >
+                              <span className="truncate pr-2">Default - MacBook Pro Microphone ...</span>
+                              {selectedMicDevice.includes('Default') && <Check size={16} className="text-blue-400 flex-shrink-0" />}
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => setSelectedMicDevice('MacBook Pro Microphone (Built-in)')}
+                              className={`w-full flex items-center justify-between p-2 rounded-lg text-left transition-colors ${
+                                !selectedMicDevice.includes('Default') ? 'bg-white/10 text-white font-medium' : 'text-white/70 hover:bg-white/5'
+                              }`}
+                            >
+                              <span className="truncate pr-2">MacBook Pro Microphone (Built-in)</span>
+                              {!selectedMicDevice.includes('Default') && <Check size={16} className="text-blue-400 flex-shrink-0" />}
+                            </button>
+                          </div>
+
+                          {/* Divider */}
+                          <div className="border-t border-white/10 my-1" />
+
+                          {/* Hold to record toggle */}
+                          <div className="flex items-center justify-between pt-0.5">
+                            <div className="flex items-center gap-2 text-white/90 font-medium">
+                              <Hand size={15} className="text-white/70" />
+                              <span>Hold to record</span>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => setHoldToRecord(!holdToRecord)}
+                              className={`w-9 h-5 rounded-full p-0.5 transition-colors flex items-center cursor-pointer ${
+                                holdToRecord ? 'bg-blue-500 justify-end' : 'bg-white/20 justify-start'
+                              }`}
+                            >
+                              <div className="w-4 h-4 rounded-full bg-white shadow-md" />
+                            </button>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Voice Audio Waveform Icon Button */}
+                <button
+                  type="button"
+                  onClick={toggleListening}
+                  className={`p-1.5 rounded-lg border border-black/5 transition-all flex items-center justify-center ${
+                    isListening ? 'bg-blue-500 text-white animate-pulse' : 'bg-camry-graphite/10 text-camry-blackout hover:bg-camry-graphite/15'
+                  }`}
+                  title="Live audio waveform visualizer"
+                >
+                  <div className="flex items-center gap-[2px] h-4 px-1">
+                    <span className={`w-0.5 rounded-full bg-current transition-all duration-200 ${isListening ? 'animate-bounce h-3' : 'h-2'}`} style={{ animationDelay: '0ms' }} />
+                    <span className={`w-0.5 rounded-full bg-current transition-all duration-200 ${isListening ? 'animate-bounce h-4' : 'h-3.5'}`} style={{ animationDelay: '150ms' }} />
+                    <span className={`w-0.5 rounded-full bg-current transition-all duration-200 ${isListening ? 'animate-bounce h-2' : 'h-1.5'}`} style={{ animationDelay: '300ms' }} />
+                    <span className={`w-0.5 rounded-full bg-current transition-all duration-200 ${isListening ? 'animate-bounce h-3.5' : 'h-3'}`} style={{ animationDelay: '450ms' }} />
+                  </div>
+                </button>
 
                 <button 
                   onClick={() => handleSend(input)}

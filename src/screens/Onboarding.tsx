@@ -28,7 +28,7 @@ export const Onboarding: React.FC = () => {
   }, [step]);
 
   return (
-    <div className="flex-1 w-full h-full flex flex-col items-center justify-center relative bg-camry-paper text-camry-blackout overflow-hidden">
+    <div className="flex-1 w-full h-full flex flex-col items-center justify-center relative bg-camry-paper text-camry-blackout overflow-y-auto p-4 sm:p-6">
       
       {/* Faint Africa Motif Background */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] flex items-center justify-center">
