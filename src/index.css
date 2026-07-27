@@ -9,9 +9,10 @@
   
   --font-sans: "Poppins", sans-serif;
   --font-poppins: "Poppins", sans-serif;
-  --font-bricolage: "Poppins", sans-serif;
+  --font-bricolage: "Bricolage Grotesque", sans-serif;
   --font-familjen: "Poppins", sans-serif;
-  --font-martian: "Martian Mono", monospace;
+  --font-martian: "Poppins", sans-serif;
+  --font-mono: "Poppins", sans-serif;
 }
 
 body {

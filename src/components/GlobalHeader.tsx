@@ -91,13 +91,6 @@ export const GlobalHeader: React.FC = () => {
         <span className="font-bricolage font-semibold text-camry-blackout text-xs sm:text-sm tracking-tight truncate">
           {screenTitles[currentScreen] || 'Camry OS'}
         </span>
-        <div className="hidden sm:block h-3 w-[1px] bg-black/10 flex-shrink-0" />
-        <div className="hidden sm:flex items-center gap-1.5 font-martian text-[10px] sm:text-[11px] text-camry-graphite/60 flex-shrink-0">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Local Engine</span>
-          <span className="text-black/30">•</span>
-          <span className="text-camry-blackout font-medium truncate max-w-[100px]">{loadedModel}</span>
-        </div>
       </div>
 
       {/* Middle: Global Search Bar */}
