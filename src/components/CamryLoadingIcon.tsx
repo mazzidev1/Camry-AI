@@ -5,68 +5,218 @@ interface CamryLoadingIconProps {
   size?: number;
   className?: string;
   color?: string;
+  variant?: 'default' | 'spinner' | 'waveform' | 'pulse-grid';
 }
 
 export const CamryLoadingIcon: React.FC<CamryLoadingIconProps> = ({
   size = 22,
   className = '',
-  color = '#0B0C0E'
+  color = '#0B0C0E',
+  variant = 'default'
 }) => {
-  const blueColor = '#9BD1FF';
+  const blueColor = '#3B82F6';
+  const orangeColor = '#F59E0B';
+  const purpleColor = '#A855F7';
 
+  if (variant === 'spinner') {
+    return (
+      <div 
+        style={{ width: size, height: size }} 
+        className={`relative inline-flex items-center justify-center ${className}`}
+      >
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Outer ring */}
+          <circle cx="16" cy="16" r="13" stroke="currentColor" strokeOpacity="0.12" strokeWidth="2.5" />
+          
+          {/* Animated SVG path arc */}
+          <motion.circle
+            cx="16"
+            cy="16"
+            r="13"
+            stroke={color}
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeDasharray="80"
+            strokeDashoffset="60"
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+            style={{ transformOrigin: "center" }}
+          />
+
+          {/* Inner pulsating core */}
+          <motion.circle
+            cx="16"
+            cy="16"
+            r="4"
+            fill={blueColor}
+            animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.6, 1, 0.6] }}
+            transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+            style={{ transformOrigin: "center" }}
+          />
+        </svg>
+      </div>
+    );
+  }
+
+  if (variant === 'waveform') {
+    return (
+      <div 
+        style={{ width: size * 1.5, height: size }} 
+        className={`relative inline-flex items-center justify-center ${className}`}
+      >
+        <svg
+          width={size * 1.5}
+          height={size}
+          viewBox="0 0 36 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {[0, 1, 2, 3, 4].map((i) => (
+            <motion.rect
+              key={i}
+              x={4 + i * 6.5}
+              y="3"
+              width="3.5"
+              height="18"
+              rx="1.75"
+              fill={i === 2 ? blueColor : color}
+              animate={{ 
+                scaleY: [0.3, 1, 0.3],
+                opacity: [0.4, 1, 0.4]
+              }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 1, 
+                delay: i * 0.15,
+                ease: "easeInOut"
+              }}
+              style={{ transformOrigin: "center" }}
+            />
+          ))}
+        </svg>
+      </div>
+    );
+  }
+
+  if (variant === 'pulse-grid') {
+    return (
+      <div 
+        style={{ width: size, height: size }} 
+        className={`relative inline-flex items-center justify-center ${className}`}
+      >
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {[0, 1, 2].map((row) =>
+            [0, 1, 2].map((col) => (
+              <motion.rect
+                key={`${row}-${col}`}
+                x={3 + col * 7}
+                y={3 + row * 7}
+                width="4"
+                height="4"
+                rx="1"
+                fill={row === 1 && col === 1 ? blueColor : color}
+                animate={{
+                  opacity: [0.2, 1, 0.2],
+                  scale: [0.8, 1.15, 0.8]
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 1.2,
+                  delay: (row + col) * 0.15,
+                  ease: "easeInOut"
+                }}
+                style={{ transformOrigin: "center" }}
+              />
+            ))
+          )}
+        </svg>
+      </div>
+    );
+  }
+
+  // Default Camry NPU Brand Logo Loader
   return (
     <div 
-      style={{ width: size, height: (size * 24) / 38 }} 
+      style={{ width: size, height: size }} 
       className={`relative inline-flex items-center justify-center ${className}`}
     >
       <svg
         width={size}
-        height={(size * 24) / 38}
-        viewBox="0 0 38 24"
+        height={size}
+        viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="overflow-visible"
       >
-        {/* Left Dots */}
-        <motion.circle 
-          cx="3" cy="7.5" r="2.5" fill={color}
-          animate={{ opacity: [0.3, 1, 0.3], scale: [0.85, 1.15, 0.85] }}
-          transition={{ repeat: Infinity, duration: 1.4, delay: 0 }}
+        {/* Row 1: Top Bar & Circle */}
+        <motion.rect 
+          x="36" y="16" width="32" height="12" rx="3" fill={color}
+          animate={{ opacity: [0.3, 1, 0.3], scaleX: [0.95, 1.05, 0.95] }}
+          transition={{ repeat: Infinity, duration: 1.2, delay: 0.1, ease: "easeInOut" }}
+          style={{ transformOrigin: "36px 22px" }}
         />
         <motion.circle 
-          cx="3" cy="16.5" r="2.5" fill={blueColor}
-          animate={{ opacity: [0.4, 1, 0.4], scale: [0.85, 1.2, 0.85] }}
-          transition={{ repeat: Infinity, duration: 1.4, delay: 0.2 }}
+          cx="78" cy="22" r="6" fill={color}
+          animate={{ opacity: [0.3, 1, 0.3], scale: [0.85, 1.25, 0.85] }}
+          transition={{ repeat: Infinity, duration: 1.2, delay: 0.2, ease: "easeInOut" }}
+          style={{ transformOrigin: "78px 22px" }}
         />
 
-        {/* Center 3 Pill Bars */}
+        {/* Row 2: Orange Square & Center Circle */}
         <motion.rect 
-          x="9" y="2" width="18" height="5" rx="2.5" fill={color}
-          animate={{ opacity: [0.3, 1, 0.3], scaleX: [0.92, 1.05, 0.92] }}
-          transition={{ repeat: Infinity, duration: 1.4, delay: 0.1 }}
+          x="16" y="34" width="14" height="14" rx="3" fill={orangeColor}
+          animate={{ opacity: [0.4, 1, 0.4], scale: [0.9, 1.2, 0.9], rotate: [0, 5, 0] }}
+          transition={{ repeat: Infinity, duration: 1.2, delay: 0, ease: "easeInOut" }}
+          style={{ transformOrigin: "23px 41px" }}
         />
-        <motion.rect 
-          x="9" y="9.5" width="18" height="5" rx="2.5" fill={color}
-          animate={{ opacity: [0.3, 1, 0.3], scaleX: [0.92, 1.05, 0.92] }}
-          transition={{ repeat: Infinity, duration: 1.4, delay: 0.3 }}
-        />
-        <motion.rect 
-          x="9" y="17" width="18" height="5" rx="2.5" fill={color}
-          animate={{ opacity: [0.3, 1, 0.3], scaleX: [0.92, 1.05, 0.92] }}
-          transition={{ repeat: Infinity, duration: 1.4, delay: 0.5 }}
+        <motion.circle 
+          cx="43" cy="41" r="6" fill={color}
+          animate={{ opacity: [0.3, 1, 0.3], scale: [0.85, 1.2, 0.85] }}
+          transition={{ repeat: Infinity, duration: 1.2, delay: 0.3, ease: "easeInOut" }}
+          style={{ transformOrigin: "43px 41px" }}
         />
 
-        {/* Right Dots */}
-        <motion.circle 
-          cx="32" cy="4.5" r="2.5" fill={color}
-          animate={{ opacity: [0.3, 1, 0.3], scale: [0.85, 1.15, 0.85] }}
-          transition={{ repeat: Infinity, duration: 1.4, delay: 0.2 }}
+        {/* Row 3: Blue Square & Purple Square */}
+        <motion.rect 
+          x="16" y="52" width="14" height="14" rx="3" fill={blueColor}
+          animate={{ opacity: [0.4, 1, 0.4], scale: [0.9, 1.2, 0.9], rotate: [0, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 1.2, delay: 0.2, ease: "easeInOut" }}
+          style={{ transformOrigin: "23px 59px" }}
+        />
+        <motion.rect 
+          x="36" y="52" width="14" height="14" rx="3" fill={purpleColor}
+          animate={{ opacity: [0.4, 1, 0.4], scale: [0.9, 1.2, 0.9] }}
+          transition={{ repeat: Infinity, duration: 1.2, delay: 0.35, ease: "easeInOut" }}
+          style={{ transformOrigin: "43px 59px" }}
+        />
+
+        {/* Row 4: Bottom Bar & Circle */}
+        <motion.rect 
+          x="36" y="70" width="32" height="12" rx="3" fill={color}
+          animate={{ opacity: [0.3, 1, 0.3], scaleX: [0.95, 1.05, 0.95] }}
+          transition={{ repeat: Infinity, duration: 1.2, delay: 0.4, ease: "easeInOut" }}
+          style={{ transformOrigin: "36px 76px" }}
         />
         <motion.circle 
-          cx="32" cy="19.5" r="2.5" fill={color}
-          animate={{ opacity: [0.3, 1, 0.3], scale: [0.85, 1.15, 0.85] }}
-          transition={{ repeat: Infinity, duration: 1.4, delay: 0.6 }}
+          cx="78" cy="76" r="6" fill={color}
+          animate={{ opacity: [0.3, 1, 0.3], scale: [0.85, 1.25, 0.85] }}
+          transition={{ repeat: Infinity, duration: 1.2, delay: 0.5, ease: "easeInOut" }}
+          style={{ transformOrigin: "78px 76px" }}
         />
       </svg>
     </div>
   );
 };
+

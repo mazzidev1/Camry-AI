@@ -10,10 +10,10 @@ import { CamryLoadingIcon } from '../components/CamryLoadingIcon';
 import { DocumentViewer } from '../components/DocumentViewer';
 
 const SUGGESTIONS = [
-  { icon: <Scale size={20} className="text-camry-graphite/60 group-hover:text-camry-carrier transition-colors" />, text: 'Summarize the key obligations in this contract.' },
-  { icon: <FileText size={20} className="text-camry-graphite/60 group-hover:text-camry-carrier transition-colors" />, text: 'Draft a formal prompt for Camry desktop app design.' },
-  { icon: <Search size={20} className="text-camry-graphite/60 group-hover:text-camry-carrier transition-colors" />, text: 'Extract every date and deadline from this document.' },
-  { icon: <Folder size={20} className="text-camry-graphite/60 group-hover:text-camry-carrier transition-colors" />, text: 'Turn these meeting notes into action items.' },
+  { icon: <Scale size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Summarize the key obligations in this contract.' },
+  { icon: <FileText size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Draft a formal prompt for Camry desktop app design.' },
+  { icon: <Search size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Extract every date and deadline from this document.' },
+  { icon: <Folder size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Turn these meeting notes into action items.' },
 ];
 
 const ThinkingIndicator: React.FC = () => {
@@ -571,7 +571,7 @@ export const Chat: React.FC = () => {
                             <FileText size={20} />
                           </div>
                           <div className="min-w-0">
-                            <h4 className="font-bricolage font-semibold text-xs sm:text-sm text-camry-blackout truncate group-hover:text-camry-carrier transition-colors">
+                            <h4 className="font-bricolage font-bold text-xs sm:text-sm text-camry-blackout truncate group-hover:text-black transition-colors">
                               {msg.document.title}
                             </h4>
                             <p className="font-martian text-[10px] text-camry-graphite/60">
