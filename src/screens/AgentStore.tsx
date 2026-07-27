@@ -80,7 +80,7 @@ export const AgentStore: React.FC = () => {
   
   // Analytics state
   const [selectedAnalyticsAgent, setSelectedAnalyticsAgent] = useState<string>('all');
-  const [showAnalyticsPanel, setShowAnalyticsPanel] = useState<boolean>(true);
+  const [showAnalyticsPanel, setShowAnalyticsPanel] = useState<boolean>(false);
 
   // Version History Modal state
   const [selectedAgentForHistory, setSelectedAgentForHistory] = useState<Agent | null>(null);
@@ -236,107 +236,131 @@ export const AgentStore: React.FC = () => {
       <div className="flex-1 overflow-y-auto p-4 sm:p-8 pt-4 sm:pt-6">
         
         {/* AGENT TELEMETRY & DATA VISUALIZATION (RECHARTS) */}
-        <div className="bg-white border border-black/10 rounded-2xl p-3.5 sm:p-6 shadow-sm mb-6 sm:mb-8 overflow-hidden">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 sm:mb-6">
+        {!showAnalyticsPanel ? (
+          <div 
+            onClick={() => setShowAnalyticsPanel(true)}
+            className="bg-white border border-black/10 rounded-xl p-3 sm:p-4 shadow-sm mb-6 flex items-center justify-between cursor-pointer hover:border-black/20 hover:bg-black/[0.01] transition-all group"
+          >
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-camry-blackout text-white flex items-center justify-center shadow-sm flex-shrink-0">
-                <BarChart3 size={18} />
+              <div className="w-8 h-8 rounded-lg bg-camry-blackout text-white flex items-center justify-center shadow-sm flex-shrink-0 group-hover:scale-105 transition-transform">
+                <BarChart3 size={16} />
               </div>
               <div className="min-w-0">
-                <h2 className="text-base sm:text-xl font-bricolage text-camry-blackout leading-snug truncate">Agent Telemetry & Usage Analytics</h2>
-                <p className="font-familjen text-[11px] sm:text-xs text-camry-graphite/60 truncate">Live breakdown of tokens consumed and requests handled on Camry NPU</p>
+                <h2 className="text-xs sm:text-sm font-bricolage text-camry-blackout font-bold leading-tight truncate">
+                  Agent Telemetry & Usage Analytics
+                </h2>
+                <p className="font-familjen text-[10px] sm:text-xs text-camry-graphite/60 truncate">
+                  Live breakdown of tokens consumed and requests handled on Camry NPU
+                </p>
               </div>
             </div>
 
-            {/* Agent Telemetry Selector & Toggle */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-between lg:justify-end min-w-0 max-w-full">
-              <div className="flex items-center gap-1.5 bg-camry-graphite/5 p-1 sm:p-1.5 rounded-lg border border-black/5 min-w-0 max-w-full">
-                <span className="font-martian text-[9px] sm:text-[10px] text-camry-graphite/60 px-1 uppercase tracking-wider flex-shrink-0">AGENT:</span>
-                <select 
-                  value={selectedAnalyticsAgent}
-                  onChange={(e) => setSelectedAnalyticsAgent(e.target.value)}
-                  className="bg-white border border-black/10 rounded px-2 py-0.5 sm:px-2.5 sm:py-1 text-xs font-martian font-medium text-camry-blackout focus:outline-none focus:border-camry-deep-carrier cursor-pointer max-w-[130px] xs:max-w-[170px] sm:max-w-xs truncate"
-                >
-                  <option value="all">All Agents Aggregate</option>
-                  {allAgents.map(a => (
-                    <option key={a.id} value={a.id}>{a.name}</option>
-                  ))}
-                </select>
+            <button 
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowAnalyticsPanel(true);
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-camry-blackout text-white hover:bg-camry-graphite text-xs font-martian font-medium shadow-sm transition-all flex-shrink-0 ml-2"
+            >
+              <BarChart3 size={13} />
+              <span>Show Analytics</span>
+            </button>
+          </div>
+        ) : (
+          <div className="bg-white border border-black/10 rounded-2xl p-3.5 sm:p-6 shadow-sm mb-6 sm:mb-8 overflow-hidden">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 sm:mb-6">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-camry-blackout text-white flex items-center justify-center shadow-sm flex-shrink-0">
+                  <BarChart3 size={18} />
+                </div>
+                <div className="min-w-0">
+                  <h2 className="text-base sm:text-xl font-bricolage text-camry-blackout leading-snug truncate">Agent Telemetry & Usage Analytics</h2>
+                  <p className="font-familjen text-[11px] sm:text-xs text-camry-graphite/60 truncate">Live breakdown of tokens consumed and requests handled on Camry NPU</p>
+                </div>
               </div>
 
-              <button 
-                onClick={() => setShowAnalyticsPanel(!showAnalyticsPanel)}
-                className="text-xs font-martian px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-black/10 hover:bg-black/5 text-camry-graphite transition-colors flex-shrink-0 whitespace-nowrap"
-              >
-                {showAnalyticsPanel ? 'Hide Chart' : 'Show Chart'}
-              </button>
+              {/* Agent Telemetry Selector & Toggle */}
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-between lg:justify-end min-w-0 max-w-full">
+                <div className="flex items-center gap-1.5 bg-camry-graphite/5 p-1 sm:p-1.5 rounded-lg border border-black/5 min-w-0 max-w-full">
+                  <span className="font-martian text-[9px] sm:text-[10px] text-camry-graphite/60 px-1 uppercase tracking-wider flex-shrink-0">AGENT:</span>
+                  <select 
+                    value={selectedAnalyticsAgent}
+                    onChange={(e) => setSelectedAnalyticsAgent(e.target.value)}
+                    className="bg-white border border-black/10 rounded px-2 py-0.5 sm:px-2.5 sm:py-1 text-xs font-martian font-medium text-camry-blackout focus:outline-none focus:border-camry-deep-carrier cursor-pointer max-w-[130px] xs:max-w-[170px] sm:max-w-xs truncate"
+                  >
+                    <option value="all">All Agents Aggregate</option>
+                    {allAgents.map(a => (
+                      <option key={a.id} value={a.id}>{a.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <button 
+                  onClick={() => setShowAnalyticsPanel(false)}
+                  className="text-xs font-martian px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-black/10 hover:bg-black/5 text-camry-graphite transition-colors flex-shrink-0 whitespace-nowrap"
+                >
+                  Hide Analytics
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-4 sm:space-y-6">
+              {/* Analytics Metric Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <div className="p-3.5 sm:p-4 bg-zinc-50/80 border border-black/10 rounded-xl hover:border-black/20 transition-all">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-martian text-[10px] text-camry-graphite/70 font-bold uppercase tracking-wider">Tokens Consumed</span>
+                    <Zap size={14} className="text-camry-blackout" />
+                  </div>
+                  <div className="font-martian text-xl sm:text-2xl text-camry-blackout font-bold">
+                    {((AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all'])[6]?.tokens || 68400).toLocaleString()}
+                  </div>
+                  <div className="font-familjen text-xs text-camry-graphite/60 mt-0.5">Local NPU context cache</div>
+                </div>
+
+                <div className="p-3.5 sm:p-4 bg-zinc-50/80 border border-black/10 rounded-xl hover:border-black/20 transition-all">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-martian text-[10px] text-camry-graphite/70 font-bold uppercase tracking-wider">Requests Handled</span>
+                    <Cpu size={14} className="text-camry-blackout" />
+                  </div>
+                  <div className="font-martian text-xl sm:text-2xl text-camry-blackout font-bold">
+                    {(AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all'])[6]?.requests || 520}
+                  </div>
+                  <div className="font-familjen text-xs text-camry-graphite/60 mt-0.5">100% on-device inference</div>
+                </div>
+
+                <div className="p-3.5 sm:p-4 bg-zinc-50/80 border border-black/10 rounded-xl hover:border-black/20 transition-all">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-martian text-[10px] text-camry-graphite/70 font-bold uppercase tracking-wider">Avg Latency</span>
+                    <Activity size={14} className="text-camry-blackout" />
+                  </div>
+                  <div className="font-martian text-xl sm:text-2xl text-camry-blackout font-bold">14.2 ms</div>
+                  <div className="font-familjen text-xs text-camry-graphite/60 mt-0.5">Zero network hop overhead</div>
+                </div>
+              </div>
+
+              {/* Recharts Line Chart */}
+              <div className="h-48 sm:h-64 w-full pt-2">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all']} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                    <XAxis dataKey="time" stroke="#64748b" fontSize={10} tickLine={false} />
+                    <YAxis yAxisId="left" stroke="#3b82f6" fontSize={10} tickLine={false} axisLine={false} />
+                    <YAxis yAxisId="right" orientation="right" stroke="#10b981" fontSize={10} tickLine={false} axisLine={false} />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#18181b', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '11px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+                      itemStyle={{ color: '#fff' }}
+                    />
+                    <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
+                    <Line yAxisId="left" type="monotone" dataKey="tokens" name="Tokens" stroke="#3b82f6" strokeWidth={2} activeDot={{ r: 5 }} dot={{ r: 2 }} />
+                    <Line yAxisId="right" type="monotone" dataKey="requests" name="Requests" stroke="#10b981" strokeWidth={2} activeDot={{ r: 5 }} dot={{ r: 2 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
-
-          <AnimatePresence>
-            {showAnalyticsPanel && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="space-y-4 sm:space-y-6"
-              >
-                {/* Analytics Metric Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                  <div className="p-3 sm:p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-martian text-[10px] text-blue-700 font-semibold uppercase tracking-wider">Tokens Consumed</span>
-                      <Zap size={14} className="text-blue-600" />
-                    </div>
-                    <div className="font-martian text-xl sm:text-2xl text-blue-950 font-bold">
-                      {((AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all'])[6]?.tokens || 68400).toLocaleString()}
-                    </div>
-                    <div className="font-familjen text-xs text-blue-600/80 mt-0.5">Local NPU context cache</div>
-                  </div>
-
-                  <div className="p-3 sm:p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-martian text-[10px] text-emerald-700 font-semibold uppercase tracking-wider">Requests Handled</span>
-                      <Cpu size={14} className="text-emerald-600" />
-                    </div>
-                    <div className="font-martian text-xl sm:text-2xl text-emerald-950 font-bold">
-                      {(AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all'])[6]?.requests || 520}
-                    </div>
-                    <div className="font-familjen text-xs text-emerald-600/80 mt-0.5">100% on-device inference</div>
-                  </div>
-
-                  <div className="p-3 sm:p-4 bg-purple-50/50 border border-purple-100 rounded-xl">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-martian text-[10px] text-purple-700 font-semibold uppercase tracking-wider">Avg Latency</span>
-                      <Activity size={14} className="text-purple-600" />
-                    </div>
-                    <div className="font-martian text-xl sm:text-2xl text-purple-950 font-bold">14.2 ms</div>
-                    <div className="font-familjen text-xs text-purple-600/80 mt-0.5">Zero network hop overhead</div>
-                  </div>
-                </div>
-
-                {/* Recharts Line Chart */}
-                <div className="h-48 sm:h-64 w-full pt-2">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={AGENT_TELEMETRY_DATA[selectedAnalyticsAgent] || AGENT_TELEMETRY_DATA['all']} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                      <XAxis dataKey="time" stroke="#64748b" fontSize={10} tickLine={false} />
-                      <YAxis yAxisId="left" stroke="#3b82f6" fontSize={10} tickLine={false} axisLine={false} />
-                      <YAxis yAxisId="right" orientation="right" stroke="#10b981" fontSize={10} tickLine={false} axisLine={false} />
-                      <Tooltip 
-                        contentStyle={{ backgroundColor: '#18181b', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '11px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
-                        itemStyle={{ color: '#fff' }}
-                      />
-                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
-                      <Line yAxisId="left" type="monotone" dataKey="tokens" name="Tokens" stroke="#3b82f6" strokeWidth={2} activeDot={{ r: 5 }} dot={{ r: 2 }} />
-                      <Line yAxisId="right" type="monotone" dataKey="requests" name="Requests" stroke="#10b981" strokeWidth={2} activeDot={{ r: 5 }} dot={{ r: 2 }} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        )}
 
         {/* Featured Banners */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">

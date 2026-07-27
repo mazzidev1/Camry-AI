@@ -32,16 +32,16 @@ export const Sidebar: React.FC = () => {
   return (
     <div className="w-[240px] flex-shrink-0 flex flex-col h-full bg-camry-blackout text-white/60 font-familjen pt-4 pb-4">
       
-      {/* Top Collapse control */}
-      <div className="flex items-center justify-end px-4 mb-4">
-        <button onClick={() => showToast("Collapse not available in preview")} className="text-white/40 hover:text-white transition-colors">
+      {/* Top Header: Brand Identity & Collapse Icon aligned horizontally at the top */}
+      <div className="flex items-center justify-between px-4 mb-6 pb-4 border-b border-white/10">
+        <CamryLogo variant="light" size="md" />
+        <button 
+          onClick={() => showToast("Collapse not available in preview")} 
+          className="text-white/40 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5"
+          title="Toggle sidebar"
+        >
           <PanelLeftClose size={16} />
         </button>
-      </div>
-
-      {/* Brand Identity / Logo Header */}
-      <div className="px-4 mb-6 pb-4 border-b border-white/10">
-        <CamryLogo variant="light" size="md" />
       </div>
 
       <div className="flex-1 overflow-y-auto px-3 space-y-6">

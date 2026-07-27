@@ -243,100 +243,157 @@ export const Dashboard: React.FC = () => {
       <div className="flex-1 overflow-y-auto px-4 sm:px-8 pb-8">
         <div className="max-w-4xl space-y-4 sm:space-y-6">
           
-          {/* Telemetry Tabs with Live Breathing Hardware Values */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-4">
-            {getStatTab('NPU', npuValue.toFixed(1))}
-            {getStatTab('SOC', socValue.toFixed(1))}
-            {getStatTab('RAM', ramValue.toFixed(1))}
-          </div>
-
-          {/* REAL-TIME HARDWARE PERFORMANCE METRICS CHART */}
-          <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-              <div className="flex items-center gap-2">
-                <Cpu size={18} className="text-camry-deep-carrier flex-shrink-0" />
-                <h3 className="font-bricolage text-base sm:text-lg text-camry-blackout leading-tight">Real-Time Hardware Performance Metrics</h3>
+          {isRefreshing ? (
+            /* TELEMETRY LOADING SKELETONS */
+            <div className="space-y-4 sm:space-y-6">
+              {/* Skeleton Stat Tabs */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="p-3 sm:p-4 bg-white border border-black/10 rounded-xl space-y-2 animate-pulse">
+                    <div className="h-3 bg-black/10 rounded w-12" />
+                    <div className="h-8 bg-black/10 rounded w-20" />
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center gap-2 font-martian text-[10px] text-camry-graphite/60 bg-black/5 px-2.5 py-1 rounded-md w-fit">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>LIVE TELEMETRY</span>
+
+              {/* Skeleton Performance Card */}
+              <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm space-y-4 animate-pulse">
+                <div className="flex items-center justify-between">
+                  <div className="h-5 bg-black/10 rounded w-48" />
+                  <div className="h-4 bg-black/10 rounded w-24" />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="p-4 bg-zinc-100 rounded-xl space-y-2">
+                      <div className="h-3 bg-black/10 rounded w-16" />
+                      <div className="h-6 bg-black/10 rounded w-24" />
+                      <div className="h-3 bg-black/10 rounded w-32" />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="h-36 sm:h-40 bg-zinc-200 rounded-lg" />
+              </div>
+
+              {/* Skeleton System Logs */}
+              <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm space-y-3 animate-pulse">
+                <div className="h-5 bg-black/10 rounded w-32" />
+                <div className="h-48 bg-zinc-100 rounded-lg p-4 space-y-2">
+                  <div className="h-4 bg-black/10 rounded w-full" />
+                  <div className="h-4 bg-black/10 rounded w-4/5" />
+                  <div className="h-4 bg-black/10 rounded w-5/6" />
+                  <div className="h-4 bg-black/10 rounded w-2/3" />
+                </div>
               </div>
             </div>
-
-            {/* Metrics Key Indicators */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
-              <div className="p-3 bg-blue-50/50 border border-blue-100 rounded-lg">
-                <div className="font-martian text-[10px] text-blue-700 font-semibold uppercase tracking-wider mb-0.5">CPU Usage</div>
-                <div className="font-martian text-xl sm:text-2xl text-blue-900 font-bold">{latestMetric.cpu}%</div>
-                <div className="font-familjen text-xs text-blue-600/70 mt-0.5">8 Cores @ 3.8GHz</div>
+          ) : (
+            <>
+              {/* Telemetry Tabs with Live Breathing Hardware Values */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                {getStatTab('NPU', npuValue.toFixed(1))}
+                {getStatTab('SOC', socValue.toFixed(1))}
+                {getStatTab('RAM', ramValue.toFixed(1))}
               </div>
 
-              <div className="p-3 bg-emerald-50/50 border border-emerald-100 rounded-lg">
-                <div className="font-martian text-[10px] text-emerald-700 font-semibold uppercase tracking-wider mb-0.5">Memory (RAM/VRAM)</div>
-                <div className="font-martian text-xl sm:text-2xl text-emerald-900 font-bold">{latestMetric.memory}%</div>
-                <div className="font-familjen text-xs text-emerald-600/70 mt-0.5">{((latestMetric.memory / 100) * 32).toFixed(1)} GB / 32 GB Used</div>
-              </div>
-
-              <div className="p-3 bg-purple-50/50 border border-purple-100 rounded-lg">
-                <div className="font-martian text-[10px] text-purple-700 font-semibold uppercase tracking-wider mb-0.5">NPU TOPS Load</div>
-                <div className="font-martian text-xl sm:text-2xl text-purple-900 font-bold">{latestMetric.npu}%</div>
-                <div className="font-familjen text-xs text-purple-600/70 mt-0.5">{((latestMetric.npu / 100) * 40).toFixed(1)} TOPS Active</div>
-              </div>
-            </div>
-
-            {/* Real-time Hardware Chart (SVG Data Visualization) */}
-            <div className="relative h-36 sm:h-40 bg-camry-blackout rounded-lg p-3 sm:p-4 overflow-hidden border border-white/10 flex flex-col justify-between">
-              <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
-              
-              <svg className="w-full h-full overflow-visible" viewBox="0 0 600 140" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="cpuGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0" />
-                  </linearGradient>
-                  <linearGradient id="memGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
-                  </linearGradient>
-                </defs>
-
-                {/* Grid Lines */}
-                <line x1="0" y1="35" x2="600" y2="35" stroke="#ffffff" strokeOpacity="0.1" strokeDasharray="4 4" />
-                <line x1="0" y1="70" x2="600" y2="70" stroke="#ffffff" strokeOpacity="0.1" strokeDasharray="4 4" />
-                <line x1="0" y1="105" x2="600" y2="105" stroke="#ffffff" strokeOpacity="0.1" strokeDasharray="4 4" />
-
-                {/* Memory Area & Line */}
-                <path d={createSvgArea('memory')} fill="url(#memGrad)" />
-                <path d={createSvgPath('memory')} fill="none" stroke="#10b981" strokeWidth="2.5" />
-
-                {/* CPU Area & Line */}
-                <path d={createSvgArea('cpu')} fill="url(#cpuGrad)" />
-                <path d={createSvgPath('cpu')} fill="none" stroke="#3b82f6" strokeWidth="2.5" />
-
-                {/* NPU Line */}
-                <path d={createSvgPath('npu')} fill="none" stroke="#a855f7" strokeWidth="2" strokeDasharray="3 3" />
-              </svg>
-
-              {/* Chart Legend */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between font-martian text-[10px] text-white/60 pt-2 z-10 border-t border-white/10 mt-2 gap-1.5">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-blue-500 rounded-sm" />
-                    <span className="text-white">CPU %</span>
+              {/* REAL-TIME HARDWARE PERFORMANCE METRICS CHART */}
+              <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <Cpu size={18} className="text-camry-blackout flex-shrink-0" />
+                    <h3 className="font-bricolage text-base sm:text-lg text-camry-blackout leading-tight">Real-Time Hardware Performance Metrics</h3>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-sm" />
-                    <span className="text-white">Memory %</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-purple-500 rounded-sm" />
-                    <span className="text-white">NPU %</span>
+                  <div className="flex items-center gap-2 font-martian text-[10px] text-camry-graphite/60 bg-black/5 px-2.5 py-1 rounded-md w-fit">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>LIVE TELEMETRY</span>
                   </div>
                 </div>
-                <span className="text-[9px] sm:text-[10px] opacity-80">Last updated: {metricsHistory[metricsHistory.length - 1]?.time}</span>
+
+                {/* Metrics Key Indicators */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
+                  <div className="p-3.5 sm:p-4 bg-zinc-50/80 border border-black/10 rounded-xl hover:border-black/20 transition-all">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-martian text-[10px] text-camry-graphite/70 font-bold uppercase tracking-wider">CPU Usage</span>
+                      <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                    </div>
+                    <div className="font-martian text-xl sm:text-2xl text-camry-blackout font-bold">{latestMetric.cpu}%</div>
+                    <div className="font-familjen text-xs text-camry-graphite/60 mt-0.5">8 Cores @ 3.8GHz</div>
+                  </div>
+
+                  <div className="p-3.5 sm:p-4 bg-zinc-50/80 border border-black/10 rounded-xl hover:border-black/20 transition-all">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-martian text-[10px] text-camry-graphite/70 font-bold uppercase tracking-wider">Memory (RAM/VRAM)</span>
+                      <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                    </div>
+                    <div className="font-martian text-xl sm:text-2xl text-camry-blackout font-bold">{latestMetric.memory}%</div>
+                    <div className="font-familjen text-xs text-camry-graphite/60 mt-0.5">{((latestMetric.memory / 100) * 32).toFixed(1)} GB / 32 GB Used</div>
+                  </div>
+
+                  <div className="p-3.5 sm:p-4 bg-zinc-50/80 border border-black/10 rounded-xl hover:border-black/20 transition-all">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-martian text-[10px] text-camry-graphite/70 font-bold uppercase tracking-wider">NPU TOPS Load</span>
+                      <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                    </div>
+                    <div className="font-martian text-xl sm:text-2xl text-camry-blackout font-bold">{latestMetric.npu}%</div>
+                    <div className="font-familjen text-xs text-camry-graphite/60 mt-0.5">{((latestMetric.npu / 100) * 40).toFixed(1)} TOPS Active</div>
+                  </div>
+                </div>
+
+                {/* Real-time Hardware Chart (SVG Data Visualization) */}
+                <div className="relative h-36 sm:h-40 bg-camry-blackout rounded-lg p-3 sm:p-4 overflow-hidden border border-white/10 flex flex-col justify-between">
+                  <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+                  
+                  <svg className="w-full h-full overflow-visible" viewBox="0 0 600 140" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="cpuGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0" />
+                      </linearGradient>
+                      <linearGradient id="memGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Grid Lines */}
+                    <line x1="0" y1="35" x2="600" y2="35" stroke="#ffffff" strokeOpacity="0.1" strokeDasharray="4 4" />
+                    <line x1="0" y1="70" x2="600" y2="70" stroke="#ffffff" strokeOpacity="0.1" strokeDasharray="4 4" />
+                    <line x1="0" y1="105" x2="600" y2="105" stroke="#ffffff" strokeOpacity="0.1" strokeDasharray="4 4" />
+
+                    {/* Memory Area & Line */}
+                    <path d={createSvgArea('memory')} fill="url(#memGrad)" />
+                    <path d={createSvgPath('memory')} fill="none" stroke="#10b981" strokeWidth="2.5" />
+
+                    {/* CPU Area & Line */}
+                    <path d={createSvgArea('cpu')} fill="url(#cpuGrad)" />
+                    <path d={createSvgPath('cpu')} fill="none" stroke="#3b82f6" strokeWidth="2.5" />
+
+                    {/* NPU Line */}
+                    <path d={createSvgPath('npu')} fill="none" stroke="#a855f7" strokeWidth="2" strokeDasharray="3 3" />
+                  </svg>
+
+                  {/* Chart Legend */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between font-martian text-[10px] text-white/60 pt-2 z-10 border-t border-white/10 mt-2 gap-1.5">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-blue-500 rounded-sm" />
+                        <span className="text-white">CPU %</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-sm" />
+                        <span className="text-white">Memory %</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-purple-500 rounded-sm" />
+                        <span className="text-white">NPU %</span>
+                      </div>
+                    </div>
+                    <span className="text-[9px] sm:text-[10px] opacity-80">Last updated: {metricsHistory[metricsHistory.length - 1]?.time}</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
 
           {/* SYSTEM LOGS COMPONENT */}
           <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm">

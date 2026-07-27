@@ -2,11 +2,21 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 
 export type Screen = 'onboarding' | 'chat' | 'modelStore' | 'agentStore' | 'dashboard' | 'settings';
 
+export interface GeneratedDocument {
+  id: string;
+  title: string;
+  type: string;
+  content: string;
+  createdAt: string;
+  messageId?: string;
+}
+
 export interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   model: string;
+  document?: GeneratedDocument;
 }
 
 export interface Model {
@@ -209,6 +219,11 @@ interface AppContextType {
   chatHistory: Message[];
   addMessage: (msg: Message) => void;
   clearChat: () => void;
+
+  activeDocument: GeneratedDocument | null;
+  setActiveDocument: (doc: GeneratedDocument | null) => void;
+  sessionDocuments: GeneratedDocument[];
+  addDocument: (doc: GeneratedDocument) => void;
   
   settingsView: 'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy';
   setSettingsView: (view: 'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy') => void;
@@ -226,6 +241,60 @@ interface AppContextType {
   exportConfig: () => void;
   importConfig: (jsonData: string) => boolean;
 }
+
+const INITIAL_SAMPLE_DOC: GeneratedDocument = {
+  id: 'doc-1',
+  title: 'Camry app design prompt',
+  type: 'MD',
+  createdAt: 'Just now',
+  messageId: 'msg-2',
+  content: `# CAMRY DESKTOP APP — CLICKABLE PROTOTYPE BUILD PROMPT
+
+**For Claude Design · Produces a high-fidelity, clickable desktop-app prototype**
+
+---
+
+### 0. WHAT YOU ARE BUILDING
+Build a **clickable desktop-application prototype** for **Camry** — the desktop client (macOS/Windows) that a business installs on their computers to talk to the Camry AI appliance: a headless on-premise AI box sitting on the office network. The box has **no screen of its own**; this app is the entire interface to it.
+
+The app is a **local client for a networked device**. It talks to the box over the local network via an OpenAI-compatible API at a local IP. Every "device" control in the app (Wi-Fi, storage, power, updates) is the app reaching into the box and controlling it remotely. Keep this mental model visible in the design: the user always feels they are operating *their own machine in the building*, not a cloud service.
+
+Deliver a **single-window desktop app** rendered inside a realistic desktop-OS chrome (rounded window, traffic-light controls top-left), with a **persistent left navigation rail** and a **main content area** that swaps between screens. All navigation and key interactions must actually work (clickable, with state changes, hovers, popovers, modals, and toggles). Use in-memory state only — no backend, no localStorage.
+
+Build **six primary screens** plus their sub-states:
+1. Onboarding / device pairing (first-run)
+2. Chat (home) + Switch-Model popover
+3. Model Store
+4. Agent Store
+5. Dashboard
+6. Settings (incl. API key sub-screen)
+
+---
+
+### 1. BRAND SYSTEM (APPLY THROUGHOUT — THIS IS NON-NEGOTIABLE)
+Camry's identity is disciplined, engineering-serious, quiet. The opposite of playful. Think "precision instrument," not "consumer gadget."
+
+**Colors:**
+- Backgrounds: Warm Paper \`#EDEBE4\` and Dark Graphite \`#121418\`
+- Accent: Carrier Blue \`#1D4ED8\`
+`
+};
+
+const INITIAL_SAMPLE_CHAT: Message[] = [
+  {
+    id: 'msg-1',
+    role: 'user',
+    content: 'answer this question "In 3-4 sentences, describe your business idea, the problem space and the market potential. What made you pick this idea?"',
+    model: 'gpt-oss-120b',
+  },
+  {
+    id: 'msg-2',
+    role: 'assistant',
+    content: "Here's a version that fits the 3-4 sentence limit while hitting all four asks (idea, problem, market, why you):\n\nCamry builds on-premise AI appliances for African businesses — a device you plug into your office network that gives your whole team private AI, paid for once, with no subscriptions and no data ever leaving the building. The problem is that African enterprises are being pushed to cloud AI that is expensive, laggy, and risky for sensitive client data.",
+    model: 'gpt-oss-120b',
+    document: INITIAL_SAMPLE_DOC
+  }
+];
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -245,7 +314,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     showToast(`Agent priority order updated`);
   };
   
-  const [chatHistory, setChatHistory] = useState<Message[]>([]);
+  const [chatHistory, setChatHistory] = useState<Message[]>(INITIAL_SAMPLE_CHAT);
+  const [sessionDocuments, setSessionDocuments] = useState<GeneratedDocument[]>([INITIAL_SAMPLE_DOC]);
+  const [activeDocument, setActiveDocument] = useState<GeneratedDocument | null>(null);
+
+  const addDocument = (doc: GeneratedDocument) => {
+    setSessionDocuments(prev => [doc, ...prev.filter(d => d.id !== doc.id)]);
+  };
   const [settingsView, setSettingsView] = useState<'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy'>('main');
   
   const [toastData, setToastData] = useState<ToastData | null>(null);
@@ -433,6 +508,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       chatHistory,
       addMessage,
       clearChat,
+      activeDocument,
+      setActiveDocument,
+      sessionDocuments,
+      addDocument,
       settingsView,
       setSettingsView,
       toastData,
