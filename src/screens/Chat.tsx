@@ -706,10 +706,10 @@ export const Chat: React.FC = () => {
                           <span className="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">CITED SOURCES:</span>
                           <button
                             onClick={() => setCurrentScreen('knowledgeBase')}
-                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold border transition-colors ${
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold border transition-all ${
                               isLight 
-                                ? 'bg-sky-500/10 border-sky-500/20 text-sky-600 hover:bg-sky-500/20' 
-                                : 'bg-sky-500/20 border-sky-500/30 text-sky-400 hover:bg-sky-500/30'
+                                ? 'bg-zinc-100 border-zinc-200 hover:bg-zinc-200 text-zinc-700' 
+                                : 'bg-white/5 border-white/10 hover:bg-white/10 text-white/80'
                             }`}
                           >
                             <FileText size={10} />
@@ -717,10 +717,10 @@ export const Chat: React.FC = () => {
                           </button>
                           <button
                             onClick={() => setCurrentScreen('knowledgeBase')}
-                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold border transition-colors ${
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold border transition-all ${
                               isLight 
-                                ? 'bg-sky-500/10 border-sky-500/20 text-sky-600 hover:bg-sky-500/20' 
-                                : 'bg-sky-500/20 border-sky-500/30 text-sky-400 hover:bg-sky-500/30'
+                                ? 'bg-zinc-100 border-zinc-200 hover:bg-zinc-200 text-zinc-700' 
+                                : 'bg-white/5 border-white/10 hover:bg-white/10 text-white/80'
                             }`}
                           >
                             <FileText size={10} />
@@ -740,14 +740,14 @@ export const Chat: React.FC = () => {
                           }`}
                         >
                           <div className="flex items-center gap-3 min-w-0">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-sky-500 group-hover:text-white transition-colors ${
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-zinc-300 dark:group-hover:bg-white/20 transition-colors ${
                               isLight ? 'bg-zinc-200 text-zinc-700' : 'bg-white/10 text-white'
                             }`}>
                               <FileText size={20} />
                             </div>
                             <div className="min-w-0">
                               <h4 className={`font-display font-bold text-xs sm:text-sm truncate transition-colors ${
-                                isLight ? 'text-[#18181B] group-hover:text-sky-600' : 'text-white group-hover:text-sky-400'
+                                isLight ? 'text-[#18181B] group-hover:text-black' : 'text-white group-hover:text-white'
                               }`}>
                                 {msg.document.title}
                               </h4>
@@ -790,7 +790,7 @@ export const Chat: React.FC = () => {
                             onClick={() => handleSpeak(msg.id, msg.content)}
                             className={`p-1.5 rounded-lg transition-colors flex items-center justify-center ${
                               speakingId === msg.id 
-                                ? isLight ? 'bg-sky-100 text-sky-600 animate-pulse' : 'bg-white/10 text-sky-300 animate-pulse'
+                                ? isLight ? 'bg-zinc-200 text-black animate-pulse' : 'bg-white/15 text-white animate-pulse'
                                 : isLight ? 'hover:bg-zinc-100 hover:text-black' : 'hover:bg-white/5 hover:text-white'
                             }`}
                             title={speakingId === msg.id ? 'Stop reading' : 'Read aloud'}
@@ -888,9 +888,11 @@ export const Chat: React.FC = () => {
                   <div className="relative">
                     <button 
                       onClick={() => setShowWebPopover(!showWebPopover)}
-                      className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] sm:text-xs font-semibold transition-colors border ${
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] sm:text-xs font-semibold transition-all border ${
                         isWebMode 
-                          ? 'bg-sky-500/10 border-sky-500/30 text-sky-500' 
+                          ? isLight 
+                            ? 'bg-zinc-900 border-zinc-900 text-white shadow-sm' 
+                            : 'bg-white border-white text-zinc-950 shadow-sm'
                           : isLight 
                             ? 'bg-zinc-100 border-zinc-200 text-zinc-700 hover:bg-zinc-200' 
                             : 'bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10'
@@ -975,21 +977,23 @@ export const Chat: React.FC = () => {
                                 if (!isInstalled && !isLoading && !isLoaded) return null;
                                 
                                 return (
-                                  <div key={m.id} className={`flex items-center justify-between p-2 rounded-xl transition-colors ${
+                                  <div key={m.id} className={`flex items-center justify-between p-2 rounded-xl transition-colors border ${
                                     isLoaded 
-                                      ? 'bg-sky-500/10 text-sky-600' 
-                                      : isLight ? 'hover:bg-zinc-50' : 'hover:bg-white/5'
+                                      ? isLight 
+                                        ? 'bg-zinc-100 border-zinc-200 text-zinc-900 font-bold' 
+                                        : 'bg-white/10 border-white/10 text-white font-bold'
+                                      : 'border-transparent'
                                   }`}>
                                     <div className="flex items-center gap-2 min-w-0">
                                       <span className="font-mono text-xs truncate font-medium">{m.id}</span>
                                     </div>
                                     
                                     {isLoaded ? (
-                                      <Check size={16} className="text-sky-500 shrink-0" />
+                                      <Check size={16} className="text-emerald-500 shrink-0" />
                                     ) : isLoading ? (
                                       <div className="flex items-center gap-2">
                                         <div className="w-12 h-1 bg-zinc-200 rounded-full overflow-hidden">
-                                          <div className="h-full bg-sky-500 w-1/3 animate-pulse" />
+                                          <div className="h-full bg-emerald-500 w-1/3 animate-pulse" />
                                         </div>
                                         <span className="font-mono text-[9px] text-zinc-400">LOADING...</span>
                                       </div>
@@ -1057,7 +1061,7 @@ export const Chat: React.FC = () => {
                               <Mic size={15} className="text-white/80 shrink-0" />
                               <div className="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
                                 <div 
-                                  className="h-full bg-sky-500 rounded-full transition-all duration-150"
+                                  className="h-full bg-emerald-500 rounded-full transition-all duration-150"
                                   style={{ width: `${audioLevel}%` }}
                                 />
                               </div>
@@ -1072,7 +1076,7 @@ export const Chat: React.FC = () => {
                                 }`}
                               >
                                 <span className="truncate pr-2">Default - MacBook Pro Microphone ...</span>
-                                {selectedMicDevice.includes('Default') && <Check size={16} className="text-sky-400 shrink-0" />}
+                                {selectedMicDevice.includes('Default') && <Check size={16} className="text-emerald-400 shrink-0" />}
                               </button>
 
                               <button
@@ -1083,7 +1087,7 @@ export const Chat: React.FC = () => {
                                 }`}
                               >
                                 <span className="truncate pr-2">MacBook Pro Microphone (Built-in)</span>
-                                {!selectedMicDevice.includes('Default') && <Check size={16} className="text-sky-400 shrink-0" />}
+                                {!selectedMicDevice.includes('Default') && <Check size={16} className="text-emerald-400 shrink-0" />}
                               </button>
                             </div>
 
@@ -1099,7 +1103,7 @@ export const Chat: React.FC = () => {
                                 type="button"
                                 onClick={() => setHoldToRecord(!holdToRecord)}
                                 className={`w-9 h-5 rounded-full p-0.5 transition-colors flex items-center cursor-pointer ${
-                                  holdToRecord ? 'bg-sky-500 justify-end' : 'bg-white/20 justify-start'
+                                  holdToRecord ? 'bg-emerald-500 justify-end' : 'bg-white/20 justify-start'
                                 }`}
                               >
                                 <div className="w-4 h-4 rounded-full bg-white shadow-md" />

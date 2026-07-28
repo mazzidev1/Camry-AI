@@ -112,10 +112,10 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
                     key={opt.value}
                     type="button"
                     onClick={() => handleSelect(opt.value)}
-                    className={`w-full flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-left transition-colors cursor-pointer ${
+                    className={`w-full flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-left transition-colors cursor-pointer border ${
                       isSelected
-                        ? 'bg-blue-500/20 text-sky-200 font-bold border border-blue-400/30'
-                        : 'text-white/80 hover:bg-white/10 hover:text-white'
+                        ? 'bg-white/15 text-white font-bold border-white/20'
+                        : 'text-white/80 hover:bg-white/10 hover:text-white border-transparent'
                     }`}
                   >
                     <div className="min-w-0 flex-1">
@@ -124,13 +124,13 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
                         <span className="truncate">{opt.label}</span>
                       </div>
                       {opt.description && (
-                        <div className={`text-[10px] font-normal mt-0.5 truncate ${isSelected ? 'text-sky-300/80' : 'text-white/50'}`}>
+                        <div className={`text-[10px] font-normal mt-0.5 truncate ${isSelected ? 'text-white/80' : 'text-white/50'}`}>
                           {opt.description}
                         </div>
                       )}
                     </div>
                     {isSelected && (
-                      <Check size={14} className="text-sky-300 shrink-0 ml-1" />
+                      <Check size={14} className="text-emerald-400 shrink-0 ml-1" />
                     )}
                   </button>
                 );

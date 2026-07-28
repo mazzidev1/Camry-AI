@@ -109,11 +109,11 @@ export const Sidebar: React.FC = () => {
               onClick={() => startTour()}
               className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-mono font-semibold transition-all cursor-pointer shadow-sm group border ${
                 isLight 
-                  ? 'bg-gradient-to-r from-sky-50 to-blue-50 border-sky-200 text-sky-700 hover:from-sky-100 hover:to-blue-100' 
-                  : 'bg-gradient-to-r from-sky-500/20 to-blue-600/20 border-sky-400/30 text-sky-200 hover:from-sky-500/30 hover:to-blue-600/30'
+                  ? 'bg-zinc-50 border-zinc-200 text-zinc-800 hover:bg-zinc-100' 
+                  : 'bg-white/5 border-white/10 text-white/90 hover:bg-white/10'
               }`}
             >
-              <AnimatedIcon type="spin" className={`${isLight ? 'text-sky-600' : 'text-sky-300'} group-hover:scale-110 transition-transform`}>
+              <AnimatedIcon type="spin" className={`${isLight ? 'text-amber-600' : 'text-amber-400'} group-hover:scale-110 transition-transform`}>
                 <Sparkles size={16} />
               </AnimatedIcon>
               <span className="truncate">Getting Started Tour</span>

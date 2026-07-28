@@ -457,7 +457,7 @@ export const Dashboard: React.FC = () => {
                     <span className="text-white/40 text-[10px] whitespace-nowrap pt-0.5">{log.timestamp}</span>
                     <span className={`px-1.5 py-0.2 text-[9px] rounded font-bold uppercase whitespace-nowrap ${
                       log.category === 'WARN' ? 'bg-red-900/80 text-red-200 border border-red-700' :
-                      log.category === 'HW' ? 'bg-blue-900/80 text-blue-200 border border-blue-700' :
+                      log.category === 'HW' ? 'bg-amber-950/80 text-amber-200 border border-amber-700' :
                       log.category === 'INF' ? 'bg-purple-900/80 text-purple-200 border border-purple-700' :
                       'bg-emerald-900/80 text-emerald-200 border border-emerald-700'
                     }`}>

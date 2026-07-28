@@ -114,7 +114,7 @@ export const GlobalHeader: React.FC = () => {
           <span className={`hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-mono border ${
             isLight 
               ? 'bg-[#EFECE6] text-[#18181B] border-[#E2DDD5]' 
-              : 'bg-[#202026] text-sky-300 border-[#2E2E38]'
+              : 'bg-[#202026] text-zinc-300 border-[#2E2E38]'
           }`}>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>Camry OS v2.4</span>
@@ -140,8 +140,8 @@ export const GlobalHeader: React.FC = () => {
             placeholder="Search agents, models, documents..."
             className={`w-full pl-9 pr-8 py-1.5 rounded-xl text-xs font-sans transition-all focus:outline-none border ${
               isLight 
-                ? 'bg-[#F5F3EF] border-[#E2DDD5] text-[#18181B] placeholder:text-zinc-400 focus:bg-white focus:border-sky-500' 
-                : 'bg-[#0C0C0E] border-[#2E2E38] text-white placeholder:text-zinc-500 focus:bg-[#16161A] focus:border-sky-500'
+                ? 'bg-[#F5F3EF] border-[#E2DDD5] text-[#18181B] placeholder:text-zinc-400 focus:bg-white focus:border-zinc-400' 
+                : 'bg-[#0C0C0E] border-[#2E2E38] text-white placeholder:text-zinc-500 focus:bg-[#16161A] focus:border-zinc-500'
             }`}
           />
           {searchQuery && (
@@ -187,7 +187,9 @@ export const GlobalHeader: React.FC = () => {
                       }`}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-7 h-7 rounded-lg bg-sky-500/10 text-sky-500 flex items-center justify-center shrink-0">
+                        <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                          isLight ? 'bg-zinc-100 text-zinc-700' : 'bg-white/10 text-white'
+                        }`}>
                           <Bot size={14} />
                         </div>
                         <div className="min-w-0">
@@ -197,7 +199,11 @@ export const GlobalHeader: React.FC = () => {
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0 ml-2">
-                        <span className="font-mono text-[10px] bg-sky-500/15 text-sky-400 px-2 py-0.5 rounded-full border border-sky-400/20">
+                        <span className={`font-mono text-[10px] px-2 py-0.5 rounded-full border ${
+                          isLight 
+                            ? 'bg-zinc-100 text-zinc-800 border-zinc-200' 
+                            : 'bg-white/10 text-white border-white/10'
+                        }`}>
                           {isActive ? 'Active' : isInstalled ? 'Launch' : 'Get'}
                         </span>
                       </div>
@@ -228,7 +234,9 @@ export const GlobalHeader: React.FC = () => {
                       }`}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
+                        <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                          isLight ? 'bg-zinc-100 text-zinc-700' : 'bg-white/10 text-white'
+                        }`}>
                           <Cpu size={14} />
                         </div>
                         <div className="min-w-0">
@@ -272,7 +280,7 @@ export const GlobalHeader: React.FC = () => {
               <span>Daylight</span>
             </div>
           ) : (
-            <div className="flex items-center gap-1 text-sky-400 font-medium text-[11px]">
+            <div className="flex items-center gap-1 text-zinc-200 font-medium text-[11px]">
               <Moon size={13} />
               <span>Dark</span>
             </div>

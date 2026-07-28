@@ -812,7 +812,7 @@ const MiniDashboard: React.FC = () => {
               Total AI Tokens Used
             </span>
             <Tooltip content="Tokens processed on local NPU hardware" position="top">
-              <span className="p-1.5 rounded-lg bg-blue-50 text-blue-600">
+              <span className="p-1.5 rounded-lg bg-zinc-100 text-zinc-600">
                 <AnimatedIcon type="bounce">
                   <Zap size={14} />
                 </AnimatedIcon>
@@ -833,11 +833,11 @@ const MiniDashboard: React.FC = () => {
           {/* Token Breakdown Bar */}
           <div className="space-y-1.5 pt-1">
             <div className="flex items-center justify-between text-[10px] font-martian font-semibold">
-              <span className="text-blue-700">1,620,400 Prompt (57%)</span>
+              <span className="text-zinc-700">1,620,400 Prompt (57%)</span>
               <span className="text-emerald-700">1,224,790 Output (43%)</span>
             </div>
             <div className="h-2 w-full bg-zinc-200 rounded-full overflow-hidden flex">
-              <div className="h-full bg-blue-600 transition-all duration-500" style={{ width: '57%' }} title="Prompt Input Tokens" />
+              <div className="h-full bg-zinc-700 transition-all duration-500" style={{ width: '57%' }} title="Prompt Input Tokens" />
               <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: '43%' }} title="Completion Output Tokens" />
             </div>
           </div>

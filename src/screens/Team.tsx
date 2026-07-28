@@ -93,7 +93,7 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
     Manager: {
       title: 'Departmental Manager',
       desc: 'Can upload to all KB categories, install marketplace agents, and manage team workflows.',
-      color: 'bg-blue-900 text-white'
+      color: 'bg-indigo-900 text-white'
     },
     Member: {
       title: 'Team Member',

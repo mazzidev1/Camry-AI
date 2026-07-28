@@ -282,7 +282,7 @@ export const KnowledgeBase: React.FC = () => {
   const getFileIcon = (type: KBDocument['type']) => {
     switch (type) {
       case 'PDF': return <FileText size={16} className="text-red-500" />;
-      case 'DOCX': return <FileText size={16} className="text-blue-500" />;
+      case 'DOCX': return <FileText size={16} className="text-indigo-500" />;
       case 'PPTX': return <FileText size={16} className="text-amber-500" />;
       case 'IMG': return <FileImage size={16} className="text-emerald-500" />;
       case 'CSV':
@@ -607,16 +607,16 @@ export const KnowledgeBase: React.FC = () => {
                         </motion.span>
                       ) : doc.status === 'PROCESSING' ? (
                         <div className="w-36 space-y-1">
-                          <div className="flex justify-between items-center text-[9px] font-martian text-blue-700 font-bold">
+                          <div className="flex justify-between items-center text-[9px] font-martian text-zinc-700 font-bold">
                             <span className="flex items-center gap-1">
-                              <Loader2 size={11} className="animate-spin text-blue-600 shrink-0" />
+                              <Loader2 size={11} className="animate-spin text-zinc-500 shrink-0" />
                               PROCESSING…
                             </span>
                             <span className="font-mono">{doc.progress || 0}%</span>
                           </div>
-                          <div className="w-full h-2 bg-blue-100/80 rounded-full overflow-hidden relative p-0.5 border border-blue-200/50">
+                          <div className="w-full h-2 bg-zinc-100 rounded-full overflow-hidden relative p-0.5 border border-zinc-200/50">
                             <motion.div 
-                              className="h-full bg-gradient-to-r from-blue-600 via-sky-500 to-emerald-500 rounded-full" 
+                              className="h-full bg-gradient-to-r from-zinc-500 to-emerald-500 rounded-full" 
                               initial={{ width: '0%' }}
                               animate={{ width: `${doc.progress || 0}%` }}
                               transition={{ ease: "easeInOut", duration: 0.4 }}

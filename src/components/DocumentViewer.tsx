@@ -54,7 +54,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
           inCodeBlock = false;
           elements.push(
             <div key={`code-${idx}`} className="my-3 relative group">
-              <pre className="bg-[#121418] border border-white/10 p-4 rounded-xl font-martian text-xs text-blue-300 overflow-x-auto leading-relaxed">
+              <pre className="bg-[#121418] border border-white/10 p-4 rounded-xl font-martian text-xs text-zinc-300 overflow-x-auto leading-relaxed">
                 {codeBlockBuffer.join('\n')}
               </pre>
             </div>
@@ -98,7 +98,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
 
       if (line.startsWith('### ')) {
         elements.push(
-          <h3 key={`h3-${idx}`} className="font-martian text-xs font-bold uppercase tracking-wider text-blue-400 mt-4 mb-2">
+          <h3 key={`h3-${idx}`} className="font-martian text-xs font-bold uppercase tracking-wider text-zinc-400 mt-4 mb-2">
             {line.replace('### ', '')}
           </h3>
         );
@@ -110,7 +110,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
         const itemText = line.trim().replace(/^[-*]\s+/, '');
         elements.push(
           <div key={`bullet-${idx}`} className="flex items-start gap-2.5 my-1.5 pl-2 text-white/85 text-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 flex-shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 mt-2 flex-shrink-0" />
             <span className="font-familjen leading-relaxed">{parseInlineStyles(itemText)}</span>
           </div>
         );
@@ -123,7 +123,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
         if (match) {
           elements.push(
             <div key={`num-${idx}`} className="flex items-start gap-2.5 my-1.5 pl-1 text-white/85 text-sm">
-              <span className="font-martian text-xs font-bold text-blue-400 min-w-[18px]">{match[1]}.</span>
+              <span className="font-martian text-xs font-bold text-zinc-400 min-w-[18px]">{match[1]}.</span>
               <span className="font-familjen leading-relaxed">{parseInlineStyles(match[2])}</span>
             </div>
           );
@@ -160,7 +160,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
       }
       if (part.startsWith('`') && part.endsWith('`')) {
         return (
-          <code key={i} className="font-martian text-[11px] bg-white/10 text-blue-300 px-1.5 py-0.5 rounded border border-white/5">
+          <code key={i} className="font-martian text-[11px] bg-white/10 text-zinc-300 px-1.5 py-0.5 rounded border border-white/5">
             {part.slice(1, -1)}
           </code>
         );
@@ -182,7 +182,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
       {/* Header Bar */}
       <div className="bg-[#121418] border-b border-white/10 px-4 py-3 flex items-center justify-between flex-shrink-0 gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-7 h-7 rounded-lg bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 flex-shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-zinc-500/15 border border-zinc-500/30 flex items-center justify-center text-zinc-300 flex-shrink-0">
             <Eye size={15} />
           </div>
           <div className="min-w-0 flex items-center gap-2">
@@ -244,7 +244,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
       </div>
 
       {/* Main Document Content Scrollable Body */}
-      <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-2 selection:bg-blue-500/30 selection:text-white">
+      <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-2 selection:bg-zinc-700/30 selection:text-white">
         <div className="max-w-3xl mx-auto">
           {renderFormattedMarkdown(doc.content)}
         </div>
@@ -253,7 +253,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
       {/* Bottom Status Bar */}
       <div className="bg-[#121418] border-t border-white/10 px-4 py-2 flex items-center justify-between text-[11px] font-martian text-white/40 flex-shrink-0">
         <div className="flex items-center gap-2">
-          <FileText size={13} className="text-blue-400/80" />
+          <FileText size={13} className="text-zinc-400/80" />
           <span>Camry On-Premise Generated Document</span>
         </div>
         <span>{doc.content.split(/\s+/).length} words</span>

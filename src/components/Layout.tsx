@@ -3,6 +3,7 @@ import { useAppContext } from '../store/AppContext';
 import { Sidebar } from './Sidebar';
 import { GlobalHeader } from './GlobalHeader';
 import { GuidedTourOverlay } from './GuidedTourOverlay';
+import { CamryOrb } from './CamryOrb';
 import { MessageSquare, Grid, Box, BarChart2, Settings } from 'lucide-react';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -32,8 +33,22 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const isLight = themeMode === 'light';
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-0 transition-colors duration-200 camry-radial-glow">
-      <div className="w-full h-screen overflow-hidden flex relative bg-transparent">
+    <div className="min-h-screen w-full flex items-center justify-center p-0 transition-colors duration-200 camry-radial-glow relative overflow-hidden">
+      {/* 3-Layer Architecture: Layer 2: Ambient Light Source (Carrier Orbs) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 select-none">
+        <CamryOrb 
+          size="xl" 
+          className="absolute top-[-10%] right-[15%] opacity-20 sm:opacity-30 lg:opacity-40 filter blur-3xl pointer-events-none scale-[2.5]" 
+          interactive={true} 
+        />
+        <CamryOrb 
+          size="lg" 
+          className="absolute bottom-[5%] left-[-10%] opacity-15 sm:opacity-20 filter blur-3xl pointer-events-none scale-[2]" 
+          interactive={true} 
+        />
+      </div>
+
+      <div className="w-full h-screen overflow-hidden flex relative bg-transparent z-10">
         
         {/* Guided Tour Modal Overlay */}
         <GuidedTourOverlay />

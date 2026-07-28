@@ -176,7 +176,7 @@ export const Library: React.FC = () => {
     switch (category) {
       case 'Legal': return <Scale size={16} className="text-amber-600" />;
       case 'Medical': return <Activity size={16} className="text-emerald-600" />;
-      case 'Government': return <Landmark size={16} className="text-blue-600" />;
+      case 'Government': return <Landmark size={16} className="text-indigo-600" />;
       case 'Industrial': return <Layers size={16} className="text-purple-600" />;
       case 'Finance': return <Shield size={16} className="text-cyan-600" />;
       default: return <Bot size={16} className="text-camry-deep-carrier" />;
@@ -964,7 +964,7 @@ export const Library: React.FC = () => {
               <div className="pt-3 border-t border-black/10 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
                 <button
                   onClick={() => handleAskAboutOutput(selectedItem)}
-                  className="px-4 py-2 rounded-xl bg-camry-carrier text-camry-blackout hover:bg-blue-300 font-martian text-xs font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-camry-carrier text-camry-blackout hover:opacity-95 font-martian text-xs font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer"
                 >
                   <MessageSquare size={15} />
                   <span>Ask Camry about this output</span>
