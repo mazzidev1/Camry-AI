@@ -106,27 +106,27 @@ export const GlobalHeader: React.FC = () => {
         </button>
 
         {/* Brand Header Status Pill from PDF Design System */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <CamryOrb size="sm" className="w-6 h-6 shrink-0" />
-          <span className="font-space font-bold lowercase tracking-tight text-sm">
+          <span className="font-space font-bold lowercase tracking-tight text-sm shrink-0">
             camry
           </span>
-          <span className={`hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-mono border ${
+          <span className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono border whitespace-nowrap shrink-0 ${
             isLight 
               ? 'bg-[#EFECE6] text-[#18181B] border-[#E2DDD5]' 
               : 'bg-[#202026] text-zinc-300 border-[#2E2E38]'
           }`}>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Camry OS v2.4</span>
-            <span className="text-emerald-500 font-bold ml-0.5">100%</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <span className="whitespace-nowrap shrink-0">Camry OS v2.4</span>
+            <span className="text-emerald-500 font-bold ml-0.5 whitespace-nowrap shrink-0">100%</span>
           </span>
         </div>
       </div>
 
       {/* Middle: Global Search Bar */}
-      <div ref={containerRef} className="relative w-36 sm:w-64 md:w-80 lg:w-96">
+      <div ref={containerRef} className="relative flex-1 max-w-[140px] sm:max-w-[240px] md:max-w-[280px] lg:max-w-[340px] xl:max-w-[380px] mx-1.5 sm:mx-4 min-w-0">
         <div className="relative flex items-center">
-          <Search size={14} className={`absolute left-3 pointer-events-none ${
+          <Search size={14} className={`absolute left-3 pointer-events-none shrink-0 ${
             isLight ? 'text-zinc-400' : 'text-zinc-500'
           }`} />
           <input 
@@ -138,7 +138,7 @@ export const GlobalHeader: React.FC = () => {
               setIsOpen(true);
             }}
             placeholder="Search agents, models, documents..."
-            className={`w-full pl-9 pr-8 py-1.5 rounded-xl text-xs font-sans transition-all focus:outline-none border ${
+            className={`w-full pl-9 pr-8 py-1.5 rounded-xl text-xs font-sans transition-all focus:outline-none border truncate ${
               isLight 
                 ? 'bg-[#F5F3EF] border-[#E2DDD5] text-[#18181B] placeholder:text-zinc-400 focus:bg-white focus:border-zinc-400' 
                 : 'bg-[#0C0C0E] border-[#2E2E38] text-white placeholder:text-zinc-500 focus:bg-[#16161A] focus:border-zinc-500'
@@ -273,7 +273,7 @@ export const GlobalHeader: React.FC = () => {
           }`}
           title="Toggle surface set (Daylight / Dark)"
         >
-          <span className="text-[10px] text-zinc-400 uppercase font-semibold hidden sm:inline">Personalize</span>
+          <span className="text-[10px] text-zinc-400 uppercase font-semibold hidden xl:inline">Personalize</span>
           {isLight ? (
             <div className="flex items-center gap-1 text-amber-600 font-medium text-[11px]">
               <Sun size={13} />
