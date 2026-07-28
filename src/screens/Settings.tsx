@@ -1,11 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../store/AppContext';
-import { ChevronRight, Shield, Power, Monitor, HardDrive, Wifi, Network, Key, ArrowLeft, Copy, Eye, EyeOff, Check, Terminal, Lock, Download, Upload, FileCode } from 'lucide-react';
+import { ChevronRight, Shield, Power, Monitor, HardDrive, Wifi, Network, Key, ArrowLeft, Copy, Eye, EyeOff, Check, Terminal, Lock, Download, Upload, FileCode, Users, Cpu, Bot, Layers, Zap, Activity } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { Team } from './Team';
+import { Tooltip } from '../components/Tooltip';
+import { AnimatedIcon, IconAnimationType } from '../components/AnimatedIcon';
 
 export const Settings: React.FC = () => {
-  const { settingsView, setSettingsView, showToast, exportConfig, importConfig } = useAppContext();
+  const { currentScreen, settingsView, setSettingsView, showToast, exportConfig, importConfig, teamMembers } = useAppContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (currentScreen === 'team') {
+      setSettingsView('team');
+    }
+  }, [currentScreen, setSettingsView]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -38,38 +47,73 @@ export const Settings: React.FC = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto px-4 sm:px-8 pb-8 sm:pb-12">
-              <div className="max-w-2xl w-full space-y-6 sm:space-y-8">
+              <div className="max-w-4xl w-full space-y-6 sm:space-y-8">
                 
+                {/* Mini Dashboard View */}
+                <MiniDashboard />
+
                 {/* Account */}
                 <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
                   <SettingRow 
-                    icon={<div className="w-8 h-8 rounded bg-camry-graphite text-white flex items-center justify-center font-medium">D</div>}
+                    icon={<div className="w-8 h-8 rounded bg-camry-graphite text-white flex items-center justify-center font-medium shadow-xs">D</div>}
                     title="digitalix"
                     subtitle="alex@nuvious.com"
+                    tooltip="User profile and account settings"
                     right={<ChevronRight size={16} className="text-camry-graphite/40" />}
                     onClick={() => {}}
                   />
                   <div className="h-[1px] bg-black/5 ml-14"></div>
                   <SettingRow 
                     title="Feedback"
+                    subtitle="Share feedback with the Camry team"
+                    tooltip="Submit product feedback"
                     right={<ChevronRight size={16} className="text-camry-graphite/40" />}
                     onClick={() => showToast("Feedback module not available in preview")}
                   />
                 </div>
 
+                {/* Organization & Team Settings */}
+                <div>
+                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider uppercase">ORGANIZATION & ACCESS</div>
+                  <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
+                    <SettingRow 
+                      icon={<Users size={18} className="text-camry-graphite/60" />}
+                      title="Team & Access Control"
+                      subtitle="Manage members, assigned roles, and document security scopes"
+                      tooltip="Manage workspace members and category permissions"
+                      iconAnimation="scale"
+                      right={
+                        <div className="flex items-center gap-2">
+                          <span className="font-martian text-[11px] bg-camry-carrier/15 text-camry-deep-carrier px-2 py-0.5 rounded font-semibold">
+                            {teamMembers.length} Members
+                          </span>
+                          <ChevronRight size={16} className="text-camry-graphite/40" />
+                        </div>
+                      }
+                      onClick={() => setSettingsView('team')}
+                    />
+                  </div>
+                </div>
+
                 {/* Software Settings */}
                 <div>
-                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider">SOFTWARE SETTINGS</div>
+                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider uppercase">SOFTWARE SETTINGS</div>
                   <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
                     <SettingRow 
                       icon={<Power size={18} className="text-camry-graphite/60" />}
                       title="Auto Start"
+                      subtitle="Automatically launch Camry OS on device boot"
+                      tooltip="Toggle auto boot behavior"
+                      iconAnimation="bounce"
                       right={<Toggle defaultChecked />}
                     />
                     <div className="h-[1px] bg-black/5 ml-12"></div>
                     <SettingRow 
                       icon={<Shield size={18} className="text-camry-graphite/60" />}
                       title="Privacy Policy"
+                      subtitle="View zero-telemetry & on-device data guarantee"
+                      tooltip="Read local privacy policy"
+                      iconAnimation="scale"
                       right={<ChevronRight size={16} className="text-camry-graphite/40" />}
                       onClick={() => setSettingsView('privacy')}
                     />
@@ -78,19 +122,23 @@ export const Settings: React.FC = () => {
 
                 {/* Backup & Portability Settings */}
                 <div>
-                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider">BACKUP & PORTABILITY</div>
+                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider uppercase">BACKUP & PORTABILITY</div>
                   <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
                     <SettingRow 
                       icon={<Download size={18} className="text-camry-carrier" />}
                       title="Export Configuration & Agents"
                       subtitle="Save system preferences and agents to JSON file"
+                      tooltip="Download backup JSON configuration"
+                      iconAnimation="bounce"
                       right={
-                        <button 
-                          onClick={exportConfig}
-                          className="px-3 py-1.5 bg-camry-blackout text-white text-xs font-martian rounded-lg hover:bg-camry-graphite transition-colors shadow-sm"
-                        >
-                          Export JSON
-                        </button>
+                        <Tooltip content="Export settings & agents JSON" position="left">
+                          <button 
+                            onClick={exportConfig}
+                            className="px-3 py-1.5 bg-camry-blackout text-white text-xs font-martian rounded-lg hover:bg-camry-graphite transition-colors shadow-sm cursor-pointer"
+                          >
+                            Export JSON
+                          </button>
+                        </Tooltip>
                       }
                     />
                     <div className="h-[1px] bg-black/5 ml-12"></div>
@@ -98,13 +146,17 @@ export const Settings: React.FC = () => {
                       icon={<Upload size={18} className="text-camry-graphite/60" />}
                       title="Import Configuration"
                       subtitle="Restore settings from a JSON backup file"
+                      tooltip="Restore configuration from local file"
+                      iconAnimation="bounce"
                       right={
-                        <button 
-                          onClick={() => fileInputRef.current?.click()}
-                          className="px-3 py-1.5 bg-camry-graphite/10 text-camry-blackout text-xs font-martian rounded-lg hover:bg-camry-graphite/20 transition-colors"
-                        >
-                          Restore
-                        </button>
+                        <Tooltip content="Restore system backup from JSON file" position="left">
+                          <button 
+                            onClick={() => fileInputRef.current?.click()}
+                            className="px-3 py-1.5 bg-camry-graphite/10 text-camry-blackout text-xs font-martian rounded-lg hover:bg-camry-graphite/20 transition-colors cursor-pointer"
+                          >
+                            Restore
+                          </button>
+                        </Tooltip>
                       }
                     />
                     <input 
@@ -119,11 +171,14 @@ export const Settings: React.FC = () => {
 
                 {/* Device Settings */}
                 <div>
-                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider">DEVICE SETTINGS</div>
+                  <div className="font-martian text-xs text-camry-graphite/50 mb-3 px-2 tracking-wider uppercase">DEVICE SETTINGS</div>
                   <div className="bg-white border border-black/5 rounded-xl shadow-sm overflow-hidden">
                     <SettingRow 
                       icon={<Monitor size={18} className="text-camry-graphite/60" />}
                       title="Device Information"
+                      subtitle="NPU serial number, hardware specs & firmware version"
+                      tooltip="View hardware specifications"
+                      iconAnimation="scale"
                       right={<ChevronRight size={16} className="text-camry-graphite/40" />}
                       onClick={() => setSettingsView('device_info')}
                     />
@@ -131,6 +186,9 @@ export const Settings: React.FC = () => {
                     <SettingRow 
                       icon={<Terminal size={18} className="text-camry-graphite/60" />}
                       title="Developer Console"
+                      subtitle="Low-level system logs & kernel telemetry"
+                      tooltip="Open developer terminal console"
+                      iconAnimation="wiggle"
                       right={<ChevronRight size={16} className="text-camry-graphite/40" />}
                       onClick={() => setSettingsView('console')}
                     />
@@ -138,6 +196,9 @@ export const Settings: React.FC = () => {
                     <SettingRow 
                       icon={<HardDrive size={18} className="text-camry-graphite/60" />}
                       title="Storage Space"
+                      subtitle="Local NVMe SSD allocation and model weights"
+                      tooltip="Manage local SSD storage"
+                      iconAnimation="pulse"
                       right={
                         <div className="flex items-center gap-3">
                           <span className="font-martian text-xs text-camry-graphite/50">142 / 1000 GB</span>
@@ -150,6 +211,9 @@ export const Settings: React.FC = () => {
                     <SettingRow 
                       icon={<Wifi size={18} className="text-camry-graphite/60" />}
                       title="Wi-Fi"
+                      subtitle="Wireless network connection status"
+                      tooltip="Configure Wi-Fi connection"
+                      iconAnimation="scale"
                       right={
                         <div className="flex items-center gap-3">
                           <span className="text-sm text-camry-graphite/50">Connected</span>
@@ -160,36 +224,24 @@ export const Settings: React.FC = () => {
                     />
                     <div className="h-[1px] bg-black/5 ml-12"></div>
                     <SettingRow 
-                      icon={<Network size={18} className="text-camry-graphite/60" />}
-                      title="Networks"
-                      right={
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm text-camry-graphite/50">Off</span>
-                          <ChevronRight size={16} className="text-camry-graphite/40" />
-                        </div>
-                      }
-                      onClick={() => showToast("Networks configuration not available")}
-                    />
-                    <div className="h-[1px] bg-black/5 ml-12"></div>
-                    <SettingRow 
                       icon={<Key size={18} className="text-camry-graphite/60" />}
                       title="API key"
+                      subtitle="Optional cloud provider API keys"
+                      tooltip="Manage remote API keys"
+                      iconAnimation="rotate"
                       right={<ChevronRight size={16} className="text-camry-graphite/40" />}
                       onClick={() => setSettingsView('api_key')}
                     />
                     <div className="h-[1px] bg-black/5 ml-12"></div>
                     <SettingRow 
-                      icon={<Power size={18} className="text-camry-graphite/60" />}
-                      title="Auto Power-on"
-                      right={<Toggle />}
-                    />
-                    <div className="h-[1px] bg-black/5 ml-12"></div>
-                    <SettingRow 
-                      icon={<ArrowLeft size={18} className="text-camry-graphite/60 rotate-90" />} // Update icon approx
+                      icon={<ArrowLeft size={18} className="text-camry-graphite/60 rotate-90" />}
                       title="Update"
+                      subtitle="Check for Camry OS software updates"
+                      tooltip="Check for software updates"
+                      iconAnimation="bounce"
                       right={
                         <div className="flex items-center gap-3">
-                          <span className="font-martian text-xs text-camry-carrier bg-camry-carrier/10 px-2 py-1 rounded">Update available</span>
+                          <span className="font-martian text-xs text-camry-carrier bg-camry-carrier/10 px-2 py-1 rounded font-semibold">Update available</span>
                           <ChevronRight size={16} className="text-camry-graphite/40" />
                         </div>
                       }
@@ -284,6 +336,18 @@ export const Settings: React.FC = () => {
             className="absolute inset-0 bg-camry-paper z-20 flex flex-col"
           >
             <PrivacySubScreen onBack={() => setSettingsView('main')} />
+          </motion.div>
+        )}
+
+        {settingsView === 'team' && (
+          <motion.div 
+            key="team"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            className="absolute inset-0 bg-camry-paper z-20 flex flex-col overflow-hidden"
+          >
+            <Team onBack={() => setSettingsView('main')} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -671,17 +735,238 @@ const PrivacySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   );
 };
 
+// Mini Dashboard Component
+const MiniDashboard: React.FC = () => {
+  const { 
+    allAgents, 
+    installedAgents, 
+    categories, 
+    kbDocuments, 
+    setCurrentScreen, 
+    setActiveAgent,
+    showToast 
+  } = useAppContext();
+
+  // Installed agents list
+  const activeInstalledAgents = allAgents.filter(a => installedAgents.includes(a.id));
+  const activeCount = activeInstalledAgents.filter(a => a.status === 'active').length || activeInstalledAgents.length;
+
+  // Category stats calculation
+  const categoryStats = categories.map(cat => {
+    const docCount = kbDocuments.filter(d => d.category === cat.name).length;
+    let weight = docCount * 14 + 10;
+    if (cat.name === 'Client Files') weight += 50;
+    if (cat.name === 'Contracts') weight += 35;
+    if (cat.name === 'Policies' || cat.name === 'Internal Policies') weight += 20;
+    return {
+      cat,
+      docCount,
+      weight
+    };
+  });
+
+  const totalWeight = categoryStats.reduce((acc, c) => acc + c.weight, 0) || 1;
+  const sortedCategories = [...categoryStats].sort((a, b) => b.weight - a.weight);
+
+  return (
+    <div className="bg-white border border-black/10 rounded-2xl shadow-sm p-4 sm:p-6 space-y-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-black/10">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-camry-blackout text-white shadow-xs">
+            <AnimatedIcon type="spin">
+              <Cpu size={20} />
+            </AnimatedIcon>
+          </div>
+          <div>
+            <h2 className="font-bricolage font-bold text-base sm:text-lg text-camry-blackout flex items-center gap-2">
+              <span>AI System & Knowledge Mini Dashboard</span>
+              <span className="text-[10px] font-martian font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-200 uppercase">
+                100% On-Device NPU
+              </span>
+            </h2>
+            <p className="text-xs text-camry-graphite/70 font-familjen">
+              Real-time local token metrics, active agent pipelines, and top knowledge categories
+            </p>
+          </div>
+        </div>
+
+        <Tooltip content="Refresh system telemetry & NPU stats" position="left">
+          <button 
+            onClick={() => showToast("Telemetry refreshed: All NPU clusters nominal")}
+            className="p-2 rounded-xl border border-black/10 hover:bg-black/5 text-camry-graphite transition-all cursor-pointer self-start sm:self-auto"
+          >
+            <AnimatedIcon type="rotate">
+              <Activity size={16} />
+            </AnimatedIcon>
+          </button>
+        </Tooltip>
+      </div>
+
+      {/* METRICS GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        {/* CARD 1: TOTAL AI TOKENS USED */}
+        <div className="p-4 rounded-xl border border-black/10 bg-gradient-to-br from-zinc-50 to-white space-y-3 relative overflow-hidden group">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-martian font-bold text-camry-graphite/70 uppercase tracking-wider">
+              Total AI Tokens Used
+            </span>
+            <Tooltip content="Tokens processed on local NPU hardware" position="top">
+              <span className="p-1.5 rounded-lg bg-blue-50 text-blue-600">
+                <AnimatedIcon type="bounce">
+                  <Zap size={14} />
+                </AnimatedIcon>
+              </span>
+            </Tooltip>
+          </div>
+
+          <div>
+            <div className="text-2xl font-bricolage font-bold text-camry-blackout flex items-baseline gap-2">
+              <span>2,845,190</span>
+              <span className="text-xs font-martian text-emerald-600 font-semibold">+12.4% today</span>
+            </div>
+            <p className="text-[11px] text-camry-graphite/60 mt-0.5 font-mono">
+              ~1,480 tokens/sec local NPU speed
+            </p>
+          </div>
+
+          {/* Token Breakdown Bar */}
+          <div className="space-y-1.5 pt-1">
+            <div className="flex items-center justify-between text-[10px] font-martian font-semibold">
+              <span className="text-blue-700">1,620,400 Prompt (57%)</span>
+              <span className="text-emerald-700">1,224,790 Output (43%)</span>
+            </div>
+            <div className="h-2 w-full bg-zinc-200 rounded-full overflow-hidden flex">
+              <div className="h-full bg-blue-600 transition-all duration-500" style={{ width: '57%' }} title="Prompt Input Tokens" />
+              <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: '43%' }} title="Completion Output Tokens" />
+            </div>
+          </div>
+
+          <div className="text-[10px] text-camry-graphite/70 pt-1 flex items-center justify-between border-t border-black/5 font-martian">
+            <span>Estimated API Cost:</span>
+            <span className="font-bold text-emerald-600 font-mono">$0.00 (Local NPU)</span>
+          </div>
+        </div>
+
+        {/* CARD 2: ACTIVE AGENTS */}
+        <div className="p-4 rounded-xl border border-black/10 bg-gradient-to-br from-zinc-50 to-white space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-martian font-bold text-camry-graphite/70 uppercase tracking-wider">
+              Active Agents
+            </span>
+            <Tooltip content="Installed local agent workflows" position="top">
+              <span className="p-1.5 rounded-lg bg-purple-50 text-purple-600">
+                <AnimatedIcon type="wiggle">
+                  <Bot size={14} />
+                </AnimatedIcon>
+              </span>
+            </Tooltip>
+          </div>
+
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bricolage font-bold text-camry-blackout">{activeInstalledAgents.length}</span>
+            <span className="text-xs font-martian text-camry-graphite">Installed ({activeCount} Active)</span>
+          </div>
+
+          {/* Agent Status List */}
+          <div className="space-y-1.5 max-h-28 overflow-y-auto pr-1 scrollbar-none">
+            {activeInstalledAgents.map(agent => (
+              <Tooltip key={agent.id} content={`Launch agent thread: ${agent.name}`} position="top" className="w-full">
+                <div 
+                  onClick={() => {
+                    setActiveAgent(agent.id);
+                    setCurrentScreen('chat');
+                  }}
+                  className="flex items-center justify-between p-1.5 rounded-lg bg-white border border-black/5 hover:border-black/20 cursor-pointer transition-all w-full"
+                >
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span className={`w-2 h-2 rounded-full ${agent.status === 'active' ? 'bg-emerald-500 animate-pulse' : 'bg-zinc-400'}`} />
+                    <span className="text-xs font-martian font-bold text-camry-blackout truncate">{agent.name}</span>
+                  </div>
+                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 text-camry-graphite uppercase font-semibold">
+                    {agent.currentVersion || 'v1.0'}
+                  </span>
+                </div>
+              </Tooltip>
+            ))}
+          </div>
+
+          <button 
+            onClick={() => setCurrentScreen('agentStore')}
+            className="w-full text-center py-1 rounded-lg text-[11px] font-martian font-bold text-camry-deep-carrier hover:underline bg-camry-carrier/10 cursor-pointer"
+          >
+            + Browse Agent Store
+          </button>
+        </div>
+
+        {/* CARD 3: TOP-REQUESTED KNOWLEDGE CATEGORIES */}
+        <div className="p-4 rounded-xl border border-black/10 bg-gradient-to-br from-zinc-50 to-white space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-martian font-bold text-camry-graphite/70 uppercase tracking-wider">
+              Top Requested Categories
+            </span>
+            <Tooltip content="Knowledge Base query load by category" position="top">
+              <span className="p-1.5 rounded-lg bg-amber-50 text-amber-600">
+                <AnimatedIcon type="scale">
+                  <Layers size={14} />
+                </AnimatedIcon>
+              </span>
+            </Tooltip>
+          </div>
+
+          <div className="space-y-2 max-h-36 overflow-y-auto pr-1 scrollbar-none">
+            {sortedCategories.slice(0, 4).map(({ cat, docCount, weight }) => {
+              const percentage = Math.round((weight / totalWeight) * 100);
+              return (
+                <Tooltip key={cat.id} content={`${cat.name}: ${docCount} docs, ${percentage}% of queries`} position="top" className="w-full">
+                  <div className="space-y-1 w-full">
+                    <div className="flex items-center justify-between text-xs font-martian">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: cat.color }} />
+                        <span className="font-bold text-camry-blackout truncate">{cat.name}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 font-mono text-[10px] flex-shrink-0">
+                        <span className="text-camry-graphite">{docCount} docs</span>
+                        <span className="font-bold text-camry-blackout">{percentage}%</span>
+                      </div>
+                    </div>
+                    <div className="h-1.5 w-full bg-zinc-200 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full transition-all duration-500 rounded-full" 
+                        style={{ width: `${percentage}%`, backgroundColor: cat.color }} 
+                      />
+                    </div>
+                  </div>
+                </Tooltip>
+              );
+            })}
+          </div>
+
+          <div className="text-[10px] text-camry-graphite/60 pt-1 border-t border-black/5 italic font-martian">
+            Highest AI retrieval load: Client Files & Contracts (67%)
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 // Helpers
 
-const SettingRow = ({ icon, title, subtitle, right, onClick }: any) => {
+const SettingRow = ({ icon, title, subtitle, tooltip, iconAnimation = 'scale', right, onClick }: any) => {
   const Component = onClick ? 'button' : 'div';
-  return (
+  const rowContent = (
     <Component 
       onClick={onClick}
-      className={`w-full flex items-center justify-between p-3.5 sm:p-4 gap-3 ${onClick ? 'hover:bg-camry-graphite/5 transition-colors text-left cursor-pointer' : ''}`}
+      className={`w-full flex items-center justify-between p-3.5 sm:p-4 gap-3 ${onClick ? 'hover:bg-camry-graphite/5 transition-colors text-left cursor-pointer group' : ''}`}
     >
       <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-        {icon && <div className="flex-shrink-0">{icon}</div>}
+        {icon && (
+          <AnimatedIcon type={iconAnimation as IconAnimationType} className="text-camry-blackout group-hover:text-camry-carrier">
+            {icon}
+          </AnimatedIcon>
+        )}
         <div className="min-w-0 flex-1">
           <div className="font-medium text-camry-blackout text-xs sm:text-sm truncate">{title}</div>
           {subtitle && <div className="text-[10px] sm:text-xs text-camry-graphite/50 font-martian mt-0.5 truncate">{subtitle}</div>}
@@ -690,6 +975,12 @@ const SettingRow = ({ icon, title, subtitle, right, onClick }: any) => {
       <div className="flex-shrink-0 ml-2">{right}</div>
     </Component>
   );
+
+  if (tooltip) {
+    return <Tooltip content={tooltip} position="top" className="w-full">{rowContent}</Tooltip>;
+  }
+
+  return rowContent;
 };
 
 const Toggle = ({ defaultChecked = false }: { defaultChecked?: boolean }) => {

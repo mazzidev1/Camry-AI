@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAppContext, AVAILABLE_MODELS, Model } from '../store/AppContext';
+import { CustomSelect } from '../components/CustomSelect';
 import { Box, ChevronDown, Download, Heart, Columns, X, Cpu, Scale, Check as CheckIcon, ShieldCheck, Zap, HardDrive } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -380,28 +381,32 @@ export const ModelStore: React.FC = () => {
               <div className="p-4 sm:p-6 pb-3 sm:pb-4 bg-camry-graphite/5 border-b border-black/5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
                 <div>
                   <label className="block font-martian text-[10px] text-camry-graphite/60 uppercase tracking-widest mb-1">Model A</label>
-                  <select 
-                    value={modelAId} 
-                    onChange={(e) => setModelAId(e.target.value)}
-                    className="w-full bg-white border border-black/10 rounded-lg p-2 font-martian text-xs font-semibold text-camry-blackout focus:outline-none focus:border-camry-carrier"
-                  >
-                    {AVAILABLE_MODELS.map(m => (
-                      <option key={m.id} value={m.id}>{m.name} ({m.params} / {m.size})</option>
-                    ))}
-                  </select>
+                  <CustomSelect
+                    fullWidth
+                    value={modelAId}
+                    onChange={(val) => setModelAId(val)}
+                    options={AVAILABLE_MODELS.map(m => ({
+                      value: m.id,
+                      label: m.name,
+                      description: `${m.params} • ${m.size}`
+                    }))}
+                    buttonClassName="bg-white border-black/10 rounded-lg"
+                  />
                 </div>
 
                 <div>
                   <label className="block font-martian text-[10px] text-camry-graphite/60 uppercase tracking-widest mb-1">Model B</label>
-                  <select 
-                    value={modelBId} 
-                    onChange={(e) => setModelBId(e.target.value)}
-                    className="w-full bg-white border border-black/10 rounded-lg p-2 font-martian text-xs font-semibold text-camry-blackout focus:outline-none focus:border-camry-carrier"
-                  >
-                    {AVAILABLE_MODELS.map(m => (
-                      <option key={m.id} value={m.id}>{m.name} ({m.params} / {m.size})</option>
-                    ))}
-                  </select>
+                  <CustomSelect
+                    fullWidth
+                    value={modelBId}
+                    onChange={(val) => setModelBId(val)}
+                    options={AVAILABLE_MODELS.map(m => ({
+                      value: m.id,
+                      label: m.name,
+                      description: `${m.params} • ${m.size}`
+                    }))}
+                    buttonClassName="bg-white border-black/10 rounded-lg"
+                  />
                 </div>
               </div>
 

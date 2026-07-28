@@ -1,6 +1,68 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type Screen = 'onboarding' | 'chat' | 'modelStore' | 'agentStore' | 'dashboard' | 'settings';
+export type Screen = 'onboarding' | 'chat' | 'knowledgeBase' | 'library' | 'team' | 'modelStore' | 'agentStore' | 'dashboard' | 'settings';
+
+export type UserRole = 'Admin' | 'Manager' | 'Member' | 'Guest';
+
+export interface Category {
+  id: string;
+  name: string;
+  color: string;
+  icon?: string;
+  description?: string;
+  isSystem?: boolean;
+}
+
+export interface KBDocument {
+  id: string;
+  name: string;
+  type: 'PDF' | 'DOCX' | 'PPTX' | 'IMG' | 'CSV' | 'TXT' | 'XLSX';
+  category: string;
+  size: string;
+  uploadedBy: string;
+  date: string;
+  status: 'INDEXED' | 'PROCESSING' | 'QUEUED';
+  progress?: number;
+  restrictedRoles?: UserRole[];
+  extractedSnippet?: string;
+  pages?: number;
+}
+
+export interface LibraryItem {
+  id: string;
+  title: string;
+  type: 'Drafts' | 'Summaries' | 'Analyses' | 'Transcripts' | 'Images';
+  category: string;
+  snippet: string;
+  content: string;
+  author: string;
+  modelUsed: string;
+  agentName?: string;
+  date: string;
+  restrictedRoles?: UserRole[];
+  imageUrl?: string;
+}
+
+export interface TeamCapabilities {
+  canChat: boolean;
+  canUploadKB: boolean;
+  canInstallAgents: boolean;
+  canViewLibrary: boolean;
+  canManageModels: boolean;
+  canInviteOthers: boolean;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role: UserRole;
+  status: 'ACTIVE' | 'INVITED — PENDING';
+  lastActive: string;
+  allowedCategories: string[];
+  capabilities: TeamCapabilities;
+}
 
 export interface GeneratedDocument {
   id: string;
@@ -185,6 +247,23 @@ export const INITIAL_AGENTS: Agent[] = [
 
 export let AVAILABLE_AGENTS: Agent[] = [...INITIAL_AGENTS];
 
+export const INITIAL_CATEGORIES: Category[] = [
+  { id: 'cat-1', name: 'Client Files', color: '#1D4ED8', icon: 'FolderGit2', description: 'Active and archived client matter files & correspondence' },
+  { id: 'cat-2', name: 'Contracts', color: '#10B981', icon: 'FileText', description: 'Master service agreements, vendor SLAs & NDAs' },
+  { id: 'cat-3', name: 'Case Law', color: '#8B5CF6', icon: 'Scale', description: 'Judicial precedents, statutory filings & legal research' },
+  { id: 'cat-4', name: 'Internal Policies', color: '#06B6D4', icon: 'Shield', description: 'Corporate governance, compliance & ethics handbooks' },
+  { id: 'cat-5', name: 'HR', color: '#F59E0B', icon: 'Users', description: 'Employment policies, staff records & onboarding guides' },
+  { id: 'cat-6', name: 'Finance', color: '#EF4444', icon: 'Landmark', description: 'Audited ledgers, capital budgets & expenditure decks' },
+  { id: 'cat-7', name: 'Uncategorized', color: '#64748B', icon: 'Layers', description: 'General uncategorized documents', isSystem: true },
+];
+
+export const DEFAULT_ROLE_CATEGORIES: Record<UserRole, string[]> = {
+  Admin: ['Client Files', 'Contracts', 'Case Law', 'Internal Policies', 'HR', 'Finance', 'Uncategorized'],
+  Manager: ['Client Files', 'Contracts', 'Case Law', 'Internal Policies', 'HR', 'Finance', 'Uncategorized'],
+  Member: ['Client Files', 'Contracts', 'Case Law', 'Internal Policies', 'HR', 'Uncategorized'],
+  Guest: ['Contracts', 'Client Files'],
+};
+
 export type ToastType = 'info' | 'success' | 'warning' | 'task_complete';
 
 export interface ToastData {
@@ -225,9 +304,43 @@ interface AppContextType {
   sessionDocuments: GeneratedDocument[];
   addDocument: (doc: GeneratedDocument) => void;
   
-  settingsView: 'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy';
-  setSettingsView: (view: 'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy') => void;
+  settingsView: 'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy' | 'team';
+  setSettingsView: (view: 'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy' | 'team') => void;
   
+  // Dynamic Category / Collections Management
+  categories: Category[];
+  addCategory: (cat: Omit<Category, 'id'>) => Category;
+  updateCategory: (id: string, updates: Partial<Category>) => void;
+  deleteCategory: (id: string, reassignToCategoryName?: string) => void;
+  roleCategoryPermissions: Record<UserRole, string[]>;
+  toggleRoleCategoryPermission: (role: UserRole, categoryName: string) => void;
+
+  // Knowledge Base State
+  kbDocuments: KBDocument[];
+  addKBDocument: (doc: Omit<KBDocument, 'id' | 'date'>) => string;
+  updateKBDocumentStatus: (id: string, status: 'INDEXED' | 'PROCESSING' | 'QUEUED', progress?: number) => void;
+  deleteKBDocument: (id: string) => void;
+  updateKBDocumentAccess: (id: string, restrictedRoles: UserRole[]) => void;
+
+  // Library State
+  libraryItems: LibraryItem[];
+  addLibraryItem: (item: Omit<LibraryItem, 'id' | 'date'>) => void;
+  deleteLibraryItem: (id: string) => void;
+
+  // Team State
+  teamMembers: TeamMember[];
+  addTeamMember: (member: Omit<TeamMember, 'id' | 'status' | 'lastActive'>) => void;
+  updateTeamMember: (id: string, updates: Partial<TeamMember>) => void;
+  deleteTeamMember: (id: string) => void;
+
+  // Demo Role Simulation
+  currentRole: UserRole;
+  setCurrentRole: (role: UserRole) => void;
+
+  // Pending Chat Prompt
+  pendingChatPrompt: string | null;
+  setPendingChatPrompt: (prompt: string | null) => void;
+
   toastData: ToastData | null;
   toastMessage: string | null;
   showToast: (msg: string, type?: ToastType, title?: string) => void;
@@ -240,6 +353,19 @@ interface AppContextType {
   
   exportConfig: () => void;
   importConfig: (jsonData: string) => boolean;
+
+  // Guided Tour State
+  isTourOpen: boolean;
+  setIsTourOpen: (open: boolean) => void;
+  tourStep: number;
+  setTourStep: (step: number) => void;
+  startTour: () => void;
+  closeTour: () => void;
+
+  // Theme Mode State (Dark Surface vs Daylight)
+  themeMode: 'dark' | 'light';
+  setThemeMode: (mode: 'dark' | 'light') => void;
+  toggleThemeMode: () => void;
 }
 
 const INITIAL_SAMPLE_DOC: GeneratedDocument = {
@@ -296,6 +422,351 @@ const INITIAL_SAMPLE_CHAT: Message[] = [
   }
 ];
 
+export const INITIAL_KB_DOCUMENTS: KBDocument[] = [
+  {
+    id: 'kb-1',
+    name: 'Company Handbook.pdf',
+    type: 'PDF',
+    category: 'Internal Policies',
+    size: '4.2 MB',
+    uploadedBy: 'Amford',
+    date: '12 JUN 2026',
+    status: 'INDEXED',
+    pages: 42,
+    extractedSnippet: 'Camry Inc Employee Guide 2026: Working hours, remote conduct, hardware usage policies, and code of ethics.'
+  },
+  {
+    id: 'kb-2',
+    name: 'Employment Policy 2026.docx',
+    type: 'DOCX',
+    category: 'HR',
+    size: '1.8 MB',
+    uploadedBy: 'Sarah',
+    date: '18 JUL 2026',
+    status: 'INDEXED',
+    pages: 18,
+    extractedSnippet: 'Leave Entitlements: All full-time employees receive 25 business days annual leave plus statutory holidays.'
+  },
+  {
+    id: 'kb-3',
+    name: 'Client Master Agreement.pdf',
+    type: 'PDF',
+    category: 'Contracts',
+    size: '8.5 MB',
+    uploadedBy: 'Francis',
+    date: '20 JUL 2026',
+    status: 'INDEXED',
+    pages: 64,
+    extractedSnippet: 'Master Services Terms: On-premise deployment specifications, hardware maintenance SLAs, and liability capping.'
+  },
+  {
+    id: 'kb-4',
+    name: 'Q1 Board Deck.pptx',
+    type: 'PPTX',
+    category: 'Finance',
+    size: '14.1 MB',
+    uploadedBy: 'Amford',
+    date: '27 JUL 2026',
+    status: 'PROCESSING',
+    progress: 62,
+    pages: 35,
+    restrictedRoles: ['Member', 'Guest'],
+    extractedSnippet: 'Q1 Financial performance overview, balance sheet, and local NPU deployment expenditure.'
+  },
+  {
+    id: 'kb-5',
+    name: 'Office Floor Plan.png',
+    type: 'IMG',
+    category: 'Client Files',
+    size: '3.6 MB',
+    uploadedBy: 'Sarah',
+    date: '02 MAY 2026',
+    status: 'INDEXED',
+    pages: 1,
+    extractedSnippet: 'Server room physical security layout, badge access zones, and Camry hardware enclosure rack location.'
+  },
+  {
+    id: 'kb-6',
+    name: 'Refund Policy.docx',
+    type: 'DOCX',
+    category: 'Internal Policies',
+    size: '0.9 MB',
+    uploadedBy: 'David',
+    date: '14 FEB 2026',
+    status: 'INDEXED',
+    pages: 6,
+    extractedSnippet: 'Hardware Warranty & Refund Terms: 30-day money-back guarantee for initial appliance testing.'
+  },
+  {
+    id: 'kb-7',
+    name: 'Founding Certificate.pdf',
+    type: 'PDF',
+    category: 'Case Law',
+    size: '1.2 MB',
+    uploadedBy: 'Amford',
+    date: '10 JAN 2026',
+    status: 'INDEXED',
+    pages: 4,
+    extractedSnippet: 'Incorporation & founding documents: Established October 2024 to provide private on-premise AI hardware.'
+  },
+  {
+    id: 'kb-8',
+    name: 'Q2 Financial Audit & Ledger.xlsx',
+    type: 'XLSX',
+    category: 'Finance',
+    size: '12.4 MB',
+    uploadedBy: 'David',
+    date: '22 JUL 2026',
+    status: 'INDEXED',
+    pages: 120,
+    restrictedRoles: ['Member', 'Guest'],
+    extractedSnippet: 'Audited financial reconciliation statements, operational ledger entries, and capital reserves.'
+  },
+  {
+    id: 'kb-9',
+    name: 'Product Roadmap 2027.pptx',
+    type: 'PPTX',
+    category: 'Client Files',
+    size: '6.8 MB',
+    uploadedBy: 'Francis',
+    date: '15 JUL 2026',
+    status: 'INDEXED',
+    pages: 28,
+    extractedSnippet: 'Next-gen NPU acceleration hardware specifications, agent marketplace evolution, and multi-node clusters.'
+  },
+  {
+    id: 'kb-10',
+    name: 'Vendor Security Evaluation.pdf',
+    type: 'PDF',
+    category: 'Contracts',
+    size: '2.1 MB',
+    uploadedBy: 'Guest Auditor',
+    date: '27 JUL 2026',
+    status: 'QUEUED',
+    pages: 14,
+    extractedSnippet: 'Third-party hardware security audit report confirming zero external data leakage or internet requirement.'
+  }
+];
+
+export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
+  {
+    id: 'lib-1',
+    title: 'Contract Risk Analysis — Acme MSA',
+    type: 'Analyses',
+    category: 'Contracts',
+    snippet: 'Key risks identified in Section 8 (Indemnity limits capped at $50k) and Section 14 (Governing law in foreign jurisdiction). Recommend standard redline terms.',
+    content: `# Contract Risk Analysis — Acme MSA\n\n### Summary\nThe Acme Master Services Agreement contains two high-priority risk clauses that require legal redlining before executive signature.\n\n### Key Risk Observations\n1. **Section 8 (Indemnification Cap)**: Liability is currently capped at $50,000, which does not adequately protect against potential hardware outage losses.\n2. **Section 14 (Jurisdiction)**: Governed by external arbitration rules. Recommend changing to local commercial court.\n3. **Data Security**: Compliant with on-premise execution rules. Zero external API calls detected.\n\n### Recommended Action\nReplace Clause 8.2 with Camry standard indemnification wording.`,
+    author: 'Amford',
+    modelUsed: 'gpt-oss-120b',
+    agentName: 'Legal Assistant',
+    date: '12 MAR 2026'
+  },
+  {
+    id: 'lib-2',
+    title: 'Client Pitch Email Draft',
+    type: 'Drafts',
+    category: 'Client Files',
+    snippet: 'Dear Client, Following our discussion on on-premise AI security, Camry ONE operates completely offline inside your firewall...',
+    content: `Subject: Private On-Premise AI for Your Enterprise — Camry ONE\n\nDear Client,\n\nFollowing our recent discussion on data privacy and AI adoption, I am sharing details on **Camry ONE**.\n\nUnlike cloud AI providers that process your corporate data on external servers, Camry ONE is a dedicated hardware appliance that sits directly inside your office server room.\n\nKey Highlights:\n- **100% On-Premise**: Your contracts, financial ledgers, and patient records never touch the public internet.\n- **Flat-Rate Hardware**: Pay once for the appliance with zero monthly token fees.\n- **Local NPU Acceleration**: Instant responses with sub-15ms local latency.\n\nLet us know when you would like a live hardware demonstration in your office.\n\nBest regards,\nSarah Jenkins`,
+    author: 'Sarah',
+    modelUsed: 'Qwen3-30B-Instruct-2507',
+    agentName: 'General Assistant',
+    date: '18 APR 2026'
+  },
+  {
+    id: 'lib-3',
+    title: 'Q2 Executive Board Meeting Summary',
+    type: 'Summaries',
+    category: 'Finance',
+    snippet: 'Decisions: 1. Approved $1.2M VRAM expansion. 2. Finalized Q3 hiring plan. 3. Approved local audit protocol.',
+    content: `# Q2 Executive Board Meeting Summary\n\n**Date:** July 22, 2026\n**Attendees:** Amford, Francis, Sarah, David\n\n### Key Decisions\n1. **Capital Allocation**: Approved $1.2M budget for additional Camry NPU cluster expansion.\n2. **Q3 Recruitment**: Approved hiring 4 senior hardware engineers and 2 compliance leads.\n3. **Data Governance**: Formally adopted zero-cloud policy across all regional offices.\n\n### Action Items\n- [ ] Amford: Finalize hardware supplier procurement.\n- [ ] Sarah: Publish updated Onboarding Guide in Knowledge Base.`,
+    author: 'Amford',
+    modelUsed: 'gpt-oss-120b',
+    agentName: 'Meeting Notetaker',
+    date: '22 JUL 2026',
+    restrictedRoles: ['Member', 'Guest']
+  },
+  {
+    id: 'lib-4',
+    title: 'French Commercial Agreement Translation',
+    type: 'Transcripts',
+    category: 'Contracts',
+    snippet: 'Accord de Niveau de Service Commercial : Les parties conviennent par la présente de maintenir un temps de fonctionnement de 99.9%...',
+    content: `# Accord de Niveau de Service Commercial (SLA)\n\n**parties :** Camry Hardware Systems & Client Enterprise\n**Statut :** Traduction certifiée sur NPU local\n\n### Clause 1. Service et Disponibilité\nLes parties conviennent par la présente de maintenir un temps de fonctionnement minimal de 99,9% pour l'équipement d'intelligence artificielle sur site.\n\n### Clause 2. Confidentialité des Données\nToutes les opérations d'inférence doivent demeurer au sein du réseau local de l'entreprise sans transmission externe.`,
+    author: 'Francis',
+    modelUsed: 'Qwen3-Coder-30B',
+    agentName: 'Translator (Local)',
+    date: '04 JUN 2026'
+  },
+  {
+    id: 'lib-5',
+    title: 'Suspicious Transaction Fraud Pattern Report',
+    type: 'Analyses',
+    category: 'Finance',
+    snippet: 'Anomaly detected in ledgerbatch_409: 14 structured wires under $10,000 threshold within 48 hours. Recommend compliance review.',
+    content: `# Suspicious Transaction Fraud Pattern Report\n\n**Batch:** ledgerbatch_409\n**Model:** gpt-oss-120b (Finance Agent)\n\n### Findings\nDuring automated local ledger audit, 14 structured wire transfers totaling $134,200 were identified within a 48-hour window. Each individual wire was set at $9,800 to avoid standard reporting triggers.\n\n### Compliance Recommendation\nFlag account ACCT-8839 for manual review by the Internal Audit Committee.`,
+    author: 'David',
+    modelUsed: 'gpt-oss-120b',
+    agentName: 'Finance Analyst',
+    date: '15 JUL 2026',
+    restrictedRoles: ['Member', 'Guest']
+  },
+  {
+    id: 'lib-6',
+    title: 'Hardware Architecture Diagram Render',
+    type: 'Images',
+    category: 'Client Files',
+    snippet: 'Conceptual rendering of Camry NPU dual-die module layout with active cooling fins and local NVMe caching array.',
+    content: 'Conceptual high-performance rendering of Camry NPU hardware topology generated on local image model.',
+    author: 'Francis',
+    modelUsed: 'Z-Image-Turbo',
+    agentName: 'Image Creator',
+    date: '10 MAY 2026',
+    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'lib-7',
+    title: 'New Employee Onboarding FAQ Guide',
+    type: 'Drafts',
+    category: 'HR',
+    snippet: 'Welcome to Camry! Your hardware box is pre-loaded with company policies. Here is how to query the Knowledge Base on Day 1...',
+    content: `# New Employee Onboarding FAQ\n\nWelcome to the team! All company policies, benefits, and handbooks are indexed locally on your Camry box.\n\n### FAQ\n**Q: How do I ask Camry about company policies?**\nA: Open the Chat interface and ask natural questions. Camry reads directly from the Knowledge Base.\n\n**Q: Is my chat private?**\nA: Yes. All inference runs locally on the Camry NPU in your building. No data ever leaves the hardware.`,
+    author: 'Sarah',
+    modelUsed: 'gpt-oss-120b',
+    agentName: 'HR Copilot',
+    date: '01 JUL 2026'
+  },
+  {
+    id: 'lib-8',
+    title: 'Vendor SLA Redline & Indemnity Review',
+    type: 'Analyses',
+    category: 'Contracts',
+    snippet: 'Redline recommendation: Clause 4.2 mutual indemnification must require 30-day cure period for intellectual property disputes.',
+    content: `# Vendor SLA Redline & Indemnity Review\n\n**Agreement:** TechServices Master Vendor Contract\n**Agent:** Contract Reviewer\n\n### Redline Clause 4.2\n*Original:* "Vendor shall indemnify Customer against all claims immediately upon notice."\n*Revised:* "Vendor shall indemnify Customer against third-party IP infringement claims, provided Vendor receives written notice within 30 days and sole control of defense."`,
+    author: 'Amford',
+    modelUsed: 'gpt-oss-120b',
+    agentName: 'Contract Reviewer',
+    date: '19 JUN 2026'
+  },
+  {
+    id: 'lib-9',
+    title: 'Product Technical Specs Summary',
+    type: 'Summaries',
+    category: 'Case Law',
+    snippet: 'Camry ONE Specs: Dual NPU array, 256GB unified RAM, 2TB PCIe 5.0 local storage, zero external telemetry ports.',
+    content: `# Camry ONE Appliance Specifications\n\n- **Compute:** Dual Custom NPU Accelerators (480 TOPS FP16)\n- **Memory:** 256 GB LPDDR5 Unified System RAM\n- **Storage:** 2 TB NVMe PCIe 5.0 Encrypted Local Flash\n- **Networking:** Dual 10GbE RJ45 Local LAN Ports (Air-gapped capable)\n- **Security:** Hardware TPM 2.0, AES-256 Flash Encryption`,
+    author: 'Francis',
+    modelUsed: 'Qwen3-Coder-30B',
+    agentName: 'Industrial Copilot',
+    date: '28 JUN 2026'
+  }
+];
+
+export const INITIAL_TEAM_MEMBERS: TeamMember[] = [
+  {
+    id: 'tm-1',
+    name: 'Amford',
+    email: 'amford@company.com',
+    role: 'Admin',
+    status: 'ACTIVE',
+    lastActive: '2 MIN AGO',
+    allowedCategories: ['Policies', 'Contracts', 'HR', 'Finance', 'Product'],
+    capabilities: {
+      canChat: true,
+      canUploadKB: true,
+      canInstallAgents: true,
+      canViewLibrary: true,
+      canManageModels: true,
+      canInviteOthers: true
+    }
+  },
+  {
+    id: 'tm-2',
+    name: 'Francis',
+    email: 'francis@company.com',
+    role: 'Admin',
+    status: 'ACTIVE',
+    lastActive: '15 MIN AGO',
+    allowedCategories: ['Policies', 'Contracts', 'HR', 'Finance', 'Product'],
+    capabilities: {
+      canChat: true,
+      canUploadKB: true,
+      canInstallAgents: true,
+      canViewLibrary: true,
+      canManageModels: true,
+      canInviteOthers: true
+    }
+  },
+  {
+    id: 'tm-3',
+    name: 'Sarah',
+    email: 'sarah@company.com',
+    role: 'Manager',
+    status: 'ACTIVE',
+    lastActive: '1 HR AGO',
+    allowedCategories: ['Policies', 'Contracts', 'HR', 'Finance', 'Product'],
+    capabilities: {
+      canChat: true,
+      canUploadKB: true,
+      canInstallAgents: true,
+      canViewLibrary: true,
+      canManageModels: true,
+      canInviteOthers: false
+    }
+  },
+  {
+    id: 'tm-4',
+    name: 'David',
+    email: 'david@company.com',
+    role: 'Member',
+    status: 'ACTIVE',
+    lastActive: '3 HRS AGO',
+    allowedCategories: ['Policies', 'Contracts', 'HR', 'Product'],
+    capabilities: {
+      canChat: true,
+      canUploadKB: true,
+      canInstallAgents: false,
+      canViewLibrary: true,
+      canManageModels: false,
+      canInviteOthers: false
+    }
+  },
+  {
+    id: 'tm-5',
+    name: 'Guest Auditor',
+    email: 'auditor@kpmg-external.com',
+    role: 'Guest',
+    status: 'ACTIVE',
+    lastActive: 'YESTERDAY',
+    allowedCategories: ['Contracts'],
+    capabilities: {
+      canChat: true,
+      canUploadKB: false,
+      canInstallAgents: false,
+      canViewLibrary: true,
+      canManageModels: false,
+      canInviteOthers: false
+    }
+  },
+  {
+    id: 'tm-6',
+    name: 'Elena Vance',
+    email: 'elena@company.com',
+    role: 'Member',
+    status: 'INVITED — PENDING',
+    lastActive: 'NEVER',
+    allowedCategories: ['Policies', 'Contracts', 'HR', 'Product'],
+    capabilities: {
+      canChat: true,
+      canUploadKB: true,
+      canInstallAgents: false,
+      canViewLibrary: true,
+      canManageModels: false,
+      canInviteOthers: false
+    }
+  }
+];
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
@@ -309,6 +780,165 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [installedAgents, setInstalledAgents] = useState<string[]>(['meeting', 'legal']);
   const [activeAgent, setActiveAgent] = useState<string | null>(null);
 
+  // Knowledge Base, Library, Team, Categories & Role state
+  const [categories, setCategories] = useState<Category[]>(INITIAL_CATEGORIES);
+  const [roleCategoryPermissions, setRoleCategoryPermissions] = useState<Record<UserRole, string[]>>(DEFAULT_ROLE_CATEGORIES);
+  const [kbDocuments, setKbDocuments] = useState<KBDocument[]>(INITIAL_KB_DOCUMENTS);
+  const [libraryItems, setLibraryItems] = useState<LibraryItem[]>(INITIAL_LIBRARY_ITEMS);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(INITIAL_TEAM_MEMBERS);
+  const [currentRole, setCurrentRole] = useState<UserRole>('Admin');
+  const [pendingChatPrompt, setPendingChatPrompt] = useState<string | null>(null);
+
+  const addCategory = (catData: Omit<Category, 'id'>): Category => {
+    const newId = `cat-${Date.now()}`;
+    const newCategory: Category = {
+      ...catData,
+      id: newId,
+      color: catData.color || '#1D4ED8'
+    };
+    setCategories(prev => [...prev, newCategory]);
+
+    // Automatically add newly created category to Admin, Manager, and Member role permissions
+    setRoleCategoryPermissions(prev => ({
+      ...prev,
+      Admin: Array.from(new Set([...(prev.Admin || []), newCategory.name])),
+      Manager: Array.from(new Set([...(prev.Manager || []), newCategory.name])),
+      Member: Array.from(new Set([...(prev.Member || []), newCategory.name])),
+    }));
+
+    // Update allowedCategories for team members
+    setTeamMembers(prev => prev.map(m => {
+      if (m.role === 'Admin' || m.role === 'Manager' || m.role === 'Member') {
+        if (!m.allowedCategories.includes(newCategory.name)) {
+          return { ...m, allowedCategories: [...m.allowedCategories, newCategory.name] };
+        }
+      }
+      return m;
+    }));
+
+    return newCategory;
+  };
+
+  const updateCategory = (id: string, updates: Partial<Category>) => {
+    const oldCat = categories.find(c => c.id === id);
+    if (!oldCat) return;
+
+    setCategories(prev => prev.map(c => c.id === id ? { ...c, ...updates } : c));
+
+    if (updates.name && updates.name !== oldCat.name) {
+      const oldName = oldCat.name;
+      const newName = updates.name;
+
+      setKbDocuments(prev => prev.map(d => d.category === oldName ? { ...d, category: newName } : d));
+      setLibraryItems(prev => prev.map(i => i.category === oldName ? { ...i, category: newName } : i));
+      setTeamMembers(prev => prev.map(m => ({
+        ...m,
+        allowedCategories: m.allowedCategories.map(c => c === oldName ? newName : c)
+      })));
+      setRoleCategoryPermissions(prev => {
+        const updated: Record<UserRole, string[]> = { ...prev };
+        (Object.keys(updated) as UserRole[]).forEach(role => {
+          updated[role] = (updated[role] || []).map(c => c === oldName ? newName : c);
+        });
+        return updated;
+      });
+    }
+  };
+
+  const deleteCategory = (id: string, reassignToCategoryName: string = 'Uncategorized') => {
+    const catToDelete = categories.find(c => c.id === id);
+    if (!catToDelete || catToDelete.isSystem) return;
+
+    const nameToDelete = catToDelete.name;
+
+    setCategories(prev => prev.filter(c => c.id !== id));
+    setKbDocuments(prev => prev.map(d => d.category === nameToDelete ? { ...d, category: reassignToCategoryName } : d));
+    setLibraryItems(prev => prev.map(i => i.category === nameToDelete ? { ...i, category: reassignToCategoryName } : i));
+    setTeamMembers(prev => prev.map(m => ({
+      ...m,
+      allowedCategories: m.allowedCategories.filter(c => c !== nameToDelete)
+    })));
+    setRoleCategoryPermissions(prev => {
+      const updated: Record<UserRole, string[]> = { ...prev };
+      (Object.keys(updated) as UserRole[]).forEach(role => {
+        updated[role] = (updated[role] || []).filter(c => c !== nameToDelete);
+      });
+      return updated;
+    });
+  };
+
+  const toggleRoleCategoryPermission = (role: UserRole, categoryName: string) => {
+    setRoleCategoryPermissions(prev => {
+      const currentList = prev[role] || [];
+      const exists = currentList.includes(categoryName);
+      const updatedList = exists 
+        ? currentList.filter(c => c !== categoryName)
+        : [...currentList, categoryName];
+      return {
+        ...prev,
+        [role]: updatedList
+      };
+    });
+  };
+
+  const addKBDocument = (docData: Omit<KBDocument, 'id' | 'date'>) => {
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+    const id = `kb-${Date.now()}`;
+    const newDoc: KBDocument = {
+      ...docData,
+      id,
+      date: dateStr
+    };
+    setKbDocuments(prev => [newDoc, ...prev]);
+    return id;
+  };
+
+  const updateKBDocumentStatus = (id: string, status: 'INDEXED' | 'PROCESSING' | 'QUEUED', progress?: number) => {
+    setKbDocuments(prev => prev.map(d => d.id === id ? { ...d, status, progress: progress !== undefined ? progress : d.progress } : d));
+  };
+
+  const deleteKBDocument = (id: string) => {
+    setKbDocuments(prev => prev.filter(d => d.id !== id));
+  };
+
+  const updateKBDocumentAccess = (id: string, restrictedRoles: UserRole[]) => {
+    setKbDocuments(prev => prev.map(d => d.id === id ? { ...d, restrictedRoles } : d));
+  };
+
+  const addLibraryItem = (itemData: Omit<LibraryItem, 'id' | 'date'>) => {
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+    const newItem: LibraryItem = {
+      ...itemData,
+      id: `lib-${Date.now()}`,
+      date: dateStr
+    };
+    setLibraryItems(prev => [newItem, ...prev]);
+  };
+
+  const deleteLibraryItem = (id: string) => {
+    setLibraryItems(prev => prev.filter(i => i.id !== id));
+  };
+
+  const addTeamMember = (memberData: Omit<TeamMember, 'id' | 'status' | 'lastActive'>) => {
+    const newMember: TeamMember = {
+      ...memberData,
+      id: `tm-${Date.now()}`,
+      status: 'INVITED — PENDING',
+      lastActive: 'NEVER'
+    };
+    setTeamMembers(prev => [...prev, newMember]);
+  };
+
+  const updateTeamMember = (id: string, updates: Partial<TeamMember>) => {
+    setTeamMembers(prev => prev.map(m => m.id === id ? { ...m, ...updates } : m));
+  };
+
+  const deleteTeamMember = (id: string) => {
+    setTeamMembers(prev => prev.filter(m => m.id !== id));
+  };
+
   const reorderAgents = (newAgents: Agent[]) => {
     setAgentsList(newAgents);
     showToast(`Agent priority order updated`);
@@ -321,12 +951,44 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const addDocument = (doc: GeneratedDocument) => {
     setSessionDocuments(prev => [doc, ...prev.filter(d => d.id !== doc.id)]);
   };
-  const [settingsView, setSettingsView] = useState<'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy'>('main');
+  const [settingsView, setSettingsView] = useState<'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy' | 'team'>('main');
   
   const [toastData, setToastData] = useState<ToastData | null>(null);
   const [batteryLevel, setBatteryLevel] = useState<number>(88);
   const [isCharging, setIsCharging] = useState<boolean>(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  
+  // Tour State
+  const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
+  const [tourStep, setTourStep] = useState<number>(1);
+
+  // Theme Mode State
+  const [themeMode, setThemeMode] = useState<'dark' | 'light'>('dark');
+
+  const toggleThemeMode = () => {
+    setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+  };
+
+  // Synchronize HTML classes with themeMode
+  useEffect(() => {
+    const root = document.documentElement;
+    if (themeMode === 'light') {
+      root.classList.add('light');
+      root.classList.remove('dark');
+    } else {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    }
+  }, [themeMode]);
+
+  const startTour = () => {
+    setTourStep(1);
+    setIsTourOpen(true);
+  };
+
+  const closeTour = () => {
+    setIsTourOpen(false);
+  };
   
   AVAILABLE_AGENTS = agentsList;
 
@@ -514,6 +1176,28 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       addDocument,
       settingsView,
       setSettingsView,
+      categories,
+      addCategory,
+      updateCategory,
+      deleteCategory,
+      roleCategoryPermissions,
+      toggleRoleCategoryPermission,
+      kbDocuments,
+      addKBDocument,
+      updateKBDocumentStatus,
+      deleteKBDocument,
+      updateKBDocumentAccess,
+      libraryItems,
+      addLibraryItem,
+      deleteLibraryItem,
+      teamMembers,
+      addTeamMember,
+      updateTeamMember,
+      deleteTeamMember,
+      currentRole,
+      setCurrentRole,
+      pendingChatPrompt,
+      setPendingChatPrompt,
       toastData,
       toastMessage: toastData ? toastData.message : null,
       showToast,
@@ -522,7 +1206,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       isMobileMenuOpen,
       setIsMobileMenuOpen,
       exportConfig,
-      importConfig
+      importConfig,
+      isTourOpen,
+      setIsTourOpen,
+      tourStep,
+      setTourStep,
+      startTour,
+      closeTour,
+      themeMode,
+      setThemeMode,
+      toggleThemeMode
     }}>
       {children}
     </AppContext.Provider>

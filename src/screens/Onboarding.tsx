@@ -5,7 +5,7 @@ import { Monitor, Check } from 'lucide-react';
 import { CamryLogo } from '../components/CamryLogo';
 
 export const Onboarding: React.FC = () => {
-  const { setIsOnboarded, loadedModel } = useAppContext();
+  const { setIsOnboarded, loadedModel, startTour } = useAppContext();
   const [step, setStep] = useState(1);
   const [deviceName, setDeviceName] = useState('Office Camry');
   const [showManualIp, setShowManualIp] = useState(false);
@@ -171,8 +171,11 @@ export const Onboarding: React.FC = () => {
               </div>
 
               <button 
-                onClick={() => setIsOnboarded(true)}
-                className="w-full bg-camry-blackout text-camry-paper px-6 py-3 rounded-lg font-medium hover:bg-camry-graphite transition-all flex items-center justify-center gap-2"
+                onClick={() => {
+                  setIsOnboarded(true);
+                  startTour();
+                }}
+                className="w-full bg-camry-blackout text-camry-paper px-6 py-3 rounded-lg font-medium hover:bg-camry-graphite transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 Enter Camry
               </button>

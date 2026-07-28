@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAppContext, Agent, AgentVersion } from '../store/AppContext';
+import { CustomSelect } from '../components/CustomSelect';
 import { Grid, Heart, Scale, FileText, Activity, Landmark, Settings, TrendingUp, Edit3, Globe, Plus, Search, Trash2, Check, X, Bot, History, RotateCcw, BarChart3, Cpu, Zap, Eye, GripVertical, Move } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
@@ -432,18 +433,20 @@ export const AgentStore: React.FC = () => {
 
                 <div>
                   <label className="block text-xs font-martian text-camry-graphite/70 mb-1">CATEGORY</label>
-                  <select 
+                  <CustomSelect
+                    fullWidth
                     value={newAgentCat}
-                    onChange={(e) => setNewAgentCat(e.target.value)}
-                    className="w-full border border-black/10 rounded-lg px-3 py-2 text-sm font-familjen focus:outline-none focus:border-camry-deep-carrier bg-camry-graphite/5"
-                  >
-                    <option value="Legal">Legal</option>
-                    <option value="Medical">Medical</option>
-                    <option value="Government">Government</option>
-                    <option value="Industrial">Industrial</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Other">Other</option>
-                  </select>
+                    onChange={(val) => setNewAgentCat(val)}
+                    options={[
+                      { value: 'Legal', label: 'Legal' },
+                      { value: 'Medical', label: 'Medical' },
+                      { value: 'Government', label: 'Government' },
+                      { value: 'Industrial', label: 'Industrial' },
+                      { value: 'Finance', label: 'Finance' },
+                      { value: 'Other', label: 'Other' },
+                    ]}
+                    buttonClassName="bg-camry-graphite/5 border-black/10 rounded-lg py-2"
+                  />
                 </div>
 
                 <div>

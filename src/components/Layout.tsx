@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppContext } from '../store/AppContext';
 import { Sidebar } from './Sidebar';
 import { GlobalHeader } from './GlobalHeader';
+import { GuidedTourOverlay } from './GuidedTourOverlay';
 import { MessageSquare, Grid, Box, BarChart2, Settings } from 'lucide-react';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -9,7 +10,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     isOnboarded, 
     currentScreen, 
     setCurrentScreen, 
-    setActiveAgent 
+    setActiveAgent,
+    themeMode
   } = useAppContext();
 
   const navTabs = [
@@ -27,10 +29,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     setCurrentScreen(screenId as any);
   };
 
+  const isLight = themeMode === 'light';
+
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-0 bg-camry-blackout">
-      <div className="w-full h-screen bg-camry-blackout overflow-hidden flex relative">
+    <div className="min-h-screen w-full flex items-center justify-center p-0 transition-colors duration-200 camry-radial-glow">
+      <div className="w-full h-screen overflow-hidden flex relative bg-transparent">
         
+        {/* Guided Tour Modal Overlay */}
+        <GuidedTourOverlay />
+
         {/* Desktop Nav Rail */}
         {isOnboarded && (
           <div className="hidden md:flex flex-shrink-0 h-full">
@@ -39,16 +46,20 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         )}
 
         {/* Main Content Area */}
-        <div className="flex-1 bg-camry-paper relative overflow-hidden flex flex-col pb-14 md:pb-0">
+        <div className="flex-1 relative overflow-hidden flex flex-col pb-14 md:pb-0 transition-colors duration-200 bg-transparent">
           {isOnboarded && <GlobalHeader />}
-          <div className="flex-1 relative overflow-hidden flex flex-col">
+          <div className="flex-1 relative overflow-hidden flex flex-col bg-transparent">
             {children}
           </div>
         </div>
 
         {/* Bottom-Anchored Mobile Tab Bar for Small Screens */}
         {isOnboarded && (
-          <nav className="fixed md:hidden bottom-0 left-0 right-0 z-50 bg-camry-blackout/95 backdrop-blur-md border-t border-white/10 px-2 py-1.5 flex items-center justify-around shadow-2xl">
+          <nav className={`fixed md:hidden bottom-0 left-0 right-0 z-50 px-2 py-1.5 flex items-center justify-around shadow-2xl border-t transition-colors duration-200 ${
+            isLight 
+              ? 'bg-white/95 border-[#E2DDD5] text-[#18181B]' 
+              : 'bg-[#16161A]/95 border-white/10 text-white'
+          }`}>
             {navTabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = currentScreen === tab.id;
@@ -56,14 +67,18 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 <button
                   key={tab.id}
                   onClick={() => handleMobileNav(tab.id)}
-                  className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-lg transition-all min-w-[52px] ${
+                  className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all min-w-[52px] ${
                     isActive
-                      ? 'text-camry-carrier bg-camry-carrier/10 font-semibold'
-                      : 'text-white/60 hover:text-white/90'
+                      ? isLight
+                        ? 'text-sky-600 bg-sky-500/10 font-semibold border border-sky-500/20'
+                        : 'text-sky-300 bg-sky-500/20 font-semibold border border-sky-400/30'
+                      : isLight
+                        ? 'text-zinc-500 hover:text-black'
+                        : 'text-white/60 hover:text-white/90'
                   }`}
                 >
-                  <Icon size={18} className={isActive ? 'text-camry-carrier scale-105' : ''} />
-                  <span className="text-[10px] font-martian tracking-tight mt-1">{tab.label}</span>
+                  <Icon size={18} className={isActive ? 'text-sky-500 scale-105' : ''} />
+                  <span className="text-[10px] font-mono tracking-tight mt-1">{tab.label}</span>
                 </button>
               );
             })}

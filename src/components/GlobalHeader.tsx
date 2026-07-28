@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAppContext, AVAILABLE_MODELS } from '../store/AppContext';
-import { Search, Bot, Cpu, ArrowRight, Check, Sparkles, X, Activity, Menu } from 'lucide-react';
+import { Search, Bot, Cpu, ArrowRight, Check, Sparkles, X, Activity, Menu, Sun, Moon, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { CustomSelect } from './CustomSelect';
+import { CamryOrb } from './CamryOrb';
 
 export const GlobalHeader: React.FC = () => {
   const { 
@@ -17,6 +19,10 @@ export const GlobalHeader: React.FC = () => {
     installModel,
     isMobileMenuOpen,
     setIsMobileMenuOpen,
+    currentRole,
+    setCurrentRole,
+    themeMode,
+    toggleThemeMode,
     showToast
   } = useAppContext();
 
@@ -69,34 +75,60 @@ export const GlobalHeader: React.FC = () => {
   };
 
   const screenTitles: Record<string, string> = {
-    chat: 'Chat & Inference',
+    chat: 'Chat',
+    knowledgeBase: 'Knowledge Base',
+    library: 'Library',
+    team: 'Team & Access Control',
     modelStore: 'Model Hub',
     agentStore: 'Agent Store',
     dashboard: 'System Dashboard',
-    settings: 'Device Settings'
+    settings: 'Settings'
   };
 
+  const isLight = themeMode === 'light';
+
   return (
-    <header className="h-14 bg-white border-b border-black/5 px-3 sm:px-6 flex items-center justify-between z-30 flex-shrink-0 relative">
-      {/* Left: Mobile Menu Toggle & Screen Context Indicator */}
+    <header className={`h-14 px-3 sm:px-6 flex items-center justify-between z-30 flex-shrink-0 relative transition-all duration-300 border-b border-t-0 border-l-0 border-r-0 camry-glass rounded-none ${
+      isLight 
+        ? 'text-[#18181B] border-[#E2DDD5]' 
+        : 'text-white border-[#2E2E38]'
+    }`}>
+      {/* Left: Mobile Menu Toggle & Camry OS Connected Badge */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-1.5 text-camry-blackout hover:bg-black/5 rounded-lg transition-colors flex-shrink-0"
+          className={`md:hidden p-1.5 rounded-lg transition-colors flex-shrink-0 ${
+            isLight ? 'hover:bg-black/5 text-[#18181B]' : 'hover:bg-white/10 text-white'
+          }`}
           title="Toggle Navigation Menu"
         >
           <Menu size={18} />
         </button>
 
-        <span className="font-bricolage font-semibold text-camry-blackout text-xs sm:text-sm tracking-tight truncate">
-          {screenTitles[currentScreen] || 'Camry OS'}
-        </span>
+        {/* Brand Header Status Pill from PDF Design System */}
+        <div className="flex items-center gap-2">
+          <CamryOrb size="sm" className="w-6 h-6 shrink-0" />
+          <span className="font-space font-bold lowercase tracking-tight text-sm">
+            camry
+          </span>
+          <span className={`hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-mono border ${
+            isLight 
+              ? 'bg-[#EFECE6] text-[#18181B] border-[#E2DDD5]' 
+              : 'bg-[#202026] text-sky-300 border-[#2E2E38]'
+          }`}>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Camry OS v2.4</span>
+            <span className="text-emerald-500 font-bold ml-0.5">100%</span>
+          </span>
+        </div>
       </div>
 
       {/* Middle: Global Search Bar */}
       <div ref={containerRef} className="relative w-36 sm:w-64 md:w-80 lg:w-96">
         <div className="relative flex items-center">
-          <Search size={14} className="absolute left-3 text-camry-graphite/40 pointer-events-none" />
+          <Search size={14} className={`absolute left-3 pointer-events-none ${
+            isLight ? 'text-zinc-400' : 'text-zinc-500'
+          }`} />
           <input 
             type="text"
             value={searchQuery}
@@ -105,13 +137,17 @@ export const GlobalHeader: React.FC = () => {
               setSearchQuery(e.target.value);
               setIsOpen(true);
             }}
-            placeholder="Search agents, models, settings... (e.g. Legal, Qwen)"
-            className="w-full pl-9 pr-8 py-1.5 bg-camry-paper/60 border border-black/10 rounded-lg text-xs font-familjen text-camry-blackout placeholder:text-camry-graphite/40 focus:outline-none focus:border-camry-deep-carrier focus:bg-white transition-all"
+            placeholder="Search agents, models, documents..."
+            className={`w-full pl-9 pr-8 py-1.5 rounded-xl text-xs font-sans transition-all focus:outline-none border ${
+              isLight 
+                ? 'bg-[#F5F3EF] border-[#E2DDD5] text-[#18181B] placeholder:text-zinc-400 focus:bg-white focus:border-sky-500' 
+                : 'bg-[#0C0C0E] border-[#2E2E38] text-white placeholder:text-zinc-500 focus:bg-[#16161A] focus:border-sky-500'
+            }`}
           />
           {searchQuery && (
             <button 
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 text-camry-graphite/40 hover:text-black"
+              className={`absolute right-2.5 ${isLight ? 'text-zinc-400 hover:text-black' : 'text-zinc-500 hover:text-white'}`}
             >
               <X size={12} />
             </button>
@@ -125,16 +161,18 @@ export const GlobalHeader: React.FC = () => {
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 4 }}
-              className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-black/10 rounded-xl shadow-2xl p-2 z-50 max-h-96 overflow-y-auto"
+              className={`absolute top-full left-0 right-0 mt-1.5 border rounded-2xl shadow-2xl p-2 z-50 max-h-96 overflow-y-auto ${
+                isLight ? 'bg-white border-[#E2DDD5] text-[#18181B]' : 'bg-[#16161A] border-[#2E2E38] text-white'
+              }`}
             >
               {/* Agents Section */}
-              <div className="px-2 py-1 font-martian text-[10px] text-camry-graphite/50 tracking-wider flex items-center justify-between">
+              <div className="px-2 py-1 font-mono text-[10px] text-zinc-400 tracking-wider flex items-center justify-between">
                 <span>AGENTS ({matchingAgents.length})</span>
                 <Bot size={12} />
               </div>
 
               {matchingAgents.length === 0 ? (
-                <div className="px-3 py-2 text-xs text-camry-graphite/50 italic font-familjen">No matching agents</div>
+                <div className="px-3 py-2 text-xs text-zinc-400 italic font-sans">No matching agents</div>
               ) : (
                 matchingAgents.map(agent => {
                   const isInstalled = installedAgents.includes(agent.id);
@@ -144,26 +182,22 @@ export const GlobalHeader: React.FC = () => {
                     <div 
                       key={agent.id}
                       onClick={() => handleSelectAgent(agent.id)}
-                      className="flex items-center justify-between p-2 rounded-lg hover:bg-camry-graphite/5 cursor-pointer transition-colors group"
+                      className={`flex items-center justify-between p-2 rounded-xl cursor-pointer transition-colors group ${
+                        isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'
+                      }`}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-7 h-7 rounded-md bg-camry-blackout/5 flex items-center justify-center text-camry-blackout group-hover:bg-camry-carrier/20">
+                        <div className="w-7 h-7 rounded-lg bg-sky-500/10 text-sky-500 flex items-center justify-center shrink-0">
                           <Bot size={14} />
                         </div>
                         <div className="min-w-0">
-                          <div className="text-xs font-medium text-camry-blackout truncate">{agent.name}</div>
-                          <div className="text-[10px] text-camry-graphite/60 truncate">{agent.description}</div>
+                          <div className="text-xs font-medium truncate">{agent.name}</div>
+                          <div className="text-[10px] text-zinc-400 truncate">{agent.description}</div>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                        {agent.status && (
-                          <span className={`w-2 h-2 rounded-full ${
-                            agent.status === 'active' ? 'bg-emerald-500 animate-pulse' :
-                            agent.status === 'error' ? 'bg-red-500' : 'bg-amber-400'
-                          }`} />
-                        )}
-                        <span className="font-martian text-[10px] bg-black/5 px-1.5 py-0.5 rounded text-camry-graphite">
+                      <div className="flex items-center gap-2 shrink-0 ml-2">
+                        <span className="font-mono text-[10px] bg-sky-500/15 text-sky-400 px-2 py-0.5 rounded-full border border-sky-400/20">
                           {isActive ? 'Active' : isInstalled ? 'Launch' : 'Get'}
                         </span>
                       </div>
@@ -173,13 +207,13 @@ export const GlobalHeader: React.FC = () => {
               )}
 
               {/* Models Section */}
-              <div className="mt-3 px-2 py-1 font-martian text-[10px] text-camry-graphite/50 tracking-wider flex items-center justify-between border-t border-black/5 pt-2">
+              <div className="mt-3 px-2 py-1 font-mono text-[10px] text-zinc-400 tracking-wider flex items-center justify-between border-t border-white/10 pt-2">
                 <span>MODELS ({matchingModels.length})</span>
                 <Cpu size={12} />
               </div>
 
               {matchingModels.length === 0 ? (
-                <div className="px-3 py-2 text-xs text-camry-graphite/50 italic font-familjen">No matching models</div>
+                <div className="px-3 py-2 text-xs text-zinc-400 italic font-sans">No matching models</div>
               ) : (
                 matchingModels.map(model => {
                   const isInstalled = installedModels.includes(model.id);
@@ -189,22 +223,23 @@ export const GlobalHeader: React.FC = () => {
                     <div 
                       key={model.id}
                       onClick={() => handleSelectModel(model.id)}
-                      className="flex items-center justify-between p-2 rounded-lg hover:bg-camry-graphite/5 cursor-pointer transition-colors group"
+                      className={`flex items-center justify-between p-2 rounded-xl cursor-pointer transition-colors group ${
+                        isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'
+                      }`}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-7 h-7 rounded-md bg-camry-carrier/10 flex items-center justify-center text-camry-deep-carrier">
+                        <div className="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
                           <Cpu size={14} />
                         </div>
                         <div className="min-w-0">
-                          <div className="text-xs font-medium text-camry-blackout truncate">{model.name}</div>
-                          <div className="text-[10px] text-camry-graphite/60">{model.params} • {model.size}</div>
+                          <div className="text-xs font-medium truncate">{model.name}</div>
+                          <div className="text-[10px] text-zinc-400">{model.params} • {model.size}</div>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                        <span className={`font-martian text-[10px] px-1.5 py-0.5 rounded ${
-                          isLoaded ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
-                          isInstalled ? 'bg-black/5 text-camry-blackout' : 'bg-camry-carrier/20 text-camry-deep-carrier'
+                      <div className="flex items-center gap-2 shrink-0 ml-2">
+                        <span className={`font-mono text-[10px] px-2 py-0.5 rounded-full ${
+                          isLoaded ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-white/10 text-white'
                         }`}>
                           {isLoaded ? 'Loaded' : isInstalled ? 'Load NPU' : 'Install'}
                         </span>
@@ -216,6 +251,53 @@ export const GlobalHeader: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Right side: Personalize Theme Switcher + Role Selector */}
+      <div className="flex items-center gap-2.5">
+        {/* Personalize Surface Toggle Switch (PDF Component 2.1) */}
+        <button
+          onClick={toggleThemeMode}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border transition-all cursor-pointer ${
+            isLight 
+              ? 'bg-[#EFECE6] hover:bg-[#E2DDD5] border-[#E2DDD5] text-[#18181B]' 
+              : 'bg-[#202026] hover:bg-[#2E2E38] border-[#2E2E38] text-white'
+          }`}
+          title="Toggle surface set (Daylight / Dark)"
+        >
+          <span className="text-[10px] text-zinc-400 uppercase font-semibold hidden sm:inline">Personalize</span>
+          {isLight ? (
+            <div className="flex items-center gap-1 text-amber-600 font-medium text-[11px]">
+              <Sun size={13} />
+              <span>Daylight</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 text-sky-400 font-medium text-[11px]">
+              <Moon size={13} />
+              <span>Dark</span>
+            </div>
+          )}
+        </button>
+
+        {/* View as Role Switcher */}
+        <div className="hidden lg:block">
+          <CustomSelect
+            label="VIEW AS:"
+            size="sm"
+            value={currentRole}
+            onChange={(val) => {
+              setCurrentRole(val as any);
+              showToast(`Role switched to ${val} (simulated access scope)`);
+            }}
+            options={[
+              { value: 'Admin', label: 'Admin (Full Access)', description: 'Hardware Admin & Full Permissions' },
+              { value: 'Manager', label: 'Manager', description: 'Departmental KB & Agent Management' },
+              { value: 'Member', label: 'Member (Finance: Denied)', description: 'Standard Inference & Chat Access' },
+              { value: 'Guest', label: 'Guest (Contracts Only)', description: 'Restricted Contracts/Audit Access' },
+            ]}
+            buttonClassName={isLight ? 'bg-[#F5F3EF] border-[#E2DDD5] text-[#18181B]' : 'bg-[#202026] border-[#2E2E38] text-white'}
+          />
+        </div>
       </div>
     </header>
   );

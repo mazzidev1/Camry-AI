@@ -8,6 +8,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { CamryLoadingIcon } from '../components/CamryLoadingIcon';
 import { DocumentViewer } from '../components/DocumentViewer';
+import { CamryOrb } from '../components/CamryOrb';
 
 const SUGGESTIONS = [
   { icon: <Scale size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Summarize the key obligations in this contract.' },
@@ -17,7 +18,7 @@ const SUGGESTIONS = [
 ];
 
 const ThinkingIndicator: React.FC = () => {
-  const { loadedModel } = useAppContext();
+  const { loadedModel, themeMode } = useAppContext();
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
@@ -27,6 +28,8 @@ const ThinkingIndicator: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const isLight = themeMode === 'light';
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 8, scale: 0.98 }}
@@ -35,37 +38,43 @@ const ThinkingIndicator: React.FC = () => {
       className="flex flex-col items-start my-2 space-y-3 w-full max-w-2xl"
     >
       {/* NPU Computation Status Card */}
-      <div className="bg-white border border-black/10 rounded-2xl px-4 sm:px-5 py-3.5 shadow-sm text-camry-blackout w-full sm:w-auto min-w-[280px]">
+      <div className={`border rounded-2xl px-4 sm:px-5 py-3.5 shadow-sm w-full sm:w-auto min-w-[280px] transition-colors duration-200 ${
+        isLight ? 'bg-white border-[#E2DDD5] text-[#18181B]' : 'bg-[#16161A] border-[#2E2E38] text-white'
+      }`}>
         <div className="flex items-center justify-between gap-3 mb-2">
           <div className="flex items-center gap-2">
-            <CamryLoadingIcon size={16} color="#0B0C0E" />
-            <span className="font-martian text-[10px] text-camry-blackout font-bold tracking-wider uppercase">
+            <CamryLoadingIcon size={16} color={isLight ? '#3B82F6' : '#60A5FA'} />
+            <span className={`font-mono text-[10px] font-bold tracking-wider uppercase ${
+              isLight ? 'text-zinc-700' : 'text-zinc-300'
+            }`}>
               LOCAL NPU INFERENCE
             </span>
           </div>
-          <span className="font-martian text-[10px] text-camry-graphite/60 font-semibold">
+          <span className="font-mono text-[10px] text-zinc-400 font-semibold">
             {elapsed.toFixed(1)}s
           </span>
         </div>
         
-        <div className="flex items-center gap-3 font-martian text-xs text-camry-graphite/90 py-0.5">
-          <div className="flex items-center gap-2 font-martian font-semibold text-camry-blackout bg-camry-graphite/5 px-2.5 py-1 rounded border border-black/5">
+        <div className="flex items-center gap-3 font-mono text-xs py-0.5">
+          <div className={`flex items-center gap-2 font-semibold px-2.5 py-1 rounded-xl border ${
+            isLight ? 'bg-zinc-100 border-zinc-200 text-zinc-800' : 'bg-white/5 border-white/10 text-white'
+          }`}>
             <span>thinking</span>
             <div className="flex gap-1 items-center ml-0.5">
-              <span className="inline-block w-1 h-1 rounded-full bg-camry-blackout animate-bounce" style={{ animationDelay: '0ms' }} />
-              <span className="inline-block w-1 h-1 rounded-full bg-camry-blackout animate-bounce" style={{ animationDelay: '150ms' }} />
-              <span className="inline-block w-1 h-1 rounded-full bg-camry-blackout animate-bounce" style={{ animationDelay: '300ms' }} />
+              <span className={`inline-block w-1.5 h-1.5 rounded-full animate-bounce ${isLight ? 'bg-zinc-800' : 'bg-white'}`} style={{ animationDelay: '0ms' }} />
+              <span className={`inline-block w-1.5 h-1.5 rounded-full animate-bounce ${isLight ? 'bg-zinc-800' : 'bg-white'}`} style={{ animationDelay: '150ms' }} />
+              <span className={`inline-block w-1.5 h-1.5 rounded-full animate-bounce ${isLight ? 'bg-zinc-800' : 'bg-white'}`} style={{ animationDelay: '300ms' }} />
             </div>
           </div>
-          <span className="text-[10px] text-camry-graphite/60 font-martian truncate">
+          <span className="text-[10px] text-zinc-400 font-mono truncate max-w-[140px]">
             {loadedModel}
           </span>
         </div>
 
         {/* Shimmering NPU computation line */}
-        <div className="mt-3 w-full bg-black/5 h-1 rounded-full overflow-hidden relative">
+        <div className={`mt-3 w-full h-1 rounded-full overflow-hidden relative ${isLight ? 'bg-zinc-100' : 'bg-white/5'}`}>
           <motion.div 
-            className="h-full bg-camry-blackout rounded-full"
+            className={`h-full rounded-full ${isLight ? 'bg-sky-500' : 'bg-sky-400'}`}
             animate={{ x: ['-100%', '100%'] }}
             transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
           />
@@ -73,18 +82,20 @@ const ThinkingIndicator: React.FC = () => {
       </div>
 
       {/* Response Message Skeleton */}
-      <div className="bg-white border border-black/10 rounded-2xl p-4 sm:p-5 shadow-sm w-full max-w-xl space-y-3">
+      <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm w-full max-w-xl space-y-3 transition-colors duration-200 ${
+        isLight ? 'bg-white border-[#E2DDD5]' : 'bg-[#16161A] border-[#2E2E38]'
+      }`}>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded bg-camry-graphite flex items-center justify-center">
-            <div className="w-1 h-1 bg-white rounded-full"></div>
+          <div className={`w-4 h-4 rounded-lg flex items-center justify-center ${isLight ? 'bg-zinc-200' : 'bg-white/10'}`}>
+            <div className={`w-1 h-1 rounded-full ${isLight ? 'bg-zinc-400' : 'bg-white/50'}`} />
           </div>
-          <div className="h-3 w-24 bg-black/10 rounded animate-pulse" />
+          <div className={`h-3 w-24 rounded animate-pulse ${isLight ? 'bg-zinc-200' : 'bg-white/10'}`} />
         </div>
         
         <div className="space-y-2 pt-1">
-          <div className="h-4 bg-black/10 rounded-md w-11/12 animate-pulse" />
-          <div className="h-4 bg-black/10 rounded-md w-4/5 animate-pulse" />
-          <div className="h-4 bg-black/10 rounded-md w-3/5 animate-pulse" />
+          <div className={`h-4 rounded-xl w-11/12 animate-pulse ${isLight ? 'bg-zinc-200' : 'bg-white/10'}`} />
+          <div className={`h-4 rounded-xl w-4/5 animate-pulse ${isLight ? 'bg-zinc-200' : 'bg-white/10'}`} />
+          <div className={`h-4 rounded-xl w-3/5 animate-pulse ${isLight ? 'bg-zinc-200' : 'bg-white/10'}`} />
         </div>
       </div>
     </motion.div>
@@ -104,10 +115,25 @@ export const Chat: React.FC = () => {
     activeDocument,
     setActiveDocument,
     sessionDocuments,
-    addDocument
+    addDocument,
+    kbDocuments,
+    pendingChatPrompt,
+    setPendingChatPrompt,
+    setCurrentScreen,
+    themeMode
   } = useAppContext();
 
+  const isLight = themeMode === 'light';
+
   const [input, setInput] = useState('');
+
+  // Handle pending prompt passed from Knowledge Base or Library
+  useEffect(() => {
+    if (pendingChatPrompt) {
+      setInput(pendingChatPrompt);
+      setPendingChatPrompt(null);
+    }
+  }, [pendingChatPrompt, setPendingChatPrompt]);
   const [isWebMode, setIsWebMode] = useState(false);
   const [showWebPopover, setShowWebPopover] = useState(false);
   const [showModelPopover, setShowModelPopover] = useState(false);
@@ -404,7 +430,7 @@ export const Chat: React.FC = () => {
   const isEmpty = chatHistory.length === 0;
 
   return (
-    <div className="flex-1 h-full flex flex-row relative bg-camry-paper overflow-hidden">
+    <div className="flex-1 h-full flex flex-row relative overflow-hidden transition-colors duration-200 bg-transparent">
       
       {/* Left Chat Main Area */}
       <div className={`flex-1 h-full flex flex-col relative transition-all duration-300 overflow-hidden ${
@@ -412,13 +438,19 @@ export const Chat: React.FC = () => {
       }`}>
         
         {/* Top Header Bar for Chat Section (Includes Document Icon in Top Right) */}
-        <div className="h-12 border-b border-black/5 bg-white/60 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-10">
+        <div className={`h-12 border-b border-t-0 border-l-0 border-r-0 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-10 transition-all duration-300 camry-glass rounded-none ${
+          isLight ? 'border-[#E2DDD5]' : 'border-white/5'
+        }`}>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-bricolage text-xs sm:text-sm font-semibold text-camry-blackout">
+            <span className={`font-display text-xs sm:text-sm font-bold tracking-tight ${
+              isLight ? 'text-[#18181B]' : 'text-white'
+            }`}>
               {activeAgent ? activeAgent.toUpperCase() : 'CAMRY ON-DEVICE CHAT'}
             </span>
-            <span className="text-[10px] font-martian px-1.5 py-0.5 rounded bg-black/5 text-camry-graphite/60">
+            <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+              isLight ? 'bg-zinc-100 text-zinc-600 border border-[#E2DDD5]' : 'bg-white/5 text-zinc-400'
+            }`}>
               {loadedModel}
             </span>
           </div>
@@ -427,17 +459,19 @@ export const Chat: React.FC = () => {
           <div className="flex items-center gap-2 relative">
             <button
               onClick={() => setShowDocsListModal(!showDocsListModal)}
-              className={`p-2 rounded-lg transition-all flex items-center gap-2 relative ${
+              className={`p-2 rounded-xl transition-all flex items-center gap-2 relative border ${
                 sessionDocuments.length > 0 
-                  ? 'bg-camry-blackout text-white shadow-sm hover:bg-camry-graphite' 
-                  : 'bg-black/5 hover:bg-black/10 text-camry-graphite'
+                  ? 'bg-sky-500 hover:bg-sky-600 text-white border-sky-400' 
+                  : isLight 
+                    ? 'bg-white border-[#E2DDD5] hover:bg-zinc-100 text-zinc-800'
+                    : 'bg-[#16161A] border-[#2E2E38] hover:bg-[#202026] text-white'
               }`}
               title="View generated documents from this chat session"
             >
               <Files size={16} />
-              <span className="font-martian text-xs font-semibold hidden sm:inline">Docs</span>
+              <span className="font-mono text-xs font-bold hidden sm:inline">Docs</span>
               {sessionDocuments.length > 0 && (
-                <span className="w-4 h-4 rounded-full bg-blue-500 text-white font-martian text-[10px] font-bold flex items-center justify-center">
+                <span className="w-4 h-4 rounded-full bg-white text-sky-600 font-mono text-[9px] font-bold flex items-center justify-center">
                   {sessionDocuments.length}
                 </span>
               )}
@@ -452,28 +486,30 @@ export const Chat: React.FC = () => {
                     initial={{ opacity: 0, y: 8, scale: 0.96 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                    className="absolute top-full right-0 mt-2 z-40 bg-white border border-black/10 rounded-2xl shadow-2xl w-80 sm:w-96 p-4 space-y-3"
+                    className={`absolute top-full right-0 mt-2 z-40 border rounded-2xl shadow-2xl w-80 sm:w-96 p-4 space-y-3 ${
+                      isLight ? 'bg-white border-[#E2DDD5] text-[#18181B]' : 'bg-[#16161A] border-[#2E2E38] text-white'
+                    }`}
                   >
-                    <div className="flex items-center justify-between border-b border-black/5 pb-2">
+                    <div className={`flex items-center justify-between border-b pb-2 ${isLight ? 'border-zinc-100' : 'border-white/10'}`}>
                       <div className="flex items-center gap-2">
-                        <Files size={18} className="text-camry-carrier" />
-                        <h3 className="font-bricolage text-sm font-bold text-camry-blackout">
+                        <Files size={18} className="text-sky-500" />
+                        <h3 className="font-display text-sm font-bold">
                           Session Documents ({sessionDocuments.length})
                         </h3>
                       </div>
                       <button 
                         onClick={() => setShowDocsListModal(false)}
-                        className="text-camry-graphite/50 hover:text-black p-1"
+                        className={`p-1 rounded-lg ${isLight ? 'text-zinc-400 hover:text-black' : 'text-zinc-500 hover:text-white'}`}
                       >
                         <X size={16} />
                       </button>
                     </div>
 
                     {sessionDocuments.length === 0 ? (
-                      <div className="text-center py-6 text-camry-graphite/60 space-y-2">
-                        <FileText size={28} className="mx-auto opacity-40" />
-                        <p className="font-familjen text-xs">No documents generated in this session yet.</p>
-                        <p className="font-martian text-[10px] text-camry-graphite/40">Ask Camry to draft a contract, design prompt, or spec!</p>
+                      <div className="text-center py-6 space-y-2">
+                        <FileText size={28} className="mx-auto opacity-40 text-sky-500" />
+                        <p className="font-sans text-xs font-medium">No documents generated in this session yet.</p>
+                        <p className="font-mono text-[10px] text-zinc-400">Ask Camry to draft a contract, design prompt, or spec!</p>
                       </div>
                     ) : (
                       <div className="max-h-72 overflow-y-auto space-y-2 pr-1">
@@ -486,19 +522,23 @@ export const Chat: React.FC = () => {
                             }}
                             className={`p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
                               activeDocument?.id === doc.id 
-                                ? 'bg-camry-carrier/10 border-camry-carrier/30' 
-                                : 'bg-black/5 border-transparent hover:bg-black/10'
+                                ? 'bg-sky-500/10 border-sky-500/30' 
+                                : isLight 
+                                  ? 'bg-zinc-50 border-zinc-200 hover:bg-zinc-100'
+                                  : 'bg-[#202026] border-white/5 hover:bg-[#2E2E38]'
                             }`}
                           >
                             <div className="flex items-center gap-2.5 min-w-0">
-                              <div className="w-8 h-8 rounded-lg bg-camry-blackout text-white flex items-center justify-center flex-shrink-0">
+                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                                isLight ? 'bg-zinc-200 text-zinc-800' : 'bg-white/10 text-white'
+                              }`}>
                                 <FileText size={16} />
                               </div>
                               <div className="min-w-0">
-                                <h4 className="font-bricolage text-xs font-semibold text-camry-blackout truncate">
+                                <h4 className={`text-xs font-bold truncate ${isLight ? 'text-zinc-800' : 'text-white'}`}>
                                   {doc.title}
                                 </h4>
-                                <p className="font-martian text-[9px] text-camry-graphite/60">
+                                <p className="font-mono text-[9px] text-zinc-400">
                                   Document · {doc.type} · {doc.createdAt}
                                 </p>
                               </div>
@@ -511,7 +551,7 @@ export const Chat: React.FC = () => {
                                 setActiveDocument(doc);
                                 setShowDocsListModal(false);
                               }}
-                              className="p-1.5 rounded-lg bg-camry-blackout text-white hover:bg-camry-graphite text-[10px] font-martian flex items-center gap-1 flex-shrink-0"
+                              className="p-1.5 rounded-lg bg-sky-500 text-white hover:bg-sky-600 text-[10px] font-mono font-bold flex items-center gap-1 shrink-0"
                             >
                               <Eye size={12} />
                               <span>View</span>
@@ -530,129 +570,273 @@ export const Chat: React.FC = () => {
         {/* Main Chat Stream Area */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-8 pb-36 sm:pb-32 flex flex-col items-center">
           {isEmpty ? (
-            <div className="flex-1 flex flex-col items-center justify-center max-w-2xl w-full text-center py-6 sm:pb-20">
-              {activeAgent ? (
-                <h2 className="text-xl sm:text-3xl font-bricolage tracking-tight mb-2 opacity-80">{activeAgent.toUpperCase()}</h2>
-              ) : (
-                <h1 className="text-3xl sm:text-5xl font-bricolage tracking-tight mb-4 sm:mb-12 opacity-80">camry</h1>
-              )}
+            <div className="flex-1 flex flex-col items-center justify-center max-w-2xl w-full text-center py-6 pb-20 sm:pb-32">
+              <CamryOrb size="xl" className="mb-6" />
+              
+              <h2 className={`text-4xl md:text-5xl font-display font-extrabold tracking-tight mb-2 transition-colors duration-200 ${
+                isLight ? 'text-[#18181B]' : 'text-white'
+              }`}>
+                {activeAgent ? `Hello, I'm ${activeAgent}` : 'Hi, there'}
+              </h2>
+              <p className={`text-sm md:text-base font-sans transition-colors duration-200 mb-8 max-w-md ${
+                isLight ? 'text-zinc-500' : 'text-zinc-400'
+              }`}>
+                Tell us what you need, and we'll handle the rest.
+              </p>
+
+              {/* Bento Quick Actions Grid */}
+              <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                <button
+                  onClick={() => setInput("Can you help me answer the pending RFP documentation and verify on-premises security?")}
+                  className={`p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer shadow-sm flex flex-col justify-between h-28 group ${
+                    isLight 
+                      ? 'bg-white border-[#E2DDD5] hover:bg-[#EFECE6]' 
+                      : 'bg-[#16161A] border-[#2E2E38] hover:bg-[#202026]'
+                  }`}
+                >
+                  <Sparkles size={16} className="text-sky-500 group-hover:scale-110 transition-transform" />
+                  <div>
+                    <div className="text-[10px] font-bold font-mono uppercase tracking-wide text-zinc-400 mb-0.5">Task</div>
+                    <div className={`text-xs sm:text-[13px] font-semibold leading-tight ${isLight ? 'text-[#18181B]' : 'text-zinc-100'}`}>
+                      Answer RFP documentation
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setInput("Analyze our device health logs and run a complete on-premise security audit.")}
+                  className={`p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer shadow-sm flex flex-col justify-between h-28 group ${
+                    isLight 
+                      ? 'bg-white border-[#E2DDD5] hover:bg-[#EFECE6]' 
+                      : 'bg-[#16161A] border-[#2E2E38] hover:bg-[#202026]'
+                  }`}
+                >
+                  <Globe size={16} className="text-blue-500 group-hover:scale-110 transition-transform" />
+                  <div>
+                    <div className="text-[10px] font-bold font-mono uppercase tracking-wide text-zinc-400 mb-0.5">Security</div>
+                    <div className={`text-xs sm:text-[13px] font-semibold leading-tight ${isLight ? 'text-[#18181B]' : 'text-zinc-100'}`}>
+                      Conduct on-premise audit
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setInput("How is the model performing? I want to provide system feedback regarding performance.")}
+                  className={`p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer shadow-sm flex flex-col justify-between h-28 group ${
+                    isLight 
+                      ? 'bg-white border-[#E2DDD5] hover:bg-[#EFECE6]' 
+                      : 'bg-[#16161A] border-[#2E2E38] hover:bg-[#202026]'
+                  }`}
+                >
+                  <ThumbsUp size={16} className="text-emerald-500 group-hover:scale-110 transition-transform" />
+                  <div>
+                    <div className="text-[10px] font-bold font-mono uppercase tracking-wide text-zinc-400 mb-0.5">Support</div>
+                    <div className={`text-xs sm:text-[13px] font-semibold leading-tight ${isLight ? 'text-[#18181B]' : 'text-zinc-100'}`}>
+                      Provide feedback
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              {/* Calendar Integration Card (PDF 4.2 bottom right element) */}
+              <div className="w-full">
+                <button
+                  onClick={() => showToast("Syncing with corporate calendar (simulated)")}
+                  className={`w-full p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer shadow-sm flex items-center justify-between group ${
+                    isLight 
+                      ? 'bg-[#EFECE6] border-[#E2DDD5] hover:bg-white' 
+                      : 'bg-[#202026] border-[#2E2E38] hover:bg-[#2E2E38]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                      isLight ? 'bg-sky-500/10 text-sky-600' : 'bg-sky-500/20 text-sky-400'
+                    }`}>
+                      <FileText size={18} />
+                    </div>
+                    <div>
+                      <h4 className={`text-xs sm:text-sm font-bold ${isLight ? 'text-[#18181B]' : 'text-white'}`}>
+                        Connect Calendar
+                      </h4>
+                      <p className={`text-[10px] sm:text-xs ${isLight ? 'text-zinc-500' : 'text-zinc-400'}`}>
+                        Sync your schedule to prep for upcoming briefs automatically
+                      </p>
+                    </div>
+                  </div>
+                  <span className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-full ${
+                    isLight ? 'bg-zinc-200 text-zinc-700' : 'bg-white/10 text-white/90'
+                  }`}>
+                    Connect
+                  </span>
+                </button>
+              </div>
             </div>
           ) : (
             <div className="max-w-3xl w-full space-y-6">
-              {chatHistory.map((msg) => (
-                <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[92%] sm:max-w-[85%] rounded-2xl px-3.5 py-3 sm:px-5 sm:py-4 ${
-                    msg.role === 'user' 
-                      ? 'bg-camry-graphite text-camry-paper' 
-                      : 'bg-white border border-black/5 shadow-sm text-camry-blackout'
-                  }`}>
-                    {msg.role === 'assistant' && (
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-4 h-4 rounded bg-camry-graphite flex items-center justify-center">
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                        </div>
-                        <span className="font-martian text-[10px] text-camry-graphite/50">{msg.model}</span>
-                      </div>
-                    )}
-
-                    {/* Commentary Text */}
-                    <p className="font-familjen leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
-                      {msg.content}
-                    </p>
-
-                    {/* Clickable Document Card inside Chat Bubble */}
-                    {msg.document && (
-                      <div 
-                        onClick={() => setActiveDocument(msg.document!)}
-                        className="mt-3 p-3.5 sm:p-4 rounded-xl border border-black/10 bg-black/5 hover:bg-black/10 transition-all cursor-pointer group flex items-center justify-between gap-3 shadow-sm hover:shadow"
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-camry-blackout/10 flex items-center justify-center text-camry-blackout flex-shrink-0 group-hover:bg-camry-blackout group-hover:text-white transition-colors">
-                            <FileText size={20} />
+              {chatHistory.map((msg) => {
+                const isUser = msg.role === 'user';
+                return (
+                  <div key={msg.id} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[92%] sm:max-w-[85%] rounded-2xl px-3.5 py-3 sm:px-5 sm:py-4 border transition-all ${
+                      isUser 
+                        ? isLight 
+                          ? 'bg-[#18181B] text-[#EDEBE4] border-zinc-800 shadow-md' 
+                          : 'bg-[#202026] text-white border-zinc-800 shadow-md' 
+                        : isLight 
+                          ? 'bg-white border-[#E2DDD5] text-zinc-900 shadow-sm' 
+                          : 'bg-[#16161A] border-[#2E2E38] text-white shadow-md'
+                    }`}>
+                      {!isUser && (
+                        <div className="flex items-center gap-2 mb-2 pb-1 border-b border-zinc-100/10">
+                          <div className={`w-4 h-4 rounded-md flex items-center justify-center ${isLight ? 'bg-zinc-100' : 'bg-white/5'}`}>
+                            <div className={`w-1.5 h-1.5 rounded-full ${isLight ? 'bg-sky-500' : 'bg-sky-400'}`} />
                           </div>
-                          <div className="min-w-0">
-                            <h4 className="font-bricolage font-bold text-xs sm:text-sm text-camry-blackout truncate group-hover:text-black transition-colors">
-                              {msg.document.title}
-                            </h4>
-                            <p className="font-martian text-[10px] text-camry-graphite/60">
-                              Document · {msg.document.type}
-                            </p>
-                          </div>
+                          <span className="font-mono text-[10px] text-zinc-400">{msg.model}</span>
                         </div>
+                      )}
 
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setActiveDocument(msg.document!);
-                          }}
-                          className="px-3 py-1.5 rounded-lg bg-camry-blackout text-white hover:bg-camry-graphite text-xs font-martian font-medium flex items-center gap-1.5 shadow-sm transition-all flex-shrink-0"
-                        >
-                          <Download size={13} />
-                          <span className="hidden xs:inline">Download and open</span>
-                          <span className="xs:hidden">Open</span>
-                        </button>
-                      </div>
-                    )}
+                      {/* Commentary Text */}
+                      <p className="font-sans leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
+                        {msg.content}
+                      </p>
 
-                    {/* Functional Action Bar under Assistant Answers */}
-                    {msg.role === 'assistant' && (
-                      <div className="flex items-center gap-1 sm:gap-1.5 mt-3 pt-2.5 border-t border-black/5 text-camry-graphite/70">
-                        <button
-                          onClick={() => handleCopy(msg.id, msg.content)}
-                          className="p-1.5 rounded-md hover:bg-black/5 hover:text-camry-blackout transition-colors flex items-center justify-center text-camry-graphite/80"
-                          title="Copy response"
-                        >
-                          {copiedId === msg.id ? <Check size={15} className="text-emerald-600" /> : <Copy size={15} />}
-                        </button>
+                      {/* Knowledge Base Citation Chips */}
+                      {!isUser && (
+                        <div className="mt-2.5 flex flex-wrap items-center gap-1.5 pt-1.5 border-t border-zinc-100/10">
+                          <span className="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">CITED SOURCES:</span>
+                          <button
+                            onClick={() => setCurrentScreen('knowledgeBase')}
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold border transition-colors ${
+                              isLight 
+                                ? 'bg-sky-500/10 border-sky-500/20 text-sky-600 hover:bg-sky-500/20' 
+                                : 'bg-sky-500/20 border-sky-500/30 text-sky-400 hover:bg-sky-500/30'
+                            }`}
+                          >
+                            <FileText size={10} />
+                            <span>Company Handbook.pdf</span>
+                          </button>
+                          <button
+                            onClick={() => setCurrentScreen('knowledgeBase')}
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold border transition-colors ${
+                              isLight 
+                                ? 'bg-sky-500/10 border-sky-500/20 text-sky-600 hover:bg-sky-500/20' 
+                                : 'bg-sky-500/20 border-sky-500/30 text-sky-400 hover:bg-sky-500/30'
+                            }`}
+                          >
+                            <FileText size={10} />
+                            <span>Employment Policy 2026.docx</span>
+                          </button>
+                        </div>
+                      )}
 
-                        <button
-                          onClick={() => handleSpeak(msg.id, msg.content)}
-                          className={`p-1.5 rounded-md transition-colors flex items-center justify-center ${
-                            speakingId === msg.id 
-                              ? 'bg-black/10 text-camry-blackout animate-pulse' 
-                              : 'text-camry-graphite/80 hover:bg-black/5 hover:text-camry-blackout'
+                      {/* Clickable Document Card inside Chat Bubble */}
+                      {msg.document && (
+                        <div 
+                          onClick={() => setActiveDocument(msg.document!)}
+                          className={`mt-3 p-3.5 sm:p-4 rounded-xl border transition-all cursor-pointer group flex items-center justify-between gap-3 shadow-sm ${
+                            isLight 
+                              ? 'bg-zinc-50 border-zinc-200 hover:bg-zinc-100' 
+                              : 'bg-white/5 border-white/10 hover:bg-white/10'
                           }`}
-                          title={speakingId === msg.id ? 'Stop reading' : 'Read aloud'}
                         >
-                          {speakingId === msg.id ? <VolumeX size={15} /> : <Volume2 size={15} />}
-                        </button>
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-sky-500 group-hover:text-white transition-colors ${
+                              isLight ? 'bg-zinc-200 text-zinc-700' : 'bg-white/10 text-white'
+                            }`}>
+                              <FileText size={20} />
+                            </div>
+                            <div className="min-w-0">
+                              <h4 className={`font-display font-bold text-xs sm:text-sm truncate transition-colors ${
+                                isLight ? 'text-[#18181B] group-hover:text-sky-600' : 'text-white group-hover:text-sky-400'
+                              }`}>
+                                {msg.document.title}
+                              </h4>
+                              <p className="font-mono text-[10px] text-zinc-400">
+                                Document · {msg.document.type}
+                              </p>
+                            </div>
+                          </div>
 
-                        <button
-                          onClick={() => handleFeedback(msg.id, 'up')}
-                          className={`p-1.5 rounded-md transition-colors flex items-center justify-center ${
-                            feedback[msg.id] === 'up' 
-                              ? 'bg-emerald-50 text-emerald-600 font-bold' 
-                              : 'text-camry-graphite/80 hover:bg-black/5 hover:text-camry-blackout'
-                          }`}
-                          title="Good response"
-                        >
-                          <ThumbsUp size={15} className={feedback[msg.id] === 'up' ? 'fill-emerald-600' : ''} />
-                        </button>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveDocument(msg.document!);
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-sky-500 text-white hover:bg-sky-600 text-xs font-mono font-bold flex items-center gap-1.5 shadow-sm transition-all shrink-0"
+                          >
+                            <Download size={13} />
+                            <span className="hidden xs:inline">Download and open</span>
+                            <span className="xs:hidden">Open</span>
+                          </button>
+                        </div>
+                      )}
 
-                        <button
-                          onClick={() => handleFeedback(msg.id, 'down')}
-                          className={`p-1.5 rounded-md transition-colors flex items-center justify-center ${
-                            feedback[msg.id] === 'down' 
-                              ? 'bg-red-50 text-red-600 font-bold' 
-                              : 'text-camry-graphite/80 hover:bg-black/5 hover:text-camry-blackout'
-                          }`}
-                          title="Bad response"
-                        >
-                          <ThumbsDown size={15} className={feedback[msg.id] === 'down' ? 'fill-red-600' : ''} />
-                        </button>
+                      {/* Functional Action Bar under Assistant Answers */}
+                      {!isUser && (
+                        <div className={`flex items-center gap-1 sm:gap-1.5 mt-3 pt-2 border-t text-zinc-400 ${
+                          isLight ? 'border-zinc-100' : 'border-white/5'
+                        }`}>
+                          <button
+                            onClick={() => handleCopy(msg.id, msg.content)}
+                            className={`p-1.5 rounded-lg transition-colors flex items-center justify-center ${
+                              isLight ? 'hover:bg-zinc-100 hover:text-black' : 'hover:bg-white/5 hover:text-white'
+                            }`}
+                            title="Copy response"
+                          >
+                            {copiedId === msg.id ? <Check size={15} className="text-emerald-500" /> : <Copy size={15} />}
+                          </button>
 
-                        <button
-                          onClick={() => handleRegenerate(msg.id)}
-                          className="p-1.5 rounded-md text-camry-graphite/80 hover:bg-black/5 hover:text-camry-blackout transition-colors flex items-center justify-center"
-                          title="Regenerate response"
-                        >
-                          <RotateCw size={15} />
-                        </button>
-                      </div>
-                    )}
+                          <button
+                            onClick={() => handleSpeak(msg.id, msg.content)}
+                            className={`p-1.5 rounded-lg transition-colors flex items-center justify-center ${
+                              speakingId === msg.id 
+                                ? isLight ? 'bg-sky-100 text-sky-600 animate-pulse' : 'bg-white/10 text-sky-300 animate-pulse'
+                                : isLight ? 'hover:bg-zinc-100 hover:text-black' : 'hover:bg-white/5 hover:text-white'
+                            }`}
+                            title={speakingId === msg.id ? 'Stop reading' : 'Read aloud'}
+                          >
+                            {speakingId === msg.id ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                          </button>
+
+                          <button
+                            onClick={() => handleFeedback(msg.id, 'up')}
+                            className={`p-1.5 rounded-lg transition-colors flex items-center justify-center ${
+                              feedback[msg.id] === 'up' 
+                                ? 'bg-emerald-500/10 text-emerald-500 font-bold' 
+                                : isLight ? 'hover:bg-zinc-100 hover:text-black' : 'hover:bg-white/5 hover:text-white'
+                            }`}
+                            title="Good response"
+                          >
+                            <ThumbsUp size={15} className={feedback[msg.id] === 'up' ? 'fill-emerald-500' : ''} />
+                          </button>
+
+                          <button
+                            onClick={() => handleFeedback(msg.id, 'down')}
+                            className={`p-1.5 rounded-lg transition-colors flex items-center justify-center ${
+                              feedback[msg.id] === 'down' 
+                                ? 'bg-red-500/10 text-red-500 font-bold' 
+                                : isLight ? 'hover:bg-zinc-100 hover:text-black' : 'hover:bg-white/5 hover:text-white'
+                            }`}
+                            title="Bad response"
+                          >
+                            <ThumbsDown size={15} className={feedback[msg.id] === 'down' ? 'fill-red-500' : ''} />
+                          </button>
+
+                          <button
+                            onClick={() => handleRegenerate(msg.id)}
+                            className={`p-1.5 rounded-lg transition-colors flex items-center justify-center ${
+                              isLight ? 'hover:bg-zinc-100 hover:text-black' : 'hover:bg-white/5 hover:text-white'
+                            }`}
+                            title="Regenerate response"
+                          >
+                            <RotateCw size={15} />
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {isThinking && <ThinkingIndicator />}
               <div ref={messagesEndRef} />
             </div>
@@ -660,10 +844,16 @@ export const Chat: React.FC = () => {
         </div>
 
         {/* Footer Composer Area */}
-        <div className={`absolute bottom-0 left-0 right-0 p-2 sm:p-6 md:p-8 flex flex-col items-center justify-end bg-gradient-to-t from-camry-paper via-camry-paper to-transparent transition-all duration-500 ${isEmpty ? 'top-1/4' : ''}`}>
+        <div className={`absolute bottom-0 left-0 right-0 p-2 sm:p-6 md:p-8 flex flex-col items-center justify-end bg-gradient-to-t transition-all duration-500 ${
+          isLight ? 'from-[#EDEBE4] via-[#EDEBE4]/95' : 'from-[#121418] via-[#121418]/95'
+        } to-transparent ${isEmpty ? 'top-1/4' : ''}`}>
           <div className="max-w-2xl w-full relative">
             
-            <div className="relative bg-white rounded-xl shadow-sm border border-black/10 flex flex-col transition-shadow focus-within:shadow-md focus-within:border-camry-carrier/50 p-2 sm:p-3">
+            <div className={`relative rounded-2xl shadow-sm border flex flex-col transition-all duration-300 focus-within:shadow-md p-2 sm:p-3 camry-glass ${
+              isLight 
+                ? 'border-[#E2DDD5] focus-within:border-sky-500' 
+                : 'border-[#2E2E38] focus-within:border-sky-500'
+            }`}>
               <textarea 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -674,16 +864,22 @@ export const Chat: React.FC = () => {
                   }
                 }}
                 placeholder="Ask anything..."
-                className="w-full bg-transparent p-2 sm:p-3 pb-12 sm:pb-12 outline-none resize-none font-familjen placeholder-camry-graphite/40 text-sm sm:text-base"
+                className={`w-full bg-transparent p-2 sm:p-3 pb-12 sm:pb-12 outline-none resize-none font-sans text-sm sm:text-base ${
+                  isLight ? 'text-zinc-900 placeholder-zinc-400' : 'text-white placeholder-zinc-500'
+                }`}
                 rows={isEmpty ? 3 : 2}
               />
               
-              <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex flex-wrap justify-between items-center gap-1.5 pt-1 border-t border-black/5">
+              <div className={`absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex flex-wrap justify-between items-center gap-1.5 pt-1 border-t ${
+                isLight ? 'border-zinc-100' : 'border-white/5'
+              }`}>
                 {/* Left Actions */}
                 <div className="flex items-center gap-1 sm:gap-2 relative flex-wrap">
                   <button 
                     onClick={() => showToast("File attachments not available in preview")}
-                    className="p-1.5 text-camry-graphite/50 hover:text-camry-blackout rounded-md transition-colors"
+                    className={`p-1.5 rounded-lg transition-colors ${
+                      isLight ? 'text-zinc-400 hover:text-black hover:bg-zinc-100' : 'text-zinc-500 hover:text-white hover:bg-white/5'
+                    }`}
                     title="Attach file"
                   >
                     <Paperclip size={16} />
@@ -692,10 +888,12 @@ export const Chat: React.FC = () => {
                   <div className="relative">
                     <button 
                       onClick={() => setShowWebPopover(!showWebPopover)}
-                      className={`flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-xs font-medium transition-colors border ${
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] sm:text-xs font-semibold transition-colors border ${
                         isWebMode 
-                          ? 'bg-blue-50 border-blue-200 text-blue-700' 
-                          : 'bg-camry-graphite/5 border-transparent text-camry-graphite/70 hover:bg-camry-graphite/10'
+                          ? 'bg-sky-500/10 border-sky-500/30 text-sky-500' 
+                          : isLight 
+                            ? 'bg-zinc-100 border-zinc-200 text-zinc-700 hover:bg-zinc-200' 
+                            : 'bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10'
                       }`}
                     >
                       <Globe size={13} />
@@ -709,19 +907,21 @@ export const Chat: React.FC = () => {
                           initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 5 }}
-                          className="absolute bottom-full left-0 mb-2 w-48 bg-camry-graphite text-white rounded-lg p-2 text-xs shadow-lg z-20 font-martian tracking-wide"
+                          className={`absolute bottom-full left-0 mb-2 w-48 rounded-xl p-2 text-xs shadow-xl z-20 font-mono tracking-wide border ${
+                            isLight ? 'bg-white border-[#E2DDD5] text-zinc-800' : 'bg-[#202026] border-white/10 text-white'
+                          }`}
                         >
                           <button 
-                            className="w-full text-left p-2 rounded hover:bg-white/10"
+                            className={`w-full text-left p-2 rounded-lg transition-colors ${isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'}`}
                             onClick={() => { setIsWebMode(false); setShowWebPopover(false); }}
                           >
-                            ON-DEVICE · nothing leaves the building
+                            ON-DEVICE · offline/local
                           </button>
                           <button 
-                            className="w-full text-left p-2 rounded hover:bg-white/10"
+                            className={`w-full text-left p-2 rounded-lg transition-colors ${isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'}`}
                             onClick={() => { setIsWebMode(true); setShowWebPopover(false); }}
                           >
-                            WEB · fetches live data
+                            WEB · live external searches
                           </button>
                         </motion.div>
                       )}
@@ -736,10 +936,14 @@ export const Chat: React.FC = () => {
                   <div className="relative">
                     <button 
                       onClick={() => setShowModelPopover(!showModelPopover)}
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 bg-camry-graphite/5 hover:bg-camry-graphite/10 rounded-lg text-camry-blackout transition-colors group border border-black/5"
+                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl transition-colors group border ${
+                        isLight 
+                          ? 'bg-zinc-100 border-zinc-200 text-zinc-800 hover:bg-zinc-200' 
+                          : 'bg-white/5 border-white/10 text-zinc-200 hover:bg-white/10'
+                      }`}
                     >
-                      <span className="font-martian text-xs font-semibold">{loadedModel}</span>
-                      <ChevronDown size={13} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors flex-shrink-0" />
+                      <span className="font-mono text-xs font-bold">{loadedModel}</span>
+                      <ChevronDown size={13} className="text-zinc-400 group-hover:text-zinc-200 transition-colors shrink-0" />
                     </button>
 
                     <AnimatePresence>
@@ -750,11 +954,15 @@ export const Chat: React.FC = () => {
                             initial={{ opacity: 0, y: 5, scale: 0.98 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 5, scale: 0.98 }}
-                            className="absolute bottom-full right-0 mb-2 w-[280px] sm:w-[340px] bg-white border border-black/10 rounded-xl shadow-xl z-30 overflow-hidden flex flex-col"
+                            className={`absolute bottom-full right-0 mb-2 w-[280px] sm:w-[340px] border rounded-2xl shadow-2xl z-30 overflow-hidden flex flex-col ${
+                              isLight ? 'bg-white border-[#E2DDD5] text-zinc-900' : 'bg-[#16161A] border-[#2E2E38] text-white'
+                            }`}
                           >
-                            <div className="flex items-center justify-between p-3 border-b border-black/5 bg-camry-paper/50">
-                              <span className="font-bricolage font-medium text-sm">Switch Model</span>
-                              <button onClick={() => setShowModelPopover(false)} className="text-camry-graphite/50 hover:text-black">
+                            <div className={`flex items-center justify-between p-3 border-b ${
+                              isLight ? 'bg-zinc-50 border-zinc-100' : 'bg-white/5 border-white/5'
+                            }`}>
+                              <span className="font-display font-bold text-sm">Switch Model</span>
+                              <button onClick={() => setShowModelPopover(false)} className={`p-1 rounded ${isLight ? 'hover:bg-zinc-200 text-zinc-400 hover:text-black' : 'hover:bg-white/5 text-zinc-500 hover:text-white'}`}>
                                 <X size={16} />
                               </button>
                             </div>
@@ -767,24 +975,32 @@ export const Chat: React.FC = () => {
                                 if (!isInstalled && !isLoading && !isLoaded) return null;
                                 
                                 return (
-                                  <div key={m.id} className={`flex items-center justify-between p-2 rounded-lg ${isLoaded ? 'bg-camry-carrier/10' : 'hover:bg-camry-graphite/5'}`}>
+                                  <div key={m.id} className={`flex items-center justify-between p-2 rounded-xl transition-colors ${
+                                    isLoaded 
+                                      ? 'bg-sky-500/10 text-sky-600' 
+                                      : isLight ? 'hover:bg-zinc-50' : 'hover:bg-white/5'
+                                  }`}>
                                     <div className="flex items-center gap-2 min-w-0">
-                                      <span className="font-martian text-xs text-camry-blackout truncate">{m.id}</span>
+                                      <span className="font-mono text-xs truncate font-medium">{m.id}</span>
                                     </div>
                                     
                                     {isLoaded ? (
-                                      <Check size={16} className="text-camry-deep-carrier flex-shrink-0" />
+                                      <Check size={16} className="text-sky-500 shrink-0" />
                                     ) : isLoading ? (
                                       <div className="flex items-center gap-2">
-                                        <div className="w-12 h-1 bg-camry-graphite/10 rounded-full overflow-hidden">
-                                          <div className="h-full bg-camry-blackout w-1/3 animate-pulse" />
+                                        <div className="w-12 h-1 bg-zinc-200 rounded-full overflow-hidden">
+                                          <div className="h-full bg-sky-500 w-1/3 animate-pulse" />
                                         </div>
-                                        <span className="font-martian text-[10px] text-camry-graphite/60">LOADING...</span>
+                                        <span className="font-mono text-[9px] text-zinc-400">LOADING...</span>
                                       </div>
                                     ) : (
                                       <button 
                                         onClick={() => handleLoadModel(m.id)}
-                                        className="text-xs font-medium px-2 py-1 rounded bg-white border border-black/10 shadow-sm hover:bg-camry-graphite/5"
+                                        className={`text-xs font-bold px-2.5 py-1 rounded-lg border shadow-sm transition-colors ${
+                                          isLight 
+                                            ? 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50' 
+                                            : 'bg-[#202026] border-zinc-800 text-zinc-300 hover:bg-[#2E2E38]'
+                                        }`}
                                       >
                                         Load
                                       </button>
@@ -801,21 +1017,25 @@ export const Chat: React.FC = () => {
 
                   {/* Mic Controls */}
                   <div className="relative">
-                    <div className="flex items-center bg-camry-graphite/10 hover:bg-camry-graphite/15 rounded-lg border border-black/5 overflow-hidden text-camry-blackout">
+                    <div className={`flex items-center rounded-xl border overflow-hidden transition-colors ${
+                      isLight 
+                        ? 'bg-zinc-100 border-zinc-200 text-zinc-800' 
+                        : 'bg-white/5 border-white/10 text-white'
+                    }`}>
                       <button
                         type="button"
                         onClick={() => setShowMicPopover(!showMicPopover)}
-                        className="px-1.5 py-1.5 hover:bg-black/10 transition-colors text-camry-graphite/80"
+                        className={`px-2 py-1.5 transition-colors ${isLight ? 'hover:bg-zinc-200' : 'hover:bg-white/5'}`}
                         title="Microphone input settings"
                       >
                         <ChevronDown size={14} />
                       </button>
-                      <div className="w-[1px] h-4 bg-black/10" />
+                      <div className={`w-[1px] h-4 ${isLight ? 'bg-zinc-200' : 'bg-white/10'}`} />
                       <button
                         type="button"
                         onClick={toggleListening}
-                        className={`px-2 py-1.5 transition-colors flex items-center justify-center ${
-                          isListening ? 'bg-red-500 text-white animate-pulse' : 'hover:bg-black/10 text-camry-blackout'
+                        className={`px-2.5 py-1.5 transition-colors flex items-center justify-center ${
+                          isListening ? 'bg-red-500 text-white animate-pulse' : isLight ? 'hover:bg-zinc-200' : 'hover:bg-white/5'
                         }`}
                         title={isListening ? 'Stop recording' : 'Start voice recording'}
                       >
@@ -831,13 +1051,13 @@ export const Chat: React.FC = () => {
                             initial={{ opacity: 0, y: 6, scale: 0.96 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 6, scale: 0.96 }}
-                            className="absolute bottom-full right-0 mb-2.5 z-40 bg-[#282828] text-white p-3.5 rounded-2xl border border-white/10 shadow-2xl w-72 space-y-3 font-familjen text-xs"
+                            className="absolute bottom-full right-0 mb-2.5 z-40 bg-[#1E1E24] text-white p-3.5 rounded-2xl border border-white/10 shadow-2xl w-72 space-y-3 font-mono text-xs"
                           >
                             <div className="flex items-center gap-2.5">
-                              <Mic size={15} className="text-white/80 flex-shrink-0" />
+                              <Mic size={15} className="text-white/80 shrink-0" />
                               <div className="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
                                 <div 
-                                  className="h-full bg-blue-500 rounded-full transition-all duration-150"
+                                  className="h-full bg-sky-500 rounded-full transition-all duration-150"
                                   style={{ width: `${audioLevel}%` }}
                                 />
                               </div>
@@ -852,7 +1072,7 @@ export const Chat: React.FC = () => {
                                 }`}
                               >
                                 <span className="truncate pr-2">Default - MacBook Pro Microphone ...</span>
-                                {selectedMicDevice.includes('Default') && <Check size={16} className="text-blue-400 flex-shrink-0" />}
+                                {selectedMicDevice.includes('Default') && <Check size={16} className="text-sky-400 shrink-0" />}
                               </button>
 
                               <button
@@ -863,7 +1083,7 @@ export const Chat: React.FC = () => {
                                 }`}
                               >
                                 <span className="truncate pr-2">MacBook Pro Microphone (Built-in)</span>
-                                {!selectedMicDevice.includes('Default') && <Check size={16} className="text-blue-400 flex-shrink-0" />}
+                                {!selectedMicDevice.includes('Default') && <Check size={16} className="text-sky-400 shrink-0" />}
                               </button>
                             </div>
 
@@ -879,7 +1099,7 @@ export const Chat: React.FC = () => {
                                 type="button"
                                 onClick={() => setHoldToRecord(!holdToRecord)}
                                 className={`w-9 h-5 rounded-full p-0.5 transition-colors flex items-center cursor-pointer ${
-                                  holdToRecord ? 'bg-blue-500 justify-end' : 'bg-white/20 justify-start'
+                                  holdToRecord ? 'bg-sky-500 justify-end' : 'bg-white/20 justify-start'
                                 }`}
                               >
                                 <div className="w-4 h-4 rounded-full bg-white shadow-md" />
@@ -894,10 +1114,12 @@ export const Chat: React.FC = () => {
                   <button 
                     onClick={() => handleSend(input)}
                     disabled={!input.trim()}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors shadow ${
                       input.trim() 
-                        ? 'bg-camry-blackout text-white' 
-                        : 'bg-camry-graphite/10 text-camry-graphite/30'
+                        ? 'bg-sky-500 text-white hover:bg-sky-600' 
+                        : isLight 
+                          ? 'bg-zinc-100 text-zinc-300' 
+                          : 'bg-white/5 text-zinc-600'
                     }`}
                   >
                     <ArrowUp size={16} />
@@ -905,22 +1127,6 @@ export const Chat: React.FC = () => {
                 </div>
               </div>
             </div>
-
-            {/* Suggestions */}
-            {isEmpty && (
-              <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-                {SUGGESTIONS.map((s, i) => (
-                  <button 
-                    key={i}
-                    onClick={() => setInput(s.text)}
-                    className="text-left p-3.5 sm:p-4 rounded-xl border border-black/5 bg-white shadow-sm hover:shadow-md hover:border-black/10 transition-all group flex items-start gap-3"
-                  >
-                    <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">{s.icon}</span>
-                    <span className="font-familjen text-xs sm:text-sm text-camry-graphite/80 group-hover:text-camry-blackout transition-colors leading-snug">{s.text}</span>
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
