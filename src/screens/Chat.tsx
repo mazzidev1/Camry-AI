@@ -9,6 +9,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CamryLoadingIcon } from '../components/CamryLoadingIcon';
 import { DocumentViewer } from '../components/DocumentViewer';
 import { CamryOrb } from '../components/CamryOrb';
+import { CamryMascot } from '../components/CamryMascot';
+import { AgentLogo } from '../components/AgentLogo';
+import { AxolotlStatusBadge } from '../components/AxolotlStatusBadge';
+import { AxolotlVariantCard } from '../components/AxolotlVariants';
 
 const SUGGESTIONS = [
   { icon: <Scale size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Summarize the key obligations in this contract.' },
@@ -16,6 +20,15 @@ const SUGGESTIONS = [
   { icon: <Search size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Extract every date and deadline from this document.' },
   { icon: <Folder size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Turn these meeting notes into action items.' },
 ];
+
+const VoiceWaveIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <line x1="6" y1="10" x2="6" y2="14" />
+    <line x1="10" y1="6" x2="10" y2="18" />
+    <line x1="14" y1="8" x2="14" y2="16" />
+    <line x1="18" y1="11" x2="18" y2="13" />
+  </svg>
+);
 
 const ThinkingIndicator: React.FC = () => {
   const { loadedModel, themeMode } = useAppContext();
@@ -43,7 +56,7 @@ const ThinkingIndicator: React.FC = () => {
       }`}>
         <div className="flex items-center justify-between gap-3 mb-2">
           <div className="flex items-center gap-2">
-            <CamryLoadingIcon size={16} color={isLight ? '#3B82F6' : '#60A5FA'} />
+            <CamryMascot size={22} mood="thinking" animated={true} />
             <span className={`font-mono text-[10px] font-bold tracking-wider uppercase ${
               isLight ? 'text-zinc-700' : 'text-zinc-300'
             }`}>
@@ -135,6 +148,7 @@ export const Chat: React.FC = () => {
     }
   }, [pendingChatPrompt, setPendingChatPrompt]);
   const [isWebMode, setIsWebMode] = useState(false);
+  const [showPlusPopover, setShowPlusPopover] = useState(false);
   const [showWebPopover, setShowWebPopover] = useState(false);
   const [showModelPopover, setShowModelPopover] = useState(false);
   const [showDocsListModal, setShowDocsListModal] = useState(false);
@@ -442,11 +456,15 @@ export const Chat: React.FC = () => {
           isLight ? 'border-[#E2DDD5]' : 'border-white/5'
         }`}>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            {activeAgent ? (
+              <AgentLogo agentId={activeAgent} size={22} className="shrink-0 shadow-sm" />
+            ) : (
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            )}
             <span className={`font-display text-xs sm:text-sm font-bold tracking-tight ${
               isLight ? 'text-[#18181B]' : 'text-white'
             }`}>
-              {activeAgent ? activeAgent.toUpperCase() : 'CAMRY ON-DEVICE CHAT'}
+              {activeAgent ? (allAgents.find(a => a.id === activeAgent)?.name || activeAgent.toUpperCase()) : 'CAMRY ON-DEVICE CHAT'}
             </span>
             <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
               isLight ? 'bg-zinc-100 text-zinc-600 border border-[#E2DDD5]' : 'bg-white/5 text-zinc-400'
@@ -571,12 +589,28 @@ export const Chat: React.FC = () => {
         <div className="flex-1 overflow-y-auto p-4 sm:p-8 pb-36 sm:pb-32 flex flex-col items-center">
           {isEmpty ? (
             <div className="flex-1 flex flex-col items-center justify-center max-w-2xl w-full text-center py-6 pb-20 sm:pb-32">
-              <CamryOrb size="xl" className="mb-6" />
+              {activeAgent ? (
+                <AgentLogo 
+                  agentId={activeAgent} 
+                  name={allAgents.find(a => a.id === activeAgent)?.name} 
+                  size={64} 
+                  className="mb-5 shadow-2xl" 
+                />
+              ) : (
+                <div className="relative mb-6 flex flex-col items-center">
+                  <CamryMascot size={84} variant="full" animated={true} className="shadow-2xl hover:scale-105 transition-transform" />
+                  <div className={`mt-3.5 px-3 py-1 rounded-full text-xs font-mono font-semibold border shadow-sm ${
+                    isLight ? 'bg-[#0066FF]/10 text-[#0066FF] border-[#0066FF]/20' : 'bg-[#0066FF]/20 text-blue-300 border-[#0066FF]/40'
+                  }`}>
+                    Hi, I'm Camry! · Local NPU AI
+                  </div>
+                </div>
+              )}
               
               <h2 className={`text-4xl md:text-5xl font-display font-extrabold tracking-tight mb-2 transition-colors duration-200 ${
                 isLight ? 'text-[#18181B]' : 'text-white'
               }`}>
-                {activeAgent ? `Hello, I'm ${activeAgent}` : 'Hi, there'}
+                {activeAgent ? `Hello, I'm ${allAgents.find(a => a.id === activeAgent)?.name || activeAgent}` : 'Hi, there'}
               </h2>
               <p className={`text-sm md:text-base font-sans transition-colors duration-200 mb-8 max-w-md ${
                 isLight ? 'text-zinc-500' : 'text-zinc-400'
@@ -638,8 +672,8 @@ export const Chat: React.FC = () => {
                 </button>
               </div>
 
-              {/* Calendar Integration Card (PDF 4.2 bottom right element) */}
-              <div className="w-full">
+              {/* Calendar Integration Card */}
+              <div className="w-full mb-6">
                 <button
                   onClick={() => showToast("Syncing with corporate calendar (simulated)")}
                   className={`w-full p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer shadow-sm flex items-center justify-between group ${
@@ -669,6 +703,41 @@ export const Chat: React.FC = () => {
                     Connect
                   </span>
                 </button>
+              </div>
+
+              {/* Live Axolotl Mascot NPU Activity Status & State Cards in Chat */}
+              <div className="w-full text-left space-y-4 pt-2 border-t border-black/5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono font-bold tracking-wider uppercase text-zinc-400">
+                    AXOLOTL MASCOT SYSTEM STATES & NOTIFICATIONS
+                  </span>
+                </div>
+                
+                <AxolotlStatusBadge showSelector={true} className="w-full shadow-sm" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                  <AxolotlVariantCard 
+                    variant="idle" 
+                    title="Standby Mode" 
+                    description="Zero external telemetry. Local NPU standing by." 
+                    actionText="Check Hardware"
+                    onAction={() => showToast("Local NPU hardware status: 100% nominal", "success", "NPU READY")}
+                  />
+                  <AxolotlVariantCard 
+                    variant="success" 
+                    title="Task Completed" 
+                    description="Documents and query vector index successfully synced." 
+                    actionText="View Output"
+                    onAction={() => showToast("All chat & RAG indexes updated", "success", "SYNC OK")}
+                  />
+                  <AxolotlVariantCard 
+                    variant="empty" 
+                    title="No Documents" 
+                    description="Query returned zero matching local document files." 
+                    actionText="Upload File"
+                    onAction={() => setInput("Draft a new contract document for me")}
+                  />
+                </div>
               </div>
             </div>
           ) : (
@@ -849,7 +918,7 @@ export const Chat: React.FC = () => {
         } to-transparent ${isEmpty ? 'top-1/4' : ''}`}>
           <div className="max-w-2xl w-full relative">
             
-            <div className={`relative rounded-2xl shadow-sm border flex flex-col transition-all duration-300 focus-within:shadow-md p-2 sm:p-3 camry-glass ${
+            <div className={`relative rounded-2xl shadow-sm border flex flex-col transition-all duration-300 focus-within:shadow-md p-2.5 sm:p-3.5 camry-glass ${
               isLight 
                 ? 'border-[#E2DDD5] focus-within:border-sky-500' 
                 : 'border-[#2E2E38] focus-within:border-sky-500'
@@ -864,88 +933,173 @@ export const Chat: React.FC = () => {
                   }
                 }}
                 placeholder="Ask anything..."
-                className={`w-full bg-transparent p-2 sm:p-3 pb-12 sm:pb-12 outline-none resize-none font-sans text-sm sm:text-base ${
+                className={`w-full bg-transparent px-1 py-1.5 sm:px-2 sm:py-2 outline-none resize-none font-sans text-sm sm:text-base leading-relaxed ${
                   isLight ? 'text-zinc-900 placeholder-zinc-400' : 'text-white placeholder-zinc-500'
                 }`}
-                rows={isEmpty ? 3 : 2}
+                rows={isEmpty ? 2 : 1}
+                style={{ minHeight: isEmpty ? '64px' : '44px' }}
               />
-              
-              <div className={`absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex flex-wrap justify-between items-center gap-1.5 pt-1 border-t ${
+                          <div className={`flex items-center justify-between gap-2 pt-2 border-t mt-1.5 ${
                 isLight ? 'border-zinc-100' : 'border-white/5'
               }`}>
                 {/* Left Actions */}
-                <div className="flex items-center gap-1 sm:gap-2 relative flex-wrap">
-                  <button 
-                    onClick={() => showToast("File attachments not available in preview")}
-                    className={`p-1.5 rounded-lg transition-colors ${
-                      isLight ? 'text-zinc-400 hover:text-black hover:bg-zinc-100' : 'text-zinc-500 hover:text-white hover:bg-white/5'
-                    }`}
-                    title="Attach file"
-                  >
-                    <Paperclip size={16} />
-                  </button>
-
-                  <div className="relative">
+                <div className="flex items-center gap-1.5 sm:gap-2 relative shrink-0 max-w-[70%] sm:max-w-none">
+                  
+                  {/* Plus / Attach / Options Button */}
+                  <div className="relative shrink-0">
                     <button 
-                      onClick={() => setShowWebPopover(!showWebPopover)}
-                      className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] sm:text-xs font-semibold transition-all border ${
-                        isWebMode 
-                          ? isLight 
-                            ? 'bg-zinc-900 border-zinc-900 text-white shadow-sm' 
-                            : 'bg-white border-white text-zinc-950 shadow-sm'
+                      onClick={() => {
+                        setShowPlusPopover(!showPlusPopover);
+                        setShowModelPopover(false);
+                        setShowMicPopover(false);
+                      }}
+                      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all shadow-sm ${
+                        showPlusPopover
+                          ? isLight ? 'bg-zinc-900 text-white' : 'bg-white text-zinc-950'
                           : isLight 
-                            ? 'bg-zinc-100 border-zinc-200 text-zinc-700 hover:bg-zinc-200' 
-                            : 'bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10'
+                            ? 'bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200/80' 
+                            : 'bg-[#22222A] hover:bg-[#2C2C36] text-zinc-200 border border-white/10'
                       }`}
+                      title="More options (Attach, Search mode, Actions)"
                     >
-                      <Globe size={13} />
-                      <span>{isWebMode ? 'Web' : 'On-device'}</span>
-                      <ChevronDown size={11} />
+                      <Plus size={18} strokeWidth={2.5} className={`transition-transform duration-200 ${showPlusPopover ? 'rotate-45' : ''}`} />
                     </button>
 
                     <AnimatePresence>
-                      {showWebPopover && (
-                        <motion.div 
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 5 }}
-                          className={`absolute bottom-full left-0 mb-2 w-48 rounded-xl p-2 text-xs shadow-xl z-20 font-mono tracking-wide border ${
-                            isLight ? 'bg-white border-[#E2DDD5] text-zinc-800' : 'bg-[#202026] border-white/10 text-white'
-                          }`}
-                        >
-                          <button 
-                            className={`w-full text-left p-2 rounded-lg transition-colors ${isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'}`}
-                            onClick={() => { setIsWebMode(false); setShowWebPopover(false); }}
+                      {showPlusPopover && (
+                        <>
+                          <div className="fixed inset-0 z-30" onClick={() => setShowPlusPopover(false)} />
+                          <motion.div 
+                            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                            className={`absolute bottom-full left-0 mb-3 w-72 rounded-2xl p-2 shadow-2xl z-40 border font-sans ${
+                              isLight ? 'bg-white border-[#E2DDD5] text-zinc-900' : 'bg-[#1C1C23] border-[#2E2E38] text-white'
+                            }`}
                           >
-                            ON-DEVICE · offline/local
-                          </button>
-                          <button 
-                            className={`w-full text-left p-2 rounded-lg transition-colors ${isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'}`}
-                            onClick={() => { setIsWebMode(true); setShowWebPopover(false); }}
-                          >
-                            WEB · live external searches
-                          </button>
-                        </motion.div>
+                            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 px-2.5 py-1 font-bold">
+                              ATTACH & OPTIONS
+                            </div>
+
+                            {/* Option 1: Attach File */}
+                            <button 
+                              onClick={() => {
+                                setShowPlusPopover(false);
+                                showToast("File attachment feature active for current session");
+                              }}
+                              className={`w-full flex items-center gap-3 p-2 rounded-xl text-left transition-colors ${
+                                isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'
+                              }`}
+                            >
+                              <div className={`p-2 rounded-lg shrink-0 ${isLight ? 'bg-zinc-100 text-zinc-700' : 'bg-white/10 text-zinc-200'}`}>
+                                <Paperclip size={16} />
+                              </div>
+                              <div className="min-w-0">
+                                <div className="text-xs font-semibold">Attach File or Document</div>
+                                <div className="text-[10px] text-zinc-400 truncate">PDF, TXT, DOCX, Code files</div>
+                              </div>
+                            </button>
+
+                            <div className={`my-1 border-t ${isLight ? 'border-zinc-100' : 'border-white/5'}`} />
+
+                            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 px-2.5 py-1 font-bold">
+                              SEARCH ENGINE MODE
+                            </div>
+
+                            {/* Option 2A: On-device */}
+                            <button 
+                              onClick={() => {
+                                setIsWebMode(false);
+                                setShowPlusPopover(false);
+                                showToast("Switched to On-device (offline) mode");
+                              }}
+                              className={`w-full flex items-center justify-between p-2 rounded-xl text-left transition-colors ${
+                                !isWebMode 
+                                  ? isLight ? 'bg-zinc-100 font-semibold' : 'bg-white/10 font-semibold'
+                                  : isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <div className={`p-1.5 rounded-lg shrink-0 ${!isWebMode ? 'bg-sky-500/10 text-sky-500' : 'text-zinc-400'}`}>
+                                  <Scale size={15} />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="text-xs font-semibold">On-device Engine</div>
+                                  <div className="text-[10px] text-zinc-400 truncate">Offline · Privacy first local model</div>
+                                </div>
+                              </div>
+                              {!isWebMode && <Check size={16} className="text-sky-500 shrink-0 ml-1" />}
+                            </button>
+
+                            {/* Option 2B: Web Live Search */}
+                            <button 
+                              onClick={() => {
+                                setIsWebMode(true);
+                                setShowPlusPopover(false);
+                                showToast("Switched to Live Web Search mode");
+                              }}
+                              className={`w-full flex items-center justify-between p-2 rounded-xl text-left transition-colors ${
+                                isWebMode 
+                                  ? isLight ? 'bg-zinc-100 font-semibold' : 'bg-white/10 font-semibold'
+                                  : isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <div className={`p-1.5 rounded-lg shrink-0 ${isWebMode ? 'bg-emerald-500/10 text-emerald-500' : 'text-zinc-400'}`}>
+                                  <Globe size={15} />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="text-xs font-semibold">Web Search Live</div>
+                                  <div className="text-[10px] text-zinc-400 truncate">Real-time web grounding search</div>
+                                </div>
+                              </div>
+                              {isWebMode && <Check size={16} className="text-emerald-500 shrink-0 ml-1" />}
+                            </button>
+
+                            <div className={`my-1 border-t ${isLight ? 'border-zinc-100' : 'border-white/5'}`} />
+
+                            {/* Option 3: Quick Action */}
+                            <button 
+                              onClick={() => {
+                                setShowPlusPopover(false);
+                                showToast("Chat session refreshed");
+                              }}
+                              className={`w-full flex items-center gap-2.5 p-2 rounded-xl text-left text-xs font-medium transition-colors ${
+                                isLight ? 'hover:bg-zinc-100 text-zinc-700' : 'hover:bg-white/5 text-zinc-300'
+                              }`}
+                            >
+                              <Sparkles size={15} className="text-amber-500 shrink-0" />
+                              <span>Quick prompt recommendations</span>
+                            </button>
+                          </motion.div>
+                        </>
                       )}
                     </AnimatePresence>
                   </div>
-                </div>
 
-                {/* Right Actions */}
-                <div className="flex items-center gap-1.5 sm:gap-2 relative ml-auto flex-wrap justify-end">
-                  
-                  {/* Model Selector */}
+                  {/* Model Selector Pill right next to the plus button */}
                   <div className="relative">
                     <button 
-                      onClick={() => setShowModelPopover(!showModelPopover)}
-                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl transition-colors group border ${
+                      onClick={() => {
+                        setShowModelPopover(!showModelPopover);
+                        setShowPlusPopover(false);
+                        setShowMicPopover(false);
+                      }}
+                      className={`flex items-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2 rounded-full font-sans transition-all border shadow-sm cursor-pointer ${
                         isLight 
-                          ? 'bg-zinc-100 border-zinc-200 text-zinc-800 hover:bg-zinc-200' 
-                          : 'bg-white/5 border-white/10 text-zinc-200 hover:bg-white/10'
+                          ? 'bg-zinc-100 hover:bg-zinc-200 border-zinc-200 text-zinc-900' 
+                          : 'bg-[#22222A] hover:bg-[#2C2C36] border-white/10 text-white'
                       }`}
                     >
-                      <span className="font-mono text-xs font-bold">{loadedModel}</span>
-                      <ChevronDown size={13} className="text-zinc-400 group-hover:text-zinc-200 transition-colors shrink-0" />
+                      <span className="font-mono text-xs font-bold truncate max-w-[100px] min-[400px]:max-w-[140px] sm:max-w-[190px]">
+                        {loadedModel}
+                      </span>
+                      {isWebMode && (
+                        <span className="hidden sm:inline-block text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-500 font-mono font-bold shrink-0">
+                          WEB
+                        </span>
+                      )}
+                      <ChevronDown size={13} className="text-zinc-400 shrink-0" />
                     </button>
 
                     <AnimatePresence>
@@ -956,7 +1110,7 @@ export const Chat: React.FC = () => {
                             initial={{ opacity: 0, y: 5, scale: 0.98 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 5, scale: 0.98 }}
-                            className={`absolute bottom-full right-0 mb-2 w-[280px] sm:w-[340px] border rounded-2xl shadow-2xl z-30 overflow-hidden flex flex-col ${
+                            className={`absolute bottom-full left-0 mb-2 w-[280px] sm:w-[320px] border rounded-2xl shadow-2xl z-30 overflow-hidden flex flex-col ${
                               isLight ? 'bg-white border-[#E2DDD5] text-zinc-900' : 'bg-[#16161A] border-[#2E2E38] text-white'
                             }`}
                           >
@@ -1018,34 +1172,32 @@ export const Chat: React.FC = () => {
                       )}
                     </AnimatePresence>
                   </div>
+                </div>
 
-                  {/* Mic Controls */}
+                {/* Right Actions */}
+                <div className="flex items-center gap-1.5 sm:gap-2 relative ml-auto shrink-0">
+                  
+                  {/* Mic Button */}
                   <div className="relative">
-                    <div className={`flex items-center rounded-xl border overflow-hidden transition-colors ${
-                      isLight 
-                        ? 'bg-zinc-100 border-zinc-200 text-zinc-800' 
-                        : 'bg-white/5 border-white/10 text-white'
-                    }`}>
-                      <button
-                        type="button"
-                        onClick={() => setShowMicPopover(!showMicPopover)}
-                        className={`px-2 py-1.5 transition-colors ${isLight ? 'hover:bg-zinc-200' : 'hover:bg-white/5'}`}
-                        title="Microphone input settings"
-                      >
-                        <ChevronDown size={14} />
-                      </button>
-                      <div className={`w-[1px] h-4 ${isLight ? 'bg-zinc-200' : 'bg-white/10'}`} />
-                      <button
-                        type="button"
-                        onClick={toggleListening}
-                        className={`px-2.5 py-1.5 transition-colors flex items-center justify-center ${
-                          isListening ? 'bg-red-500 text-white animate-pulse' : isLight ? 'hover:bg-zinc-200' : 'hover:bg-white/5'
-                        }`}
-                        title={isListening ? 'Stop recording' : 'Start voice recording'}
-                      >
-                        {isListening ? <MicOff size={15} /> : <Mic size={15} />}
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        toggleListening();
+                        setShowMicPopover(!showMicPopover);
+                        setShowPlusPopover(false);
+                        setShowModelPopover(false);
+                      }}
+                      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all border shadow-sm ${
+                        isListening
+                          ? 'bg-red-500 border-red-500 text-white animate-pulse'
+                          : isLight
+                            ? 'bg-zinc-100 hover:bg-zinc-200 border-zinc-200/80 text-zinc-700'
+                            : 'bg-[#22222A] hover:bg-[#2C2C36] border-white/10 text-zinc-200'
+                      }`}
+                      title="Microphone input settings"
+                    >
+                      {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+                    </button>
 
                     <AnimatePresence>
                       {showMicPopover && (
@@ -1115,19 +1267,31 @@ export const Chat: React.FC = () => {
                     </AnimatePresence>
                   </div>
 
+                  {/* Send / Voice Mode Action Button */}
                   <button 
-                    onClick={() => handleSend(input)}
-                    disabled={!input.trim()}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors shadow ${
-                      input.trim() 
-                        ? 'bg-sky-500 text-white hover:bg-sky-600' 
+                    onClick={() => {
+                      if (input.trim()) {
+                        handleSend(input);
+                      } else {
+                        toggleListening();
+                      }
+                    }}
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all shadow-md shrink-0 active:scale-95 ${
+                      input.trim()
+                        ? 'bg-[#0066FF] text-white hover:bg-[#0052CC] shadow-[#0066FF]/30'
                         : isLight 
-                          ? 'bg-zinc-100 text-zinc-300' 
-                          : 'bg-white/5 text-zinc-600'
+                          ? 'bg-zinc-900 text-white hover:bg-black' 
+                          : 'bg-white text-zinc-950 hover:bg-zinc-100'
                     }`}
+                    title={input.trim() ? "Send message" : "Voice mode"}
                   >
-                    <ArrowUp size={16} />
+                    {input.trim() ? (
+                      <ArrowUp size={18} strokeWidth={2.5} />
+                    ) : (
+                      <VoiceWaveIcon size={16} />
+                    )}
                   </button>
+
                 </div>
               </div>
             </div>

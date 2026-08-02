@@ -17,7 +17,9 @@ interface LogEntry {
 }
 
 export const Dashboard: React.FC = () => {
-  const { showToast } = useAppContext();
+  const { showToast, themeMode } = useAppContext();
+  const isLight = themeMode !== 'dark';
+
   const [activeTab, setActiveTab] = useState<'NPU' | 'SOC' | 'RAM'>('NPU');
   const [tick, setTick] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -174,15 +176,19 @@ export const Dashboard: React.FC = () => {
     return (
       <button 
         onClick={() => setActiveTab(id)}
-        className={`flex-1 text-left p-2.5 sm:p-4 rounded-xl border transition-all ${
+        className={`flex-1 text-left p-2.5 sm:p-4 rounded-xl border transition-all cursor-pointer ${
           isActive 
-            ? 'bg-white border-camry-carrier shadow-sm' 
-            : 'bg-camry-graphite/5 border-transparent hover:bg-camry-graphite/10'
+            ? (isLight ? 'bg-white border-camry-carrier shadow-xs' : 'bg-[#1C1C22] border-[#0066FF] shadow-xs')
+            : (isLight ? 'bg-camry-graphite/5 border-transparent hover:bg-camry-graphite/10' : 'bg-[#1C1C22]/50 border-white/5 hover:bg-white/10')
         }`}
       >
-        <div className="font-martian text-[10px] sm:text-xs text-camry-graphite/60 mb-0.5 sm:mb-1">{id}</div>
-        <div className={`font-martian text-xl sm:text-3xl md:text-4xl tracking-tight ${isActive ? 'text-camry-carrier' : 'text-camry-blackout'}`}>
-          {value}<span className="text-xs sm:text-lg text-camry-graphite/40 ml-0.5 sm:ml-1">%</span>
+        <div className={`font-martian text-[10px] sm:text-xs mb-0.5 sm:mb-1 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>{id}</div>
+        <div className={`font-martian text-xl sm:text-3xl md:text-4xl tracking-tight ${
+          isActive 
+            ? (isLight ? 'text-camry-carrier' : 'text-[#0066FF]') 
+            : (isLight ? 'text-camry-blackout' : 'text-white')
+        }`}>
+          {value}<span className={`text-xs sm:text-lg ml-0.5 sm:ml-1 ${isLight ? 'text-camry-graphite/40' : 'text-zinc-500'}`}>%</span>
         </div>
       </button>
     );
@@ -212,28 +218,34 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 h-full flex flex-col bg-camry-paper overflow-hidden">
+    <div className={`flex-1 h-full flex flex-col overflow-hidden transition-colors ${
+      isLight ? 'bg-camry-paper' : 'bg-[#141418] text-white'
+    }`}>
       {/* Header */}
       <div className="p-4 sm:p-8 pb-4 flex-shrink-0 flex justify-between items-center gap-3">
         <div className="flex items-center gap-2 sm:gap-3">
-          <BarChart2 className="text-camry-blackout flex-shrink-0" size={22} />
-          <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Dashboard</h1>
+          <BarChart2 className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-[#0066FF]'}`} size={22} />
+          <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Dashboard</h1>
         </div>
 
         {/* Manual Refresh Button */}
         <button
           onClick={handleRefresh}
           disabled={isRefreshing}
-          className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 bg-white border border-black/10 rounded-lg text-xs font-martian text-camry-graphite hover:bg-camry-graphite/5 transition-all shadow-sm disabled:opacity-60 flex-shrink-0"
+          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 border rounded-lg text-xs font-martian transition-all shadow-xs disabled:opacity-60 flex-shrink-0 cursor-pointer ${
+            isLight 
+              ? 'bg-white border-black/10 text-camry-graphite hover:bg-camry-graphite/5' 
+              : 'bg-[#1C1C22] border-white/10 text-zinc-300 hover:bg-white/10'
+          }`}
         >
           {isRefreshing ? (
             <>
-              <Loader2 size={14} className="animate-spin text-camry-deep-carrier" />
+              <Loader2 size={14} className="animate-spin text-[#0066FF]" />
               <span className="hidden xs:inline">Fetching...</span>
             </>
           ) : (
             <>
-              <RefreshCw size={14} className="text-camry-blackout" />
+              <RefreshCw size={14} className={isLight ? 'text-camry-blackout' : 'text-white'} />
               <span className="hidden xs:inline">Refresh State</span>
             </>
           )}
@@ -249,41 +261,47 @@ export const Dashboard: React.FC = () => {
               {/* Skeleton Stat Tabs */}
               <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 {[1, 2, 3].map(i => (
-                  <div key={i} className="p-3 sm:p-4 bg-white border border-black/10 rounded-xl space-y-2 animate-pulse">
-                    <div className="h-3 bg-black/10 rounded w-12" />
-                    <div className="h-8 bg-black/10 rounded w-20" />
+                  <div key={i} className={`p-3 sm:p-4 border rounded-xl space-y-2 animate-pulse ${
+                    isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'
+                  }`}>
+                    <div className={`h-3 rounded w-12 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                    <div className={`h-8 rounded w-20 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
                   </div>
                 ))}
               </div>
 
               {/* Skeleton Performance Card */}
-              <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm space-y-4 animate-pulse">
+              <div className={`border rounded-xl p-4 sm:p-6 shadow-xs space-y-4 animate-pulse ${
+                isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'
+              }`}>
                 <div className="flex items-center justify-between">
-                  <div className="h-5 bg-black/10 rounded w-48" />
-                  <div className="h-4 bg-black/10 rounded w-24" />
+                  <div className={`h-5 rounded w-48 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                  <div className={`h-4 rounded w-24 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                   {[1, 2, 3].map(i => (
-                    <div key={i} className="p-4 bg-zinc-100 rounded-xl space-y-2">
-                      <div className="h-3 bg-black/10 rounded w-16" />
-                      <div className="h-6 bg-black/10 rounded w-24" />
-                      <div className="h-3 bg-black/10 rounded w-32" />
+                    <div key={i} className={`p-4 rounded-xl space-y-2 ${isLight ? 'bg-zinc-100' : 'bg-[#141418]'}`}>
+                      <div className={`h-3 rounded w-16 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                      <div className={`h-6 rounded w-24 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                      <div className={`h-3 rounded w-32 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
                     </div>
                   ))}
                 </div>
 
-                <div className="h-36 sm:h-40 bg-zinc-200 rounded-lg" />
+                <div className={`h-36 sm:h-40 rounded-lg ${isLight ? 'bg-zinc-200' : 'bg-[#141418]'}`} />
               </div>
 
               {/* Skeleton System Logs */}
-              <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm space-y-3 animate-pulse">
-                <div className="h-5 bg-black/10 rounded w-32" />
-                <div className="h-48 bg-zinc-100 rounded-lg p-4 space-y-2">
-                  <div className="h-4 bg-black/10 rounded w-full" />
-                  <div className="h-4 bg-black/10 rounded w-4/5" />
-                  <div className="h-4 bg-black/10 rounded w-5/6" />
-                  <div className="h-4 bg-black/10 rounded w-2/3" />
+              <div className={`border rounded-xl p-4 sm:p-6 shadow-xs space-y-3 animate-pulse ${
+                isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'
+              }`}>
+                <div className={`h-5 rounded w-32 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                <div className={`h-48 rounded-lg p-4 space-y-2 ${isLight ? 'bg-zinc-100' : 'bg-[#141418]'}`}>
+                  <div className={`h-4 rounded w-full ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                  <div className={`h-4 rounded w-4/5 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                  <div className={`h-4 rounded w-5/6 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                  <div className={`h-4 rounded w-2/3 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
                 </div>
               </div>
             </div>
@@ -297,13 +315,19 @@ export const Dashboard: React.FC = () => {
               </div>
 
               {/* REAL-TIME HARDWARE PERFORMANCE METRICS CHART */}
-              <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm">
+              <div className={`border rounded-xl p-4 sm:p-6 shadow-xs ${
+                isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'
+              }`}>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
                   <div className="flex items-center gap-2">
-                    <Cpu size={18} className="text-camry-blackout flex-shrink-0" />
-                    <h3 className="font-bricolage text-base sm:text-lg text-camry-blackout leading-tight">Real-Time Hardware Performance Metrics</h3>
+                    <Cpu size={18} className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-[#0066FF]'}`} />
+                    <h3 className={`font-bricolage text-base sm:text-lg leading-tight ${
+                      isLight ? 'text-camry-blackout' : 'text-white'
+                    }`}>Real-Time Hardware Performance Metrics</h3>
                   </div>
-                  <div className="flex items-center gap-2 font-martian text-[10px] text-camry-graphite/60 bg-black/5 px-2.5 py-1 rounded-md w-fit">
+                  <div className={`flex items-center gap-2 font-martian text-[10px] px-2.5 py-1 rounded-md w-fit ${
+                    isLight ? 'text-camry-graphite/60 bg-black/5' : 'text-zinc-400 bg-white/5'
+                  }`}>
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     <span>LIVE TELEMETRY</span>
                   </div>
@@ -311,36 +335,50 @@ export const Dashboard: React.FC = () => {
 
                 {/* Metrics Key Indicators */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
-                  <div className="p-3.5 sm:p-4 bg-zinc-50/80 border border-black/10 rounded-xl hover:border-black/20 transition-all">
+                  <div className={`p-3.5 sm:p-4 border rounded-xl transition-all ${
+                    isLight ? 'bg-zinc-50/80 border-black/10 hover:border-black/20' : 'bg-[#141418] border-white/10 hover:border-white/20'
+                  }`}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-martian text-[10px] text-camry-graphite/70 font-bold uppercase tracking-wider">CPU Usage</span>
-                      <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                      <span className={`font-martian text-[10px] font-bold uppercase tracking-wider ${
+                        isLight ? 'text-camry-graphite/70' : 'text-zinc-400'
+                      }`}>CPU Usage</span>
+                      <span className="w-2 h-2 rounded-full bg-blue-500" />
                     </div>
-                    <div className="font-martian text-xl sm:text-2xl text-camry-blackout font-bold">{latestMetric.cpu}%</div>
-                    <div className="font-familjen text-xs text-camry-graphite/60 mt-0.5">8 Cores @ 3.8GHz</div>
+                    <div className={`font-martian text-xl sm:text-2xl font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{latestMetric.cpu}%</div>
+                    <div className={`font-familjen text-xs mt-0.5 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>8 Cores @ 3.8GHz</div>
                   </div>
 
-                  <div className="p-3.5 sm:p-4 bg-zinc-50/80 border border-black/10 rounded-xl hover:border-black/20 transition-all">
+                  <div className={`p-3.5 sm:p-4 border rounded-xl transition-all ${
+                    isLight ? 'bg-zinc-50/80 border-black/10 hover:border-black/20' : 'bg-[#141418] border-white/10 hover:border-white/20'
+                  }`}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-martian text-[10px] text-camry-graphite/70 font-bold uppercase tracking-wider">Memory (RAM/VRAM)</span>
-                      <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                      <span className={`font-martian text-[10px] font-bold uppercase tracking-wider ${
+                        isLight ? 'text-camry-graphite/70' : 'text-zinc-400'
+                      }`}>Memory (RAM/VRAM)</span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
                     </div>
-                    <div className="font-martian text-xl sm:text-2xl text-camry-blackout font-bold">{latestMetric.memory}%</div>
-                    <div className="font-familjen text-xs text-camry-graphite/60 mt-0.5">{((latestMetric.memory / 100) * 32).toFixed(1)} GB / 32 GB Used</div>
+                    <div className={`font-martian text-xl sm:text-2xl font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{latestMetric.memory}%</div>
+                    <div className={`font-familjen text-xs mt-0.5 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>{((latestMetric.memory / 100) * 32).toFixed(1)} GB / 32 GB Used</div>
                   </div>
 
-                  <div className="p-3.5 sm:p-4 bg-zinc-50/80 border border-black/10 rounded-xl hover:border-black/20 transition-all">
+                  <div className={`p-3.5 sm:p-4 border rounded-xl transition-all ${
+                    isLight ? 'bg-zinc-50/80 border-black/10 hover:border-black/20' : 'bg-[#141418] border-white/10 hover:border-white/20'
+                  }`}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-martian text-[10px] text-camry-graphite/70 font-bold uppercase tracking-wider">NPU TOPS Load</span>
-                      <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                      <span className={`font-martian text-[10px] font-bold uppercase tracking-wider ${
+                        isLight ? 'text-camry-graphite/70' : 'text-zinc-400'
+                      }`}>NPU TOPS Load</span>
+                      <span className="w-2 h-2 rounded-full bg-purple-500" />
                     </div>
-                    <div className="font-martian text-xl sm:text-2xl text-camry-blackout font-bold">{latestMetric.npu}%</div>
-                    <div className="font-familjen text-xs text-camry-graphite/60 mt-0.5">{((latestMetric.npu / 100) * 40).toFixed(1)} TOPS Active</div>
+                    <div className={`font-martian text-xl sm:text-2xl font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{latestMetric.npu}%</div>
+                    <div className={`font-familjen text-xs mt-0.5 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>{((latestMetric.npu / 100) * 40).toFixed(1)} TOPS Active</div>
                   </div>
                 </div>
 
                 {/* Real-time Hardware Chart (SVG Data Visualization) */}
-                <div className="relative h-36 sm:h-40 bg-camry-blackout rounded-lg p-3 sm:p-4 overflow-hidden border border-white/10 flex flex-col justify-between">
+                <div className={`relative h-36 sm:h-40 rounded-lg p-3 sm:p-4 overflow-hidden border flex flex-col justify-between ${
+                  isLight ? 'bg-camry-blackout border-white/10' : 'bg-[#141418] border-white/15'
+                }`}>
                   <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
                   
                   <svg className="w-full h-full overflow-visible" viewBox="0 0 600 140" preserveAspectRatio="none">
@@ -396,12 +434,16 @@ export const Dashboard: React.FC = () => {
           )}
 
           {/* SYSTEM LOGS COMPONENT */}
-          <div className="bg-white border border-black/10 rounded-xl p-4 sm:p-6 shadow-sm">
+          <div className={`border rounded-xl p-4 sm:p-6 shadow-xs ${
+            isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'
+          }`}>
             <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
               <div className="flex items-center gap-2">
-                <Terminal size={18} className="text-camry-blackout" />
-                <h3 className="font-bricolage text-base sm:text-lg text-camry-blackout">System Logs</h3>
-                <span className="font-martian text-[10px] bg-camry-blackout text-white px-2 py-0.5 rounded">
+                <Terminal size={18} className={isLight ? 'text-camry-blackout' : 'text-[#0066FF]'} />
+                <h3 className={`font-bricolage text-base sm:text-lg ${isLight ? 'text-camry-blackout' : 'text-white'}`}>System Logs</h3>
+                <span className={`font-martian text-[10px] px-2 py-0.5 rounded ${
+                  isLight ? 'bg-camry-blackout text-white' : 'bg-[#0066FF] text-white'
+                }`}>
                   {filteredLogs.length} Events
                 </span>
               </div>
@@ -409,12 +451,18 @@ export const Dashboard: React.FC = () => {
               {/* Controls & Filter */}
               <div className="flex items-center gap-2">
                 {/* Filter buttons */}
-                <div className="flex items-center bg-black/5 p-1 rounded-lg font-martian text-[10px]">
+                <div className={`flex items-center p-1 rounded-lg font-martian text-[10px] ${
+                  isLight ? 'bg-black/5' : 'bg-white/5'
+                }`}>
                   {(['ALL', 'HW', 'INF', 'WARN'] as const).map(f => (
                     <button
                       key={f}
                       onClick={() => setLogFilter(f)}
-                      className={`px-2 py-1 rounded ${logFilter === f ? 'bg-white text-black shadow-sm font-bold' : 'text-camry-graphite/60 hover:text-black'}`}
+                      className={`px-2 py-1 rounded cursor-pointer ${
+                        logFilter === f 
+                          ? (isLight ? 'bg-white text-black shadow-xs font-bold' : 'bg-[#0066FF] text-white shadow-xs font-bold') 
+                          : (isLight ? 'text-camry-graphite/60 hover:text-black' : 'text-zinc-400 hover:text-white')
+                      }`}
                     >
                       {f}
                     </button>
@@ -424,10 +472,14 @@ export const Dashboard: React.FC = () => {
                 {/* Pause/Resume button */}
                 <button
                   onClick={() => setIsLogsPaused(!isLogsPaused)}
-                  className="p-1.5 rounded-lg border border-black/10 hover:bg-black/5 text-camry-graphite text-xs font-martian flex items-center gap-1"
+                  className={`p-1.5 rounded-lg border text-xs font-martian flex items-center gap-1 cursor-pointer ${
+                    isLight 
+                      ? 'border-black/10 hover:bg-black/5 text-camry-graphite' 
+                      : 'border-white/10 hover:bg-white/10 text-zinc-300'
+                  }`}
                   title={isLogsPaused ? "Resume streaming" : "Pause streaming"}
                 >
-                  {isLogsPaused ? <Play size={12} className="text-emerald-600" /> : <Pause size={12} className="text-amber-600" />}
+                  {isLogsPaused ? <Play size={12} className="text-emerald-500" /> : <Pause size={12} className="text-amber-500" />}
                 </button>
 
                 {/* Clear Logs */}
@@ -436,7 +488,9 @@ export const Dashboard: React.FC = () => {
                     setLogs([]);
                     showToast("System logs cleared");
                   }}
-                  className="p-1.5 rounded-lg border border-black/10 hover:bg-red-50 text-red-600 text-xs transition-colors"
+                  className={`p-1.5 rounded-lg border border-black/10 text-red-500 text-xs transition-colors cursor-pointer ${
+                    isLight ? 'hover:bg-red-50 border-black/10' : 'hover:bg-red-950/30 border-white/10'
+                  }`}
                   title="Clear log buffer"
                 >
                   <Trash2 size={12} />
@@ -447,7 +501,9 @@ export const Dashboard: React.FC = () => {
             {/* Live Log Terminal Output */}
             <div 
               ref={logsScrollRef}
-              className="bg-camry-blackout rounded-lg p-3 sm:p-4 h-56 overflow-y-auto font-martian text-xs leading-relaxed text-camry-paper border border-white/10 space-y-1.5"
+              className={`rounded-lg p-3 sm:p-4 h-56 overflow-y-auto font-martian text-xs leading-relaxed border space-y-1.5 ${
+                isLight ? 'bg-camry-blackout text-camry-paper border-white/10' : 'bg-[#141418] text-zinc-200 border-white/10'
+              }`}
             >
               {filteredLogs.length === 0 ? (
                 <div className="text-white/40 italic p-4 text-center">No system logs in this filter view.</div>
@@ -471,15 +527,17 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Device Strip */}
-          <div className="bg-camry-graphite/5 border border-black/5 rounded-lg p-3 flex flex-wrap justify-between items-center gap-2 font-martian text-[10px] sm:text-xs text-camry-graphite/60">
+          <div className={`border rounded-lg p-3 flex flex-wrap justify-between items-center gap-2 font-martian text-[10px] sm:text-xs ${
+            isLight ? 'bg-camry-graphite/5 border-black/5 text-camry-graphite/60' : 'bg-[#1C1C22] border-white/10 text-zinc-400'
+          }`}>
             <span>CAMRY ONE</span>
-            <span className="w-1 h-1 rounded-full bg-black/10 hidden sm:inline-block"></span>
+            <span className={`w-1 h-1 rounded-full hidden sm:inline-block ${isLight ? 'bg-black/10' : 'bg-white/20'}`}></span>
             <span>256GB</span>
-            <span className="w-1 h-1 rounded-full bg-black/10 hidden sm:inline-block"></span>
+            <span className={`w-1 h-1 rounded-full hidden sm:inline-block ${isLight ? 'bg-black/10' : 'bg-white/20'}`}></span>
             <span>FW 1.0.3</span>
-            <span className="w-1 h-1 rounded-full bg-black/10 hidden sm:inline-block"></span>
+            <span className={`w-1 h-1 rounded-full hidden sm:inline-block ${isLight ? 'bg-black/10' : 'bg-white/20'}`}></span>
             <span>UPTIME 4d 12h</span>
-            <span className="w-1 h-1 rounded-full bg-black/10 hidden sm:inline-block"></span>
+            <span className={`w-1 h-1 rounded-full hidden sm:inline-block ${isLight ? 'bg-black/10' : 'bg-white/20'}`}></span>
             <span>65W</span>
           </div>
 

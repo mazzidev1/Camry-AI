@@ -4,6 +4,9 @@ import { Search, Bot, Cpu, ArrowRight, Check, Sparkles, X, Activity, Menu, Sun, 
 import { motion, AnimatePresence } from 'motion/react';
 import { CustomSelect } from './CustomSelect';
 import { CamryOrb } from './CamryOrb';
+import { CamryLogo } from './CamryLogo';
+import { CamryMascot } from './CamryMascot';
+import { AgentLogo } from './AgentLogo';
 
 export const GlobalHeader: React.FC = () => {
   const { 
@@ -93,7 +96,7 @@ export const GlobalHeader: React.FC = () => {
         ? 'text-[#18181B] border-[#E2DDD5]' 
         : 'text-white border-[#2E2E38]'
     }`}>
-      {/* Left: Mobile Menu Toggle & Camry OS Connected Badge */}
+      {/* Left: Mobile Menu Toggle & Camry OS Logo */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -105,21 +108,9 @@ export const GlobalHeader: React.FC = () => {
           <Menu size={18} />
         </button>
 
-        {/* Brand Header Status Pill from PDF Design System */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <CamryOrb size="sm" className="w-6 h-6 shrink-0" />
-          <span className="font-space font-bold lowercase tracking-tight text-sm shrink-0">
-            camry
-          </span>
-          <span className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono border whitespace-nowrap shrink-0 ${
-            isLight 
-              ? 'bg-[#EFECE6] text-[#18181B] border-[#E2DDD5]' 
-              : 'bg-[#202026] text-zinc-300 border-[#2E2E38]'
-          }`}>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="whitespace-nowrap shrink-0">Camry OS v2.4</span>
-            <span className="text-emerald-500 font-bold ml-0.5 whitespace-nowrap shrink-0">100%</span>
-          </span>
+        {/* Brand Header Status Pill with Axolotl Mascot */}
+        <div className="flex items-center gap-2 flex-shrink-0 cursor-pointer" onClick={() => setCurrentScreen('chat')}>
+          <CamryLogo variant={isLight ? 'dark' : 'light'} size="sm" useMascot={true} layout="markOnly" />
         </div>
       </div>
 
@@ -187,11 +178,7 @@ export const GlobalHeader: React.FC = () => {
                       }`}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                          isLight ? 'bg-zinc-100 text-zinc-700' : 'bg-white/10 text-white'
-                        }`}>
-                          <Bot size={14} />
-                        </div>
+                        <AgentLogo agentId={agent.id} name={agent.name} size={28} className="shrink-0" />
                         <div className="min-w-0">
                           <div className="text-xs font-medium truncate">{agent.name}</div>
                           <div className="text-[10px] text-zinc-400 truncate">{agent.description}</div>
@@ -261,7 +248,7 @@ export const GlobalHeader: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* Right side: Personalize Theme Switcher + Role Selector */}
+      {/* Right side: Personalize Theme Switcher */}
       <div className="flex items-center gap-2.5">
         {/* Personalize Surface Toggle Switch (PDF Component 2.1) */}
         <button
@@ -286,26 +273,6 @@ export const GlobalHeader: React.FC = () => {
             </div>
           )}
         </button>
-
-        {/* View as Role Switcher */}
-        <div className="hidden lg:block">
-          <CustomSelect
-            label="VIEW AS:"
-            size="sm"
-            value={currentRole}
-            onChange={(val) => {
-              setCurrentRole(val as any);
-              showToast(`Role switched to ${val} (simulated access scope)`);
-            }}
-            options={[
-              { value: 'Admin', label: 'Admin (Full Access)', description: 'Hardware Admin & Full Permissions' },
-              { value: 'Manager', label: 'Manager', description: 'Departmental KB & Agent Management' },
-              { value: 'Member', label: 'Member (Finance: Denied)', description: 'Standard Inference & Chat Access' },
-              { value: 'Guest', label: 'Guest (Contracts Only)', description: 'Restricted Contracts/Audit Access' },
-            ]}
-            buttonClassName={isLight ? 'bg-[#F5F3EF] border-[#E2DDD5] text-[#18181B]' : 'bg-[#202026] border-[#2E2E38] text-white'}
-          />
-        </div>
       </div>
     </header>
   );

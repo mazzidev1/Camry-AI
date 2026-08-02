@@ -290,6 +290,7 @@ interface AppContextType {
   installAgent: (id: string) => void;
   uninstallAgent: (id: string) => void;
   addCustomAgent: (agent: Omit<Agent, 'likes'>) => void;
+  updateCustomAgent: (id: string, updates: Partial<Omit<Agent, 'id' | 'likes'>>) => void;
   reorderAgents: (newAgents: Agent[]) => void;
   
   activeAgent: string | null;
@@ -963,7 +964,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [tourStep, setTourStep] = useState<number>(1);
 
   // Theme Mode State
-  const [themeMode, setThemeMode] = useState<'dark' | 'light'>('dark');
+  const [themeMode, setThemeMode] = useState<'dark' | 'light'>('light');
 
   const toggleThemeMode = () => {
     setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
@@ -1045,6 +1046,30 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setAgentsList(prev => [newAgent, ...prev]);
     setInstalledAgents(prev => [...prev, newAgent.id]);
     showToast(`Created & installed custom agent: ${newAgent.name}`);
+  };
+
+  const updateCustomAgent = (id: string, updates: Partial<Omit<Agent, 'id' | 'likes'>>) => {
+    setAgentsList(prev => prev.map(a => {
+      if (a.id === id) {
+        const currentVerNum = a.currentVersion ? parseFloat(a.currentVersion.replace('v', '')) : 1.0;
+        const nextVerNum = `v${(currentVerNum + 0.1).toFixed(1)}`;
+        const newVersionObj = {
+          version: nextVerNum,
+          updatedAt: new Date().toISOString().split('T')[0],
+          prompt: updates.systemPrompt || a.systemPrompt || '',
+          changes: 'Blueprint parameters compiled & updated.',
+          author: 'System Owner (Admin)'
+        };
+        return {
+          ...a,
+          ...updates,
+          currentVersion: nextVerNum,
+          versionHistory: a.versionHistory ? [...a.versionHistory, newVersionObj] : [newVersionObj]
+        };
+      }
+      return a;
+    }));
+    showToast(`Updated custom agent blueprint`);
   };
 
   const rollbackAgentVersion = (agentId: string, version: string) => {
@@ -1163,6 +1188,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       installAgent,
       uninstallAgent,
       addCustomAgent,
+      updateCustomAgent,
       rollbackAgentVersion,
       reorderAgents,
       activeAgent,

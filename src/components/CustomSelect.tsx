@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useAppContext } from '../store/AppContext';
 
 export interface SelectOption {
   value: string;
@@ -36,6 +37,8 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   size = 'md',
   fullWidth = false,
 }) => {
+  const { themeMode } = useAppContext();
+  const isLight = themeMode === 'light';
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -69,13 +72,19 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-between gap-2 border border-black/10 rounded-lg bg-white/95 text-camry-blackout font-martian shadow-xs transition-all duration-150 hover:bg-white hover:border-black/20 focus:outline-none focus:ring-2 focus:ring-camry-carrier/40 ${
+        className={`flex items-center justify-between gap-2 border rounded-lg font-martian shadow-xs transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0066FF]/40 ${
+          isLight 
+            ? 'bg-white/95 border-black/10 text-camry-blackout hover:bg-white hover:border-black/20' 
+            : 'bg-[#222228] border-white/10 text-white hover:bg-[#2A2A32] hover:border-white/20'
+        } ${
           isSmall ? 'px-2.5 py-1 text-xs' : 'px-3 py-2 text-xs sm:text-sm font-semibold'
-        } ${fullWidth ? 'w-full' : ''} ${disabled ? 'opacity-50 cursor-not-allowed bg-zinc-100' : 'cursor-pointer'} ${buttonClassName}`}
+        } ${fullWidth ? 'w-full' : ''} ${disabled ? 'opacity-50 cursor-not-allowed bg-zinc-100 dark:bg-zinc-800' : 'cursor-pointer'} ${buttonClassName}`}
       >
         <div className="flex items-center gap-1.5 truncate min-w-0">
           {label && (
-            <span className="text-camry-graphite/60 uppercase tracking-wider font-medium text-[10px] sm:text-xs shrink-0">
+            <span className={`uppercase tracking-wider font-medium text-[10px] sm:text-xs shrink-0 ${
+              isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+            }`}>
               {label}
             </span>
           )}
@@ -86,9 +95,9 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         </div>
         <ChevronDown 
           size={isSmall ? 14 : 16} 
-          className={`text-camry-graphite/60 shrink-0 transition-transform duration-200 ${
-            isOpen ? 'rotate-180 text-camry-blackout' : ''
-          }`} 
+          className={`shrink-0 transition-transform duration-200 ${
+            isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+          } ${isOpen ? 'rotate-180 text-[#0066FF]' : ''}`} 
         />
       </button>
 
@@ -100,7 +109,11 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 4 }}
             transition={{ duration: 0.15 }}
-            className={`absolute z-50 mt-1 min-w-[200px] max-h-64 overflow-y-auto bg-camry-blackout text-white border border-white/10 rounded-xl shadow-2xl p-1.5 font-martian text-xs ${
+            className={`absolute z-50 mt-1 min-w-[200px] max-h-64 overflow-y-auto border rounded-xl shadow-2xl p-1.5 font-martian text-xs ${
+              isLight 
+                ? 'bg-camry-blackout text-white border-white/10' 
+                : 'bg-[#18181C] text-white border-white/15'
+            } ${
               fullWidth ? 'w-full' : 'right-0 sm:left-0'
             } ${menuClassName}`}
           >

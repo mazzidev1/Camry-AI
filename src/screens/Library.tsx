@@ -33,6 +33,7 @@ import { motion, AnimatePresence } from 'motion/react';
 
 export const Library: React.FC = () => {
   const { 
+    themeMode,
     libraryItems, 
     deleteLibraryItem, 
     currentRole, 
@@ -45,6 +46,8 @@ export const Library: React.FC = () => {
     addCustomAgent,
     categories: appCategories
   } = useAppContext();
+
+  const isLight = themeMode === 'light';
 
   // Navigation tab: 'artifacts' | 'agents'
   const [activeTab, setActiveTab] = useState<'artifacts' | 'agents'>('artifacts');
@@ -184,29 +187,37 @@ export const Library: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-camry-paper/40 p-4 sm:p-8 space-y-6 font-familjen">
+    <div className={`flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 font-familjen transition-colors ${
+      isLight ? 'bg-camry-paper/40 text-camry-blackout' : 'bg-[#141418] text-white'
+    }`}>
       
       {/* Header with Top Tabs */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-black/5">
+      <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b ${
+        isLight ? 'border-black/5' : 'border-white/10'
+      }`}>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bricolage text-camry-blackout font-bold tracking-tight">
+            <h1 className={`text-2xl sm:text-3xl font-bricolage font-bold tracking-tight ${
+              isLight ? 'text-camry-blackout' : 'text-white'
+            }`}>
               Library & Company Hub
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-camry-graphite/70 mt-1">
+          <p className={`text-xs sm:text-sm mt-1 ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
             Access saved NPU outputs, document drafts, and enterprise AI Agents deployed for your company.
           </p>
         </div>
 
         {/* MAIN TAB TOGGLE: Artifacts vs Company Agents */}
-        <div className="flex items-center gap-1.5 bg-zinc-200/60 p-1 rounded-2xl border border-black/5 self-start sm:self-auto">
+        <div className={`flex items-center gap-1.5 p-1 rounded-2xl border self-start sm:self-auto ${
+          isLight ? 'bg-zinc-200/60 border-black/5' : 'bg-[#1C1C22] border-white/10'
+        }`}>
           <button
             onClick={() => setActiveTab('artifacts')}
             className={`px-3.5 py-1.5 rounded-xl font-martian text-xs transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'artifacts'
-                ? 'bg-camry-blackout text-white font-bold shadow-sm'
-                : 'text-camry-graphite hover:text-black hover:bg-black/5'
+                ? (isLight ? 'bg-camry-blackout text-white font-bold shadow-sm' : 'bg-[#0066FF] text-white font-bold shadow-sm')
+                : (isLight ? 'text-camry-graphite hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/10')
             }`}
           >
             <FileText size={14} />
@@ -217,11 +228,11 @@ export const Library: React.FC = () => {
             onClick={() => setActiveTab('agents')}
             className={`px-3.5 py-1.5 rounded-xl font-martian text-xs transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'agents'
-                ? 'bg-camry-blackout text-white font-bold shadow-sm'
-                : 'text-camry-graphite hover:text-black hover:bg-black/5'
+                ? (isLight ? 'bg-camry-blackout text-white font-bold shadow-sm' : 'bg-[#0066FF] text-white font-bold shadow-sm')
+                : (isLight ? 'text-camry-graphite hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/10')
             }`}
           >
-            <Bot size={14} className="text-camry-carrier" />
+            <Bot size={14} className={isLight ? 'text-camry-carrier' : 'text-blue-300'} />
             <span>Company Agents ({allAgents.length})</span>
           </button>
         </div>
@@ -233,18 +244,26 @@ export const Library: React.FC = () => {
       {activeTab === 'artifacts' && (
         <div className="space-y-6">
           {/* FILTER & SEARCH BAR FOR ARTIFACTS */}
-          <div className="bg-white border border-black/10 rounded-2xl p-4 shadow-sm space-y-3">
+          <div className={`border rounded-2xl p-4 shadow-sm space-y-3 ${
+            isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'
+          }`}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               
               {/* Search box */}
               <div className="relative flex-1">
-                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-camry-graphite/40" />
+                <Search size={15} className={`absolute left-3 top-1/2 -translate-y-1/2 ${
+                  isLight ? 'text-camry-graphite/40' : 'text-zinc-500'
+                }`} />
                 <input 
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search library artifacts by title, content, or author..."
-                  className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-black/10 rounded-xl text-xs font-familjen text-camry-blackout placeholder:text-camry-graphite/40 focus:outline-none focus:border-camry-deep-carrier focus:bg-white transition-all"
+                  className={`w-full pl-9 pr-4 py-2 border rounded-xl text-xs font-familjen transition-all focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                    isLight 
+                      ? 'bg-zinc-50 border-black/10 text-camry-blackout placeholder:text-camry-graphite/40' 
+                      : 'bg-[#141418] border-white/15 text-white placeholder:text-zinc-500'
+                  }`}
                 />
               </div>
 
@@ -260,16 +279,18 @@ export const Library: React.FC = () => {
                     { value: 'oldest', label: 'Oldest First' },
                     { value: 'alphabetical', label: 'Title A-Z' },
                   ]}
-                  buttonClassName="bg-zinc-50 border-black/10 rounded-xl px-3 py-1.5 text-xs text-camry-blackout font-martian"
+                  buttonClassName={isLight ? 'bg-zinc-50 border-black/10 rounded-xl px-3 py-1.5 text-xs text-camry-blackout font-martian' : 'bg-[#141418] border-white/15 rounded-xl px-3 py-1.5 text-xs text-white font-martian'}
                 />
 
-                <div className="flex items-center gap-1 bg-zinc-100 border border-black/10 rounded-xl p-1 shadow-2xs">
+                <div className={`flex items-center gap-1 border rounded-xl p-1 shadow-2xs ${
+                  isLight ? 'bg-zinc-100 border-black/10' : 'bg-[#141418] border-white/10'
+                }`}>
                   <button
                     onClick={() => setViewMode('grid')}
                     className={`p-1.5 rounded-lg text-xs flex items-center gap-1 font-martian transition-all ${
                       viewMode === 'grid' 
-                        ? 'bg-camry-blackout text-white shadow-2xs font-semibold' 
-                        : 'text-camry-graphite hover:bg-black/5'
+                        ? (isLight ? 'bg-camry-blackout text-white shadow-2xs font-semibold' : 'bg-[#0066FF] text-white shadow-2xs font-semibold')
+                        : (isLight ? 'text-camry-graphite hover:bg-black/5' : 'text-zinc-400 hover:bg-white/10')
                     }`}
                     title="Grid view"
                   >
@@ -280,8 +301,8 @@ export const Library: React.FC = () => {
                     onClick={() => setViewMode('list')}
                     className={`p-1.5 rounded-lg text-xs flex items-center gap-1 font-martian transition-all ${
                       viewMode === 'list' 
-                        ? 'bg-camry-blackout text-white shadow-2xs font-semibold' 
-                        : 'text-camry-graphite hover:bg-black/5'
+                        ? (isLight ? 'bg-camry-blackout text-white shadow-2xs font-semibold' : 'bg-[#0066FF] text-white shadow-2xs font-semibold')
+                        : (isLight ? 'text-camry-graphite hover:bg-black/5' : 'text-zinc-400 hover:bg-white/10')
                     }`}
                     title="List view"
                   >
@@ -292,18 +313,20 @@ export const Library: React.FC = () => {
             </div>
 
             {/* Type & Category pills */}
-            <div className="space-y-2 pt-1 border-t border-black/5">
+            <div className={`space-y-2 pt-1 border-t ${isLight ? 'border-black/5' : 'border-white/10'}`}>
               {/* Type filters */}
               <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                <span className="font-martian text-[10px] text-camry-graphite/60 uppercase tracking-wider pr-1 flex-shrink-0">Type:</span>
+                <span className={`font-martian text-[10px] uppercase tracking-wider pr-1 flex-shrink-0 ${
+                  isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+                }`}>Type:</span>
                 {types.map(t => (
                   <button
                     key={t}
                     onClick={() => setActiveType(t)}
                     className={`px-3 py-1 rounded-lg text-xs font-martian transition-all flex-shrink-0 cursor-pointer ${
                       activeType === t 
-                        ? 'bg-camry-carrier text-camry-blackout font-bold shadow-2xs' 
-                        : 'bg-zinc-100 text-camry-graphite hover:bg-zinc-200'
+                        ? (isLight ? 'bg-camry-carrier text-camry-blackout font-bold shadow-2xs' : 'bg-[#0066FF] text-white font-bold shadow-2xs')
+                        : (isLight ? 'bg-zinc-100 text-camry-graphite hover:bg-zinc-200' : 'bg-white/10 text-zinc-300 hover:bg-white/15')
                     }`}
                   >
                     {t}
@@ -313,15 +336,17 @@ export const Library: React.FC = () => {
 
               {/* Category filters */}
               <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                <span className="font-martian text-[10px] text-camry-graphite/60 uppercase tracking-wider pr-1 flex-shrink-0">Category:</span>
+                <span className={`font-martian text-[10px] uppercase tracking-wider pr-1 flex-shrink-0 ${
+                  isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+                }`}>Category:</span>
                 {categories.map(c => (
                   <button
                     key={c}
                     onClick={() => setActiveCategory(c)}
                     className={`px-2.5 py-0.5 rounded-md text-[11px] font-martian transition-all flex-shrink-0 cursor-pointer ${
                       activeCategory === c 
-                        ? 'bg-camry-blackout text-white font-semibold' 
-                        : 'bg-black/5 text-camry-graphite hover:bg-black/10'
+                        ? (isLight ? 'bg-camry-blackout text-white font-semibold' : 'bg-[#0066FF] text-white font-semibold')
+                        : (isLight ? 'bg-black/5 text-camry-graphite hover:bg-black/10' : 'bg-white/10 text-zinc-300 hover:bg-white/15')
                     }`}
                   >
                     {c}
@@ -333,9 +358,11 @@ export const Library: React.FC = () => {
 
           {/* ARTIFACTS CONTAINER */}
           {filtered.length === 0 ? (
-            <div className="bg-white border border-black/10 rounded-2xl p-12 text-center text-camry-graphite/60 space-y-2">
-              <FileText size={32} className="mx-auto text-black/20" />
-              <h3 className="font-bricolage text-base font-bold text-camry-blackout">No library items found</h3>
+            <div className={`border rounded-2xl p-12 text-center space-y-2 ${
+              isLight ? 'bg-white border-black/10 text-camry-graphite/60' : 'bg-[#1C1C22] border-white/10 text-zinc-400'
+            }`}>
+              <FileText size={32} className={`mx-auto ${isLight ? 'text-black/20' : 'text-white/20'}`} />
+              <h3 className={`font-bricolage text-base font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>No library items found</h3>
               <p className="text-xs">Try clearing search filters or generate new outputs in Chat.</p>
             </div>
           ) : viewMode === 'grid' ? (
@@ -350,20 +377,24 @@ export const Library: React.FC = () => {
                   <div 
                     key={item.id}
                     onClick={() => !isRestricted && setSelectedItem(item)}
-                    className={`bg-white border rounded-2xl p-5 shadow-xs transition-all flex flex-col justify-between group ${
+                    className={`border rounded-2xl p-5 shadow-xs transition-all flex flex-col justify-between group ${
                       isRestricted 
-                        ? 'opacity-60 border-amber-200 bg-amber-50/20 cursor-not-allowed' 
-                        : 'border-black/10 hover:border-black/30 hover:shadow-md cursor-pointer'
+                        ? (isLight ? 'opacity-60 border-amber-200 bg-amber-50/20 cursor-not-allowed' : 'opacity-60 border-amber-900/50 bg-amber-950/20 cursor-not-allowed')
+                        : (isLight ? 'bg-white border-black/10 hover:border-black/30 hover:shadow-md cursor-pointer' : 'bg-[#1C1C22] border-white/10 hover:border-white/30 hover:shadow-md cursor-pointer')
                     }`}
                   >
                     <div className="space-y-3">
                       {/* Top Badges */}
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5">
-                          <span className="px-2 py-0.5 rounded-md bg-camry-blackout text-white font-martian text-[10px] font-bold">
+                          <span className={`px-2 py-0.5 rounded-md font-martian text-[10px] font-bold ${
+                            isLight ? 'bg-camry-blackout text-white' : 'bg-[#0066FF] text-white'
+                          }`}>
                             {item.type}
                           </span>
-                          <span className="px-2 py-0.5 rounded-md bg-black/5 text-camry-graphite font-martian text-[10px]">
+                          <span className={`px-2 py-0.5 rounded-md font-martian text-[10px] ${
+                            isLight ? 'bg-black/5 text-camry-graphite' : 'bg-white/10 text-zinc-300'
+                          }`}>
                             {item.category}
                           </span>
                         </div>
@@ -376,37 +407,47 @@ export const Library: React.FC = () => {
                       </div>
 
                       {/* Title */}
-                      <h3 className="font-bricolage font-bold text-base text-camry-blackout group-hover:text-camry-deep-carrier transition-colors line-clamp-2">
+                      <h3 className={`font-bricolage font-bold text-base transition-colors line-clamp-2 ${
+                        isLight ? 'text-camry-blackout group-hover:text-[#0066FF]' : 'text-white group-hover:text-blue-400'
+                      }`}>
                         {item.title}
                       </h3>
 
                       {/* Image preview if image type */}
                       {item.imageUrl ? (
-                        <div className="rounded-xl overflow-hidden border border-black/10 aspect-video bg-black/5 relative">
+                        <div className={`rounded-xl overflow-hidden border aspect-video relative ${
+                          isLight ? 'border-black/10 bg-black/5' : 'border-white/10 bg-white/5'
+                        }`}>
                           <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
                         </div>
                       ) : (
-                        <p className="text-xs text-camry-graphite/80 line-clamp-3 leading-relaxed font-familjen">
+                        <p className={`text-xs line-clamp-3 leading-relaxed font-familjen ${
+                          isLight ? 'text-camry-graphite/80' : 'text-zinc-300'
+                        }`}>
                           {item.snippet}
                         </p>
                       )}
                     </div>
 
                     {/* Footer metadata */}
-                    <div className="pt-4 mt-4 border-t border-black/5 space-y-2">
-                      <div className="flex items-center justify-between font-martian text-[10px] text-camry-graphite/60">
+                    <div className={`pt-4 mt-4 border-t space-y-2 ${isLight ? 'border-black/5' : 'border-white/10'}`}>
+                      <div className={`flex items-center justify-between font-martian text-[10px] ${
+                        isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+                      }`}>
                         <div className="flex items-center gap-1.5">
                           <User size={12} />
                           <span>{item.author}</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Cpu size={12} className="text-camry-deep-carrier" />
+                          <Cpu size={12} className="text-[#0066FF]" />
                           <span>{item.modelUsed}</span>
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between pt-1">
-                        <span className="font-martian text-[10px] text-camry-graphite/50">
+                        <span className={`font-martian text-[10px] ${
+                          isLight ? 'text-camry-graphite/50' : 'text-zinc-500'
+                        }`}>
                           {item.date}
                         </span>
 
@@ -414,7 +455,9 @@ export const Library: React.FC = () => {
                           <Tooltip content="Copy artifact text" position="top">
                             <button
                               onClick={() => handleCopy(item.content || item.snippet)}
-                              className="p-1.5 hover:bg-black/5 rounded-lg text-camry-graphite hover:text-black transition-colors cursor-pointer group"
+                              className={`p-1.5 rounded-lg transition-colors cursor-pointer group ${
+                                isLight ? 'hover:bg-black/5 text-camry-graphite hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                              }`}
                             >
                               <AnimatedIcon type="scale">
                                 <Copy size={14} />
@@ -425,7 +468,9 @@ export const Library: React.FC = () => {
                           <Tooltip content="Download markdown document" position="top">
                             <button
                               onClick={() => handleDownload(item)}
-                              className="p-1.5 hover:bg-black/5 rounded-lg text-camry-graphite hover:text-black transition-colors cursor-pointer group"
+                              className={`p-1.5 rounded-lg transition-colors cursor-pointer group ${
+                                isLight ? 'hover:bg-black/5 text-camry-graphite hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                              }`}
                             >
                               <AnimatedIcon type="bounce">
                                 <Download size={14} />
@@ -436,7 +481,9 @@ export const Library: React.FC = () => {
                           <Tooltip content="Delete artifact" position="top">
                             <button
                               onClick={() => setItemToDelete(item)}
-                              className="p-1.5 hover:bg-red-50 rounded-lg text-red-500 transition-colors cursor-pointer group"
+                              className={`p-1.5 rounded-lg text-red-500 transition-colors cursor-pointer group ${
+                                isLight ? 'hover:bg-red-50' : 'hover:bg-red-950/30'
+                              }`}
                             >
                               <AnimatedIcon type="wiggle">
                                 <Trash2 size={14} />
@@ -452,10 +499,14 @@ export const Library: React.FC = () => {
             </div>
           ) : (
             /* LIST VIEW */
-            <div className="bg-white border border-black/10 rounded-2xl shadow-xs overflow-hidden">
+            <div className={`border rounded-2xl shadow-xs overflow-hidden ${
+              isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'
+            }`}>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-familjen">
-                  <thead className="bg-zinc-50 border-b border-black/10 font-martian text-[10px] text-camry-graphite/70 uppercase tracking-wider">
+                  <thead className={`border-b font-martian text-[10px] uppercase tracking-wider ${
+                    isLight ? 'bg-zinc-50 border-black/10 text-camry-graphite/70' : 'bg-[#141418] border-white/10 text-zinc-400'
+                  }`}>
                     <tr>
                       <th className="py-3 px-4">Title & Excerpt</th>
                       <th className="py-3 px-3">Type</th>
@@ -465,7 +516,7 @@ export const Library: React.FC = () => {
                       <th className="py-3 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-black/5">
+                  <tbody className={`divide-y ${isLight ? 'divide-black/5' : 'divide-white/10'}`}>
                     {filtered.map(item => {
                       const isRestricted = item.restrictedRoles?.includes(currentRole) || 
                         (currentRole === 'Member' && item.category === 'Finance') ||
@@ -475,36 +526,48 @@ export const Library: React.FC = () => {
                         <tr 
                           key={item.id}
                           onClick={() => !isRestricted && setSelectedItem(item)}
-                          className={`hover:bg-zinc-50/80 transition-colors cursor-pointer ${
-                            isRestricted ? 'opacity-50 bg-amber-50/10 cursor-not-allowed' : ''
+                          className={`transition-colors cursor-pointer ${
+                            isRestricted 
+                              ? (isLight ? 'opacity-50 bg-amber-50/10 cursor-not-allowed' : 'opacity-50 bg-amber-950/20 cursor-not-allowed') 
+                              : (isLight ? 'hover:bg-zinc-50/80' : 'hover:bg-white/5')
                           }`}
                         >
                           <td className="py-3 px-4 max-w-xs sm:max-w-md">
-                            <div className="font-bricolage font-bold text-sm text-camry-blackout truncate">
+                            <div className={`font-bricolage font-bold text-sm truncate ${
+                              isLight ? 'text-camry-blackout' : 'text-white'
+                            }`}>
                               {item.title}
                             </div>
-                            <div className="text-camry-graphite/70 text-[11px] truncate">
+                            <div className={`text-[11px] truncate ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
                               {item.snippet}
                             </div>
                           </td>
 
                           <td className="py-3 px-3">
-                            <span className="px-2 py-0.5 rounded bg-camry-blackout text-white font-martian text-[10px] font-bold">
+                            <span className={`px-2 py-0.5 rounded font-martian text-[10px] font-bold ${
+                              isLight ? 'bg-camry-blackout text-white' : 'bg-[#0066FF] text-white'
+                            }`}>
                               {item.type}
                             </span>
                           </td>
 
                           <td className="py-3 px-3">
-                            <span className="px-2 py-0.5 rounded bg-black/5 text-camry-graphite font-martian text-[10px]">
+                            <span className={`px-2 py-0.5 rounded font-martian text-[10px] ${
+                              isLight ? 'bg-black/5 text-camry-graphite' : 'bg-white/10 text-zinc-300'
+                            }`}>
                               {item.category}
                             </span>
                           </td>
 
-                          <td className="py-3 px-3 font-martian text-[11px] text-camry-graphite">
+                          <td className={`py-3 px-3 font-martian text-[11px] ${
+                            isLight ? 'text-camry-graphite' : 'text-zinc-300'
+                          }`}>
                             {item.author}
                           </td>
 
-                          <td className="py-3 px-3 font-martian text-[10px] text-camry-graphite/60 whitespace-nowrap">
+                          <td className={`py-3 px-3 font-martian text-[10px] whitespace-nowrap ${
+                            isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+                          }`}>
                             {item.date}
                           </td>
 
@@ -512,21 +575,27 @@ export const Library: React.FC = () => {
                             <div className="flex items-center justify-end gap-1">
                               <button
                                 onClick={() => !isRestricted && setSelectedItem(item)}
-                                className="p-1.5 hover:bg-black/5 rounded-lg text-camry-graphite hover:text-black transition-colors"
+                                className={`p-1.5 rounded-lg transition-colors ${
+                                  isLight ? 'hover:bg-black/5 text-camry-graphite hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                                }`}
                                 title="View details"
                               >
                                 <Eye size={15} />
                               </button>
                               <button
                                 onClick={() => handleCopy(item.content || item.snippet)}
-                                className="p-1.5 hover:bg-black/5 rounded-lg text-camry-graphite hover:text-black transition-colors"
+                                className={`p-1.5 rounded-lg transition-colors ${
+                                  isLight ? 'hover:bg-black/5 text-camry-graphite hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                                }`}
                                 title="Copy text"
                               >
                                 <Copy size={15} />
                               </button>
                               <button
                                 onClick={() => setItemToDelete(item)}
-                                className="p-1.5 hover:bg-red-50 rounded-lg text-red-500 transition-colors"
+                                className={`p-1.5 rounded-lg text-red-500 transition-colors ${
+                                  isLight ? 'hover:bg-red-50' : 'hover:bg-red-950/30'
+                                }`}
                                 title="Delete item"
                               >
                                 <Trash2 size={15} />
@@ -550,34 +619,48 @@ export const Library: React.FC = () => {
       {activeTab === 'agents' && (
         <div className="space-y-6">
           {/* TOP ACTION BAR: Search, Filter & Create Agent */}
-          <div className="bg-white border border-black/10 rounded-2xl p-4 shadow-sm space-y-3">
+          <div className={`border rounded-2xl p-4 shadow-sm space-y-3 ${
+            isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'
+          }`}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               
               {/* Agent Search */}
               <div className="relative flex-1">
-                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-camry-graphite/40" />
+                <Search size={15} className={`absolute left-3 top-1/2 -translate-y-1/2 ${
+                  isLight ? 'text-camry-graphite/40' : 'text-zinc-500'
+                }`} />
                 <input 
                   type="text"
                   value={agentSearch}
                   onChange={(e) => setAgentSearch(e.target.value)}
                   placeholder="Search company agents by name, category, or system instructions..."
-                  className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-black/10 rounded-xl text-xs font-familjen text-camry-blackout placeholder:text-camry-graphite/40 focus:outline-none focus:border-camry-deep-carrier focus:bg-white transition-all"
+                  className={`w-full pl-9 pr-4 py-2 border rounded-xl text-xs font-familjen transition-all focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                    isLight 
+                      ? 'bg-zinc-50 border-black/10 text-camry-blackout placeholder:text-camry-graphite/40' 
+                      : 'bg-[#141418] border-white/15 text-white placeholder:text-zinc-500'
+                  }`}
                 />
               </div>
 
               {/* Create Company Agent Button */}
               <button
                 onClick={() => setIsCreateAgentModalOpen(true)}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-camry-blackout hover:bg-black text-white rounded-xl font-martian text-xs font-semibold shadow-xs transition-all hover:scale-[1.02] cursor-pointer"
+                className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-martian text-xs font-semibold shadow-xs transition-all hover:scale-[1.02] cursor-pointer ${
+                  isLight ? 'bg-camry-blackout hover:bg-black text-white' : 'bg-[#0066FF] hover:bg-[#0052CC] text-white'
+                }`}
               >
-                <Plus size={15} className="text-camry-carrier" />
+                <Plus size={15} className={isLight ? 'text-camry-carrier' : 'text-white'} />
                 <span>+ Create Company Agent</span>
               </button>
             </div>
 
             {/* Category Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pt-2 border-t border-black/5 scrollbar-none">
-              <span className="font-martian text-[10px] text-camry-graphite/60 uppercase tracking-wider pr-1 flex-shrink-0">
+            <div className={`flex items-center gap-2 overflow-x-auto pt-2 border-t scrollbar-none ${
+              isLight ? 'border-black/5' : 'border-white/10'
+            }`}>
+              <span className={`font-martian text-[10px] uppercase tracking-wider pr-1 flex-shrink-0 ${
+                isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+              }`}>
                 Department Scopes:
               </span>
               {agentCategories.map(cat => (
@@ -586,8 +669,8 @@ export const Library: React.FC = () => {
                   onClick={() => setAgentCategoryFilter(cat)}
                   className={`px-3 py-1 rounded-lg text-xs font-martian transition-all flex-shrink-0 cursor-pointer ${
                     agentCategoryFilter === cat 
-                      ? 'bg-camry-blackout text-white font-bold shadow-2xs' 
-                      : 'bg-zinc-100 text-camry-graphite hover:bg-zinc-200'
+                      ? (isLight ? 'bg-camry-blackout text-white font-bold shadow-2xs' : 'bg-[#0066FF] text-white font-bold shadow-2xs')
+                      : (isLight ? 'bg-zinc-100 text-camry-graphite hover:bg-zinc-200' : 'bg-white/10 text-zinc-300 hover:bg-white/15')
                   }`}
                 >
                   {cat}
@@ -598,9 +681,11 @@ export const Library: React.FC = () => {
 
           {/* AGENTS GRID */}
           {filteredAgents.length === 0 ? (
-            <div className="bg-white border border-black/10 rounded-2xl p-12 text-center text-camry-graphite/60 space-y-3">
-              <Bot size={36} className="mx-auto text-black/20" />
-              <h3 className="font-bricolage text-base font-bold text-camry-blackout">No company agents match search</h3>
+            <div className={`border rounded-2xl p-12 text-center space-y-3 ${
+              isLight ? 'bg-white border-black/10 text-camry-graphite/60' : 'bg-[#1C1C22] border-white/10 text-zinc-400'
+            }`}>
+              <Bot size={36} className={`mx-auto ${isLight ? 'text-black/20' : 'text-white/20'}`} />
+              <h3 className={`font-bricolage text-base font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>No company agents match search</h3>
               <p className="text-xs">Try resetting category filters or build a new agent for your workspace.</p>
             </div>
           ) : (
@@ -611,24 +696,36 @@ export const Library: React.FC = () => {
                     key={agent.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white border border-black/10 hover:border-black/30 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
+                    className={`border rounded-2xl p-5 shadow-xs transition-all flex flex-col justify-between group ${
+                      isLight 
+                        ? 'bg-white border-black/10 hover:border-black/30 hover:shadow-md' 
+                        : 'bg-[#1C1C22] border-white/10 hover:border-white/30 hover:shadow-md'
+                    }`}
                   >
                     <div className="space-y-3">
                       {/* Top Bar: Icon, Name, Category & Status */}
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-2.5">
-                          <div className="p-2.5 rounded-xl bg-zinc-100 border border-black/5 shrink-0">
+                          <div className={`p-2.5 rounded-xl border shrink-0 ${
+                            isLight ? 'bg-zinc-100 border-black/5' : 'bg-white/5 border-white/10'
+                          }`}>
                             {renderCategoryIcon(agent.category)}
                           </div>
                           <div>
-                            <h3 className="font-bricolage font-bold text-base text-camry-blackout group-hover:text-camry-deep-carrier transition-colors">
+                            <h3 className={`font-bricolage font-bold text-base transition-colors ${
+                              isLight ? 'text-camry-blackout group-hover:text-[#0066FF]' : 'text-white group-hover:text-blue-400'
+                            }`}>
                               {agent.name}
                             </h3>
                             <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="font-martian text-[10px] font-semibold text-camry-graphite bg-black/5 px-2 py-0.5 rounded">
+                              <span className={`font-martian text-[10px] font-semibold px-2 py-0.5 rounded ${
+                                isLight ? 'text-camry-graphite bg-black/5' : 'text-zinc-300 bg-white/10'
+                              }`}>
                                 {agent.category || 'Custom'}
                               </span>
-                              <span className="font-martian text-[10px] font-bold text-camry-deep-carrier bg-camry-carrier/15 px-2 py-0.5 rounded">
+                              <span className={`font-martian text-[10px] font-bold px-2 py-0.5 rounded ${
+                                isLight ? 'text-camry-deep-carrier bg-camry-carrier/15' : 'text-blue-400 bg-blue-950/40'
+                              }`}>
                                 {agent.currentVersion || 'v1.0.0'}
                               </span>
                             </div>
@@ -638,16 +735,18 @@ export const Library: React.FC = () => {
                         {/* Status Badge */}
                         <div className="shrink-0">
                           {agent.status === 'active' ? (
-                            <span className="inline-flex items-center gap-1 text-[9px] font-martian font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            <span className="inline-flex items-center gap-1.5 text-[9px] font-martian font-bold text-white bg-emerald-600 px-2.5 py-0.5 rounded-full shadow-xs">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                               ACTIVE
                             </span>
                           ) : agent.status === 'error' ? (
-                            <span className="inline-flex items-center gap-1 text-[9px] font-martian font-bold text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+                            <span className="inline-flex items-center gap-1.5 text-[9px] font-martian font-bold text-white bg-red-600 px-2.5 py-0.5 rounded-full shadow-xs">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
                               ALERT
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-[9px] font-martian font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                            <span className="inline-flex items-center gap-1.5 text-[9px] font-martian font-bold text-white bg-amber-500 px-2.5 py-0.5 rounded-full shadow-xs">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white" />
                               STANDBY
                             </span>
                           )}
@@ -655,24 +754,34 @@ export const Library: React.FC = () => {
                       </div>
 
                       {/* Description */}
-                      <p className="text-xs text-camry-graphite/80 leading-relaxed font-familjen line-clamp-2">
+                      <p className={`text-xs leading-relaxed font-familjen line-clamp-2 ${
+                        isLight ? 'text-camry-graphite/80' : 'text-zinc-300'
+                      }`}>
                         {agent.description}
                       </p>
 
                       {/* System Prompt snippet */}
                       {agent.systemPrompt && (
-                        <div className="p-2.5 bg-zinc-50 border border-black/5 rounded-xl font-mono text-[11px] text-camry-graphite/90 line-clamp-2 relative">
-                          <span className="font-martian text-[9px] font-bold text-black/40 block mb-0.5">SYSTEM INSTRUCTIONS:</span>
+                        <div className={`p-2.5 border rounded-xl font-mono text-[11px] line-clamp-2 relative ${
+                          isLight ? 'bg-zinc-50 border-black/5 text-camry-graphite/90' : 'bg-[#141418] border-white/10 text-zinc-300'
+                        }`}>
+                          <span className={`font-martian text-[9px] font-bold block mb-0.5 ${
+                            isLight ? 'text-black/40' : 'text-zinc-500'
+                          }`}>SYSTEM INSTRUCTIONS:</span>
                           "{agent.systemPrompt}"
                         </div>
                       )}
                     </div>
 
                     {/* Action Bar */}
-                    <div className="pt-4 mt-4 border-t border-black/5 flex items-center justify-between gap-2">
+                    <div className={`pt-4 mt-4 border-t flex items-center justify-between gap-2 ${
+                      isLight ? 'border-black/5' : 'border-white/10'
+                    }`}>
                       <button
                         onClick={() => setSelectedAgentForDetails(agent)}
-                        className="p-1.5 hover:bg-black/5 rounded-lg text-camry-graphite hover:text-black font-martian text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                        className={`p-1.5 rounded-lg font-martian text-xs flex items-center gap-1 transition-colors cursor-pointer ${
+                          isLight ? 'hover:bg-black/5 text-camry-graphite hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                        }`}
                         title="View System Prompt & Versions"
                       >
                         <History size={14} />
@@ -681,9 +790,11 @@ export const Library: React.FC = () => {
 
                       <button
                         onClick={() => handleLaunchAgentChat(agent)}
-                        className="px-3 py-1.5 rounded-xl bg-camry-blackout hover:bg-black text-white font-martian text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-all hover:scale-105 cursor-pointer"
+                        className={`px-3 py-1.5 rounded-xl font-martian text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-all hover:scale-105 cursor-pointer ${
+                          isLight ? 'bg-camry-blackout hover:bg-black text-white' : 'bg-[#0066FF] hover:bg-[#0052CC] text-white'
+                        }`}
                       >
-                        <MessageSquare size={13} className="text-camry-carrier" />
+                        <MessageSquare size={13} className={isLight ? 'text-camry-carrier' : 'text-white'} />
                         <span>Launch Chat</span>
                       </button>
                     </div>
@@ -700,26 +811,30 @@ export const Library: React.FC = () => {
       {/* ========================================================= */}
       <AnimatePresence>
         {isCreateAgentModalOpen && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 font-familjen"
+              className={`border rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-black/10">
+              <div className={`flex items-center justify-between pb-3 border-b ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <div className="flex items-center gap-2">
-                  <div className="p-2 bg-camry-carrier/20 rounded-xl text-camry-blackout">
+                  <div className={`p-2 rounded-xl ${isLight ? 'bg-camry-carrier/20 text-camry-blackout' : 'bg-blue-950/40 text-blue-400'}`}>
                     <Bot size={20} />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bricolage font-bold text-camry-blackout">Create Company AI Agent</h2>
-                    <p className="text-xs text-camry-graphite/70">Deploy a customized agent on local Camry NPU for team workflows</p>
+                    <h2 className={`text-lg font-bricolage font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Create Company AI Agent</h2>
+                    <p className={`text-xs ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>Deploy a customized agent on local Camry NPU for team workflows</p>
                   </div>
                 </div>
 
-                <button onClick={() => setIsCreateAgentModalOpen(false)} className="p-1 text-camry-graphite hover:text-black cursor-pointer">
+                <button onClick={() => setIsCreateAgentModalOpen(false)} className={`p-1 cursor-pointer ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={20} />
                 </button>
               </div>
@@ -727,78 +842,90 @@ export const Library: React.FC = () => {
               {/* Agent Form */}
               <form onSubmit={handleCreateAgentSubmit} className="space-y-4 text-xs font-familjen">
                 <div>
-                  <label className="block font-martian font-bold text-camry-blackout mb-1">Agent Name *</label>
+                  <label className={`block font-martian font-bold mb-1 ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>Agent Name *</label>
                   <input 
                     type="text" 
                     required
                     value={newAgentName}
                     onChange={(e) => setNewAgentName(e.target.value)}
                     placeholder="e.g. Audit Compliance Officer"
-                    className="w-full px-3 py-2 bg-zinc-50 border border-black/10 rounded-xl focus:outline-none focus:border-camry-deep-carrier font-semibold text-camry-blackout"
+                    className={`w-full px-3 py-2 border rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                      isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
+                    }`}
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-martian font-bold text-camry-blackout mb-1">Department Scope</label>
+                    <label className={`block font-martian font-bold mb-1 ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>Department Scope</label>
                     <CustomSelect
                       fullWidth
                       value={newAgentCategory}
                       onChange={(val) => setNewAgentCategory(val)}
                       options={agentCategories.filter(c => c !== 'All').map(cat => ({ value: cat, label: cat }))}
-                      buttonClassName="bg-zinc-50 border-black/10 rounded-xl"
+                      buttonClassName={isLight ? 'bg-zinc-50 border-black/10 rounded-xl' : 'bg-[#141418] border-white/15 rounded-xl text-white'}
                     />
                   </div>
 
                   <div>
-                    <label className="block font-martian font-bold text-camry-blackout mb-1">Initial Version</label>
+                    <label className={`block font-martian font-bold mb-1 ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>Initial Version</label>
                     <input 
                       type="text"
                       value={newAgentVersion}
                       onChange={(e) => setNewAgentVersion(e.target.value)}
                       placeholder="v1.0.0"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-black/10 rounded-xl focus:outline-none focus:border-camry-deep-carrier font-mono text-xs"
+                      className={`w-full px-3 py-2 border rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                        isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
+                      }`}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-martian font-bold text-camry-blackout mb-1">Short Description / Purpose</label>
+                  <label className={`block font-martian font-bold mb-1 ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>Short Description / Purpose</label>
                   <input 
                     type="text"
                     value={newAgentTagline}
                     onChange={(e) => setNewAgentTagline(e.target.value)}
                     placeholder="e.g. Scans contract clauses against corporate risk policies."
-                    className="w-full px-3 py-2 bg-zinc-50 border border-black/10 rounded-xl focus:outline-none focus:border-camry-deep-carrier"
+                    className={`w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                      isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
+                    }`}
                   />
                 </div>
 
                 <div>
-                  <label className="block font-martian font-bold text-camry-blackout mb-1">System Instructions / Prompt</label>
+                  <label className={`block font-martian font-bold mb-1 ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>System Instructions / Prompt</label>
                   <textarea 
                     rows={4}
                     value={newAgentPrompt}
                     onChange={(e) => setNewAgentPrompt(e.target.value)}
                     placeholder="You are an enterprise AI compliance specialist. Analyze contracts, flag high-risk indemnities, and respond with structured markdown analysis..."
-                    className="w-full px-3 py-2 bg-zinc-50 border border-black/10 rounded-xl focus:outline-none focus:border-camry-deep-carrier font-mono text-xs leading-relaxed"
+                    className={`w-full px-3 py-2 border rounded-xl font-mono text-xs leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                      isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
+                    }`}
                   />
                 </div>
 
                 {/* Form Buttons */}
-                <div className="pt-3 border-t border-black/10 flex items-center justify-end gap-2">
+                <div className={`pt-3 border-t flex items-center justify-end gap-2 ${
+                  isLight ? 'border-black/10' : 'border-white/10'
+                }`}>
                   <button 
                     type="button" 
                     onClick={() => setIsCreateAgentModalOpen(false)}
-                    className="px-4 py-2 rounded-xl border border-black/10 text-xs font-martian hover:bg-black/5 cursor-pointer"
+                    className={`px-4 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
+                      isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                    }`}
                   >
                     Cancel
                   </button>
 
                   <button 
                     type="submit"
-                    className="px-5 py-2 rounded-xl bg-camry-blackout hover:bg-black text-white text-xs font-martian font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    className="px-5 py-2 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-martian font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
                   >
-                    <Check size={14} className="text-camry-carrier" />
+                    <Check size={14} className="text-white" />
                     <span>Deploy Agent</span>
                   </button>
                 </div>
@@ -813,37 +940,47 @@ export const Library: React.FC = () => {
       {/* ========================================================= */}
       <AnimatePresence>
         {selectedAgentForDetails && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col font-familjen"
+              className={`border rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
               {/* Header */}
-              <div className="flex items-start justify-between pb-3 border-b border-black/10 shrink-0">
+              <div className={`flex items-start justify-between pb-3 border-b shrink-0 ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded bg-camry-blackout text-white font-martian text-[10px] font-bold">
+                    <span className={`px-2.5 py-0.5 rounded font-martian text-[10px] font-bold ${
+                      isLight ? 'bg-camry-blackout text-white' : 'bg-[#0066FF] text-white'
+                    }`}>
                       {selectedAgentForDetails.category || 'Custom'}
                     </span>
-                    <span className="px-2.5 py-0.5 rounded bg-camry-carrier/20 text-camry-blackout font-martian text-[10px] font-bold">
+                    <span className={`px-2.5 py-0.5 rounded font-martian text-[10px] font-bold ${
+                      isLight ? 'bg-camry-carrier/20 text-camry-blackout' : 'bg-blue-950/40 text-blue-300'
+                    }`}>
                       {selectedAgentForDetails.currentVersion || 'v1.0.0'}
                     </span>
                   </div>
-                  <h2 className="text-xl font-bricolage font-bold text-camry-blackout">
+                  <h2 className={`text-xl font-bricolage font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                     {selectedAgentForDetails.name}
                   </h2>
                 </div>
 
-                <button onClick={() => setSelectedAgentForDetails(null)} className="p-1 text-camry-graphite hover:text-black cursor-pointer">
+                <button onClick={() => setSelectedAgentForDetails(null)} className={`p-1 cursor-pointer ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={20} />
                 </button>
               </div>
 
               {/* System Prompt View */}
               <div className="space-y-1">
-                <label className="font-martian text-xs font-bold text-camry-blackout uppercase tracking-wider">Active System Instructions</label>
+                <label className={`font-martian text-xs font-bold uppercase tracking-wider ${
+                  isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                }`}>Active System Instructions</label>
                 <div className="p-3 bg-zinc-900 text-emerald-400 font-mono text-xs rounded-xl border border-black/20 overflow-y-auto max-h-36 leading-relaxed">
                   {selectedAgentForDetails.systemPrompt || 'No explicit system prompt specified.'}
                 </div>
@@ -851,35 +988,45 @@ export const Library: React.FC = () => {
 
               {/* Version History Log */}
               <div className="space-y-2 flex-1 overflow-y-auto pt-2">
-                <label className="font-martian text-xs font-bold text-camry-blackout uppercase tracking-wider flex items-center gap-1.5">
-                  <History size={14} className="text-camry-deep-carrier" />
+                <label className={`font-martian text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ${
+                  isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                }`}>
+                  <History size={14} className="text-[#0066FF]" />
                   <span>Version Audit Log</span>
                 </label>
 
                 {selectedAgentForDetails.versionHistory && selectedAgentForDetails.versionHistory.length > 0 ? (
                   <div className="space-y-2">
                     {selectedAgentForDetails.versionHistory.map((ver, idx) => (
-                      <div key={ver.version + idx} className="p-3 bg-zinc-50 border border-black/10 rounded-xl space-y-1 text-xs">
+                      <div key={ver.version + idx} className={`p-3 border rounded-xl space-y-1 text-xs ${
+                        isLight ? 'bg-zinc-50 border-black/10' : 'bg-[#141418] border-white/10'
+                      }`}>
                         <div className="flex items-center justify-between font-martian text-[11px]">
-                          <span className="font-bold text-camry-blackout">{ver.version}</span>
-                          <span className="text-camry-graphite/60">{ver.updatedAt} • By {ver.author}</span>
+                          <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{ver.version}</span>
+                          <span className={isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}>{ver.updatedAt} • By {ver.author}</span>
                         </div>
-                        <p className="text-camry-graphite text-xs">{ver.changes}</p>
+                        <p className={isLight ? 'text-camry-graphite text-xs' : 'text-zinc-300 text-xs'}>{ver.changes}</p>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-camry-graphite italic p-3 bg-zinc-50 rounded-xl border border-black/5">
+                  <p className={`text-xs italic p-3 rounded-xl border ${
+                    isLight ? 'bg-zinc-50 border-black/5 text-camry-graphite' : 'bg-[#141418] border-white/5 text-zinc-400'
+                  }`}>
                     Single version deployed ({selectedAgentForDetails.currentVersion || 'v1.0.0'}).
                   </p>
                 )}
               </div>
 
               {/* Footer action */}
-              <div className="pt-3 border-t border-black/10 flex items-center justify-between gap-2 shrink-0">
+              <div className={`pt-3 border-t flex items-center justify-between gap-2 shrink-0 ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <button
                   onClick={() => handleCopy(selectedAgentForDetails.systemPrompt || '')}
-                  className="px-3.5 py-2 rounded-xl border border-black/10 hover:bg-black/5 text-xs font-martian font-semibold flex items-center gap-1.5 cursor-pointer"
+                  className={`px-3.5 py-2 rounded-xl border text-xs font-martian font-semibold flex items-center gap-1.5 cursor-pointer ${
+                    isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                  }`}
                 >
                   <Copy size={14} />
                   <span>Copy Prompt</span>
@@ -890,9 +1037,9 @@ export const Library: React.FC = () => {
                     handleLaunchAgentChat(selectedAgentForDetails);
                     setSelectedAgentForDetails(null);
                   }}
-                  className="px-4 py-2 rounded-xl bg-camry-blackout text-white hover:bg-black font-martian text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white font-martian text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
                 >
-                  <MessageSquare size={14} className="text-camry-carrier" />
+                  <MessageSquare size={14} className="text-white" />
                   <span>Launch Agent Chat</span>
                 </button>
               </div>
@@ -904,43 +1051,53 @@ export const Library: React.FC = () => {
       {/* DOCUMENT VIEWER MODAL / SIDE PANEL */}
       <AnimatePresence>
         {selectedItem && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col font-familjen"
+              className={`border rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
               {/* Header */}
-              <div className="flex items-start justify-between pb-3 border-b border-black/10 flex-shrink-0">
+              <div className={`flex items-start justify-between pb-3 border-b flex-shrink-0 ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded bg-camry-blackout text-white font-martian text-[10px] font-bold">
+                    <span className={`px-2.5 py-0.5 rounded font-martian text-[10px] font-bold ${
+                      isLight ? 'bg-camry-blackout text-white' : 'bg-[#0066FF] text-white'
+                    }`}>
                       {selectedItem.type}
                     </span>
-                    <span className="px-2.5 py-0.5 rounded bg-black/5 text-camry-graphite font-martian text-[10px]">
+                    <span className={`px-2.5 py-0.5 rounded font-martian text-[10px] ${
+                      isLight ? 'bg-black/5 text-camry-graphite' : 'bg-white/10 text-zinc-300'
+                    }`}>
                       {selectedItem.category}
                     </span>
                   </div>
-                  <h2 className="text-xl font-bricolage font-bold text-camry-blackout">
+                  <h2 className={`text-xl font-bricolage font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                     {selectedItem.title}
                   </h2>
                 </div>
 
-                <button onClick={() => setSelectedItem(null)} className="p-1.5 text-camry-graphite hover:text-black cursor-pointer">
+                <button onClick={() => setSelectedItem(null)} className={`p-1.5 cursor-pointer ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={20} />
                 </button>
               </div>
 
               {/* Author & Model strip */}
-              <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-zinc-50 border border-black/5 rounded-xl font-martian text-xs text-camry-graphite flex-shrink-0">
+              <div className={`flex flex-wrap items-center justify-between gap-2 p-3 border rounded-xl font-martian text-xs flex-shrink-0 ${
+                isLight ? 'bg-zinc-50 border-black/5 text-camry-graphite' : 'bg-[#141418] border-white/10 text-zinc-300'
+              }`}>
                 <div className="flex items-center gap-2">
                   <User size={14} />
-                  <span>Author: <strong className="text-camry-blackout">{selectedItem.author}</strong></span>
+                  <span>Author: <strong className={isLight ? 'text-camry-blackout' : 'text-white'}>{selectedItem.author}</strong></span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Cpu size={14} className="text-camry-deep-carrier" />
-                  <span>Model: <strong className="text-camry-blackout">{selectedItem.modelUsed}</strong></span>
+                  <Cpu size={14} className="text-[#0066FF]" />
+                  <span>Model: <strong className={isLight ? 'text-camry-blackout' : 'text-white'}>{selectedItem.modelUsed}</strong></span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar size={14} />
@@ -949,11 +1106,13 @@ export const Library: React.FC = () => {
               </div>
 
               {/* Document Content View */}
-              <div className="flex-1 overflow-y-auto p-4 bg-zinc-50/50 border border-black/10 rounded-xl space-y-3 font-sans text-xs sm:text-sm text-camry-blackout leading-relaxed whitespace-pre-wrap">
+              <div className={`flex-1 overflow-y-auto p-4 border rounded-xl space-y-3 font-sans text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${
+                isLight ? 'bg-zinc-50/50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/10 text-zinc-200'
+              }`}>
                 {selectedItem.imageUrl ? (
                   <div className="space-y-3">
                     <img src={selectedItem.imageUrl} alt={selectedItem.title} className="w-full rounded-xl border border-black/10" />
-                    <p className="text-xs text-camry-graphite font-familjen">{selectedItem.snippet}</p>
+                    <p className={`text-xs font-familjen ${isLight ? 'text-camry-graphite' : 'text-zinc-400'}`}>{selectedItem.snippet}</p>
                   </div>
                 ) : (
                   selectedItem.content || selectedItem.snippet
@@ -961,10 +1120,12 @@ export const Library: React.FC = () => {
               </div>
 
               {/* Action Toolbar */}
-              <div className="pt-3 border-t border-black/10 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+              <div className={`pt-3 border-t flex flex-wrap items-center justify-between gap-3 flex-shrink-0 ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <button
                   onClick={() => handleAskAboutOutput(selectedItem)}
-                  className="px-4 py-2 rounded-xl bg-camry-carrier text-camry-blackout hover:opacity-95 font-martian text-xs font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#0066FF] text-white hover:bg-[#0052CC] font-martian text-xs font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer"
                 >
                   <MessageSquare size={15} />
                   <span>Ask Camry about this output</span>
@@ -973,7 +1134,9 @@ export const Library: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleCopy(selectedItem.content || selectedItem.snippet)}
-                    className="px-3.5 py-2 rounded-xl border border-black/10 hover:bg-black/5 text-xs font-martian font-semibold flex items-center gap-1.5 cursor-pointer"
+                    className={`px-3.5 py-2 rounded-xl border text-xs font-martian font-semibold flex items-center gap-1.5 cursor-pointer ${
+                      isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                    }`}
                   >
                     <Copy size={14} />
                     <span>Copy Text</span>
@@ -981,7 +1144,9 @@ export const Library: React.FC = () => {
 
                   <button
                     onClick={() => handleDownload(selectedItem)}
-                    className="px-3.5 py-2 rounded-xl border border-black/10 hover:bg-black/5 text-xs font-martian font-semibold flex items-center gap-1.5 cursor-pointer"
+                    className={`px-3.5 py-2 rounded-xl border text-xs font-martian font-semibold flex items-center gap-1.5 cursor-pointer ${
+                      isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                    }`}
                   >
                     <Download size={14} />
                     <span>Export</span>
@@ -996,19 +1161,26 @@ export const Library: React.FC = () => {
       {/* DELETE CONFIRMATION MODAL */}
       <AnimatePresence>
         {itemToDelete && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-sm w-full p-6 shadow-xl space-y-4 font-familjen"
+              className={`border rounded-2xl max-w-sm w-full p-6 shadow-xl space-y-4 font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
-              <h3 className="font-bricolage font-bold text-base text-camry-blackout">Delete library artifact?</h3>
-              <p className="text-xs text-camry-graphite">
-                Are you sure you want to delete <span className="font-semibold text-camry-blackout">{itemToDelete.title}</span>? This cannot be undone.
+              <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Delete library artifact?</h3>
+              <p className={`text-xs ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>
+                Are you sure you want to delete <span className={`font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{itemToDelete.title}</span>? This cannot be undone.
               </p>
               <div className="flex items-center justify-end gap-2 pt-2">
-                <button onClick={() => setItemToDelete(null)} className="px-3.5 py-2 rounded-xl border border-black/10 text-xs font-martian hover:bg-black/5 cursor-pointer">
+                <button 
+                  onClick={() => setItemToDelete(null)} 
+                  className={`px-3.5 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
+                    isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                  }`}
+                >
                   Cancel
                 </button>
                 <button 

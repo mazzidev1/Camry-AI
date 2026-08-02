@@ -12,9 +12,10 @@
   --color-camry-elevated-light: #EFECE6;
   --color-camry-border-light: #E2DDD5;
 
-  --color-camry-blue-carrier: #3B82F6;
-  --color-camry-blue-signal: #60A5FA;
-  --color-camry-sky: #0EA5E9;
+  --color-camry-brand: #0066FF;
+  --color-camry-blue-carrier: #0066FF;
+  --color-camry-blue-signal: #3385FF;
+  --color-camry-sky: #0066FF;
   --color-camry-violet: #8B5CF6;
   --color-camry-amber: #F59E0B;
   --color-camry-green: #10B981;
@@ -26,10 +27,13 @@
   /* Aliases for backwards compatibility */
   --color-camry-blackout: #121418;
   --color-camry-graphite: #16161A;
-  --color-camry-carrier: #3B82F6;
-  --color-camry-deep-carrier: #2563EB;
+  --color-camry-carrier: #0066FF;
+  --color-camry-deep-carrier: #0052CC;
   
-  /* Camry Design System Typography */
+  /* Camry Design System Typography:
+     Space Grotesk (400-700) - display, headings, CAMRY AI wordmark, mono/caps micro-labels
+     Plus Jakarta Sans (400-800) - UI, body copy, conversation text
+  */
   --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: "Plus Jakarta Sans", sans-serif;
   --font-jakarta: "Plus Jakarta Sans", sans-serif;
@@ -40,8 +44,8 @@
   --font-space: "Space Grotesk", sans-serif;
   --font-bricolage: "Space Grotesk", sans-serif;
 
-  --font-mono: "Martian Mono", monospace;
-  --font-martian: "Martian Mono", monospace;
+  --font-mono: "Space Grotesk", sans-serif;
+  --font-martian: "Space Grotesk", sans-serif;
 }
 
 body {
@@ -49,6 +53,18 @@ body {
   background-color: var(--color-camry-base-dark);
   color: #FAFAFA;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.font-sans, .font-body, .font-jakarta, .font-familjen, .font-poppins {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+.font-display, .font-space, .font-bricolage, .font-mono, .font-martian {
+  font-family: "Space Grotesk", sans-serif !important;
 }
 
 html.light body {

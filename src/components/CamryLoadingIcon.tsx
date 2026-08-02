@@ -1,22 +1,34 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { CamryMascot } from './CamryMascot';
 
 interface CamryLoadingIconProps {
   size?: number;
   className?: string;
   color?: string;
-  variant?: 'default' | 'spinner' | 'waveform' | 'pulse-grid';
+  variant?: 'default' | 'spinner' | 'waveform' | 'pulse-grid' | 'mascot';
 }
 
 export const CamryLoadingIcon: React.FC<CamryLoadingIconProps> = ({
   size = 22,
   className = '',
-  color = '#0B0C0E',
+  color = '#0066FF',
   variant = 'default'
 }) => {
-  const blueColor = '#3B82F6';
+  const blueColor = '#0066FF';
   const orangeColor = '#F59E0B';
-  const purpleColor = '#A855F7';
+  const purpleColor = '#8B5CF6';
+
+  if (variant === 'mascot') {
+    return (
+      <div 
+        style={{ width: size, height: size }} 
+        className={`relative inline-flex items-center justify-center shrink-0 ${className}`}
+      >
+        <CamryMascot size={size} variant="full" animated={true} />
+      </div>
+    );
+  }
 
   if (variant === 'spinner') {
     return (
@@ -146,7 +158,7 @@ export const CamryLoadingIcon: React.FC<CamryLoadingIconProps> = ({
     );
   }
 
-  // Default Camry NPU Brand Logo Loader
+  // Default Camry NPU Geometric Brand Logo Loader
   return (
     <div 
       style={{ width: size, height: size }} 
@@ -219,4 +231,3 @@ export const CamryLoadingIcon: React.FC<CamryLoadingIconProps> = ({
     </div>
   );
 };
-

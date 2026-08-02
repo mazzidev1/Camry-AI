@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppContext, AVAILABLE_MODELS, Model } from '../store/AppContext';
 import { CustomSelect } from '../components/CustomSelect';
-import { Box, ChevronDown, Download, Heart, Columns, X, Cpu, Scale, Check as CheckIcon, ShieldCheck, Zap, HardDrive } from 'lucide-react';
+import { Box, ChevronDown, Download, Heart, Columns, X, Cpu, Scale, Check as CheckIcon, ShieldCheck, HardDrive } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 // Detailed technical specifications dictionary for model comparisons
@@ -98,7 +98,9 @@ const MODEL_SPECS: Record<string, {
 };
 
 export const ModelStore: React.FC = () => {
-  const { installedModels, installModel, loadedModel, showToast } = useAppContext();
+  const { installedModels, installModel, loadedModel, showToast, themeMode } = useAppContext();
+  const isLight = themeMode !== 'dark';
+
   const [tab, setTab] = useState<'all' | 'owned'>('all');
   const [paramLimit, setParamLimit] = useState(128); // 0 to 128
   
@@ -166,52 +168,66 @@ export const ModelStore: React.FC = () => {
   const specB = MODEL_SPECS[modelB.id] || MODEL_SPECS['Qwen3-30B-Thinking-2507'];
 
   return (
-    <div className="flex-1 h-full flex flex-col bg-camry-paper overflow-hidden relative">
+    <div className={`flex-1 h-full flex flex-col overflow-hidden relative transition-colors ${
+      isLight ? 'bg-camry-paper' : 'bg-[#141418] text-white'
+    }`}>
       {/* Header */}
-      <div className="p-4 sm:p-8 pb-4 border-b border-black/5 bg-camry-paper/50 z-10 space-y-4">
+      <div className={`p-4 sm:p-8 pb-4 border-b z-10 space-y-4 ${
+        isLight ? 'bg-camry-paper/50 border-black/5' : 'bg-[#141418]/80 border-white/10'
+      }`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Box className="text-camry-blackout" size={24} />
-            <h1 className="text-xl sm:text-2xl font-bricolage text-camry-blackout">Model Store</h1>
+            <Box className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-[#0066FF]'}`} size={24} />
+            <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Model Store</h1>
           </div>
 
           <button 
             onClick={() => setIsCompareOpen(true)}
-            className="flex items-center gap-2 px-3.5 py-2 bg-camry-blackout text-white rounded-lg text-xs font-martian hover:bg-camry-graphite transition-all shadow-sm w-fit"
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-martian transition-all shadow-xs w-fit cursor-pointer ${
+              isLight ? 'bg-camry-blackout hover:bg-black text-white' : 'bg-[#0066FF] hover:bg-[#0052CC] text-white'
+            }`}
           >
-            <Columns size={15} className="text-camry-carrier" />
+            <Columns size={15} className={isLight ? 'text-camry-carrier' : 'text-white'} />
             <span>Compare Models</span>
           </button>
         </div>
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-4">
-            <div className="flex bg-camry-graphite/5 p-1 rounded-lg">
+            <div className={`flex p-1 rounded-lg ${isLight ? 'bg-camry-graphite/5' : 'bg-white/10'}`}>
               <button 
                 onClick={() => setTab('all')}
-                className={`px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors ${tab === 'all' ? 'bg-white shadow-sm text-camry-blackout' : 'text-camry-graphite/60'}`}
+                className={`px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
+                  tab === 'all' 
+                    ? (isLight ? 'bg-white shadow-xs text-camry-blackout' : 'bg-[#0066FF] text-white shadow-xs') 
+                    : (isLight ? 'text-camry-graphite/60' : 'text-zinc-400')
+                }`}
               >
                 All
               </button>
               <button 
                 onClick={() => setTab('owned')}
-                className={`px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors ${tab === 'owned' ? 'bg-white shadow-sm text-camry-blackout' : 'text-camry-graphite/60'}`}
+                className={`px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
+                  tab === 'owned' 
+                    ? (isLight ? 'bg-white shadow-xs text-camry-blackout' : 'bg-[#0066FF] text-white shadow-xs') 
+                    : (isLight ? 'text-camry-graphite/60' : 'text-zinc-400')
+                }`}
               >
                 Owned
               </button>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
-              <span className="font-martian text-[10px] sm:text-xs text-camry-graphite/60">PARAMS:</span>
+              <span className={`font-martian text-[10px] sm:text-xs ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>PARAMS:</span>
               <input 
                 type="range" 
                 min="0" 
                 max="128" 
                 value={paramLimit}
                 onChange={(e) => setParamLimit(parseInt(e.target.value))}
-                className="w-24 sm:w-32 accent-camry-blackout"
+                className="w-24 sm:w-32 accent-[#0066FF]"
               />
-              <span className="font-martian text-[10px] sm:text-xs w-16 sm:w-20">{paramLimit}B MAX</span>
+              <span className={`font-martian text-[10px] sm:text-xs w-16 sm:w-20 ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>{paramLimit}B MAX</span>
             </div>
           </div>
 
@@ -219,17 +235,25 @@ export const ModelStore: React.FC = () => {
             <div className="relative">
               <button 
                 onClick={() => setShowTypeDropdown(!showTypeDropdown)}
-                className="flex items-center justify-between min-w-[110px] sm:min-w-[120px] px-2.5 py-1.5 bg-white border border-black/5 rounded-md text-xs font-medium text-camry-graphite hover:bg-camry-graphite/5"
+                className={`flex items-center justify-between min-w-[110px] sm:min-w-[120px] px-2.5 py-1.5 border rounded-md text-xs font-medium cursor-pointer ${
+                  isLight 
+                    ? 'bg-white border-black/5 text-camry-graphite hover:bg-camry-graphite/5' 
+                    : 'bg-[#1C1C22] border-white/10 text-zinc-300 hover:bg-white/10'
+                }`}
               >
                 {typeFilter} <ChevronDown size={14} />
               </button>
               {showTypeDropdown && (
-                <div className="absolute top-full left-0 mt-1 w-full bg-white border border-black/10 rounded-md shadow-lg py-1 z-20">
+                <div className={`absolute top-full left-0 mt-1 w-full border rounded-md shadow-lg py-1 z-20 ${
+                  isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/15'
+                }`}>
                   {['All Types', 'Text Generation', 'Text-to-Image'].map(t => (
                     <button 
                       key={t}
                       onClick={() => { setTypeFilter(t); setShowTypeDropdown(false); }}
-                      className="w-full text-left px-3 py-1.5 text-xs text-camry-graphite hover:bg-camry-graphite/5"
+                      className={`w-full text-left px-3 py-1.5 text-xs transition-colors cursor-pointer ${
+                        isLight ? 'text-camry-graphite hover:bg-camry-graphite/5' : 'text-zinc-300 hover:bg-white/10'
+                      }`}
                     >
                       {t}
                     </button>
@@ -241,17 +265,25 @@ export const ModelStore: React.FC = () => {
             <div className="relative">
               <button 
                 onClick={() => setShowTrendDropdown(!showTrendDropdown)}
-                className="flex items-center justify-between min-w-[90px] sm:min-w-[100px] px-2.5 py-1.5 bg-white border border-black/5 rounded-md text-xs font-medium text-camry-graphite hover:bg-camry-graphite/5"
+                className={`flex items-center justify-between min-w-[90px] sm:min-w-[100px] px-2.5 py-1.5 border rounded-md text-xs font-medium cursor-pointer ${
+                  isLight 
+                    ? 'bg-white border-black/5 text-camry-graphite hover:bg-camry-graphite/5' 
+                    : 'bg-[#1C1C22] border-white/10 text-zinc-300 hover:bg-white/10'
+                }`}
               >
                 {trendSort} <ChevronDown size={14} />
               </button>
               {showTrendDropdown && (
-                <div className="absolute top-full right-0 mt-1 w-full bg-white border border-black/10 rounded-md shadow-lg py-1 z-20">
+                <div className={`absolute top-full right-0 mt-1 w-full border rounded-md shadow-lg py-1 z-20 ${
+                  isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/15'
+                }`}>
                   {['Trend', 'Downloads', 'Likes'].map(t => (
                     <button 
                       key={t}
                       onClick={() => { setTrendSort(t); setShowTrendDropdown(false); }}
-                      className="w-full text-left px-3 py-1.5 text-xs text-camry-graphite hover:bg-camry-graphite/5"
+                      className={`w-full text-left px-3 py-1.5 text-xs transition-colors cursor-pointer ${
+                        isLight ? 'text-camry-graphite hover:bg-camry-graphite/5' : 'text-zinc-300 hover:bg-white/10'
+                      }`}
                     >
                       {t}
                     </button>
@@ -278,16 +310,26 @@ export const ModelStore: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   key={m.id} 
-                  className="bg-white border border-black/5 rounded-xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 shadow-sm hover:shadow-md transition-shadow"
+                  className={`border rounded-xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 shadow-xs hover:shadow-md transition-all ${
+                    isLight 
+                      ? 'bg-white border-black/5 hover:border-black/20' 
+                      : 'bg-[#1C1C22] border-white/10 hover:border-white/20'
+                  }`}
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-camry-graphite/5 flex items-center justify-center flex-shrink-0">
-                      <Box size={20} className="text-camry-graphite/70" />
+                    <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                      isLight ? 'bg-camry-graphite/5' : 'bg-white/5'
+                    }`}>
+                      <Box size={20} className={isLight ? 'text-camry-graphite/70' : 'text-zinc-400'} />
                     </div>
                     
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-martian font-semibold text-camry-blackout text-xs sm:text-sm mb-0.5 truncate">{m.name}</h3>
-                      <div className="font-martian text-[10px] text-camry-graphite/50 flex flex-wrap items-center gap-1.5">
+                      <h3 className={`font-martian font-semibold text-xs sm:text-sm mb-0.5 truncate ${
+                        isLight ? 'text-camry-blackout' : 'text-white'
+                      }`}>{m.name}</h3>
+                      <div className={`font-martian text-[10px] flex flex-wrap items-center gap-1.5 ${
+                        isLight ? 'text-camry-graphite/50' : 'text-zinc-400'
+                      }`}>
                         <span>{m.type}</span>
                         <span>•</span>
                         <span>{m.params}</span>
@@ -297,8 +339,12 @@ export const ModelStore: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-black/5">
-                    <div className="flex items-center gap-3 text-camry-graphite/40 font-martian text-xs">
+                  <div className={`flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 ${
+                    isLight ? 'border-black/5' : 'border-white/10'
+                  }`}>
+                    <div className={`flex items-center gap-3 font-martian text-xs ${
+                      isLight ? 'text-camry-graphite/40' : 'text-zinc-500'
+                    }`}>
                       <div className="flex items-center gap-1"><Download size={13} /> {m.downloads}</div>
                       <div className="flex items-center gap-1"><Heart size={13} /> {m.likes}</div>
                     </div>
@@ -306,7 +352,11 @@ export const ModelStore: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <button 
                         onClick={() => openCompareWithModel(m.id)}
-                        className="px-2 py-1.5 border border-black/10 rounded text-xs font-martian hover:bg-camry-graphite/5 text-camry-graphite transition-colors flex items-center gap-1"
+                        className={`px-2 py-1.5 border rounded text-xs font-martian transition-colors flex items-center gap-1 cursor-pointer ${
+                          isLight 
+                            ? 'border-black/10 hover:bg-black/5 text-camry-graphite' 
+                            : 'border-white/10 hover:bg-white/10 text-zinc-300'
+                        }`}
                         title="Compare specs with another model"
                       >
                         <Columns size={12} />
@@ -316,19 +366,23 @@ export const ModelStore: React.FC = () => {
                       <div className="w-24 sm:w-28 flex justify-end">
                         {isDownloading ? (
                           <div className="w-full text-right">
-                            <div className="font-martian text-[9px] text-camry-graphite/60 mb-0.5">DOWNLOADING...</div>
-                            <div className="w-full h-1 bg-camry-graphite/10 rounded-full overflow-hidden">
-                              <div className="h-full bg-camry-carrier transition-all duration-200" style={{ width: `${downloadProgress}%` }} />
+                            <div className={`font-martian text-[9px] mb-0.5 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>DOWNLOADING...</div>
+                            <div className={`w-full h-1 rounded-full overflow-hidden ${isLight ? 'bg-camry-graphite/10' : 'bg-white/10'}`}>
+                              <div className="h-full bg-[#0066FF] transition-all duration-200" style={{ width: `${downloadProgress}%` }} />
                             </div>
                           </div>
                         ) : isOwned ? (
-                          <span className="font-martian text-xs text-camry-graphite/50 flex items-center gap-1">
+                          <span className={`font-martian text-xs flex items-center gap-1 ${
+                            isLight ? 'text-camry-graphite/70' : 'text-emerald-400'
+                          }`}>
                             <CheckIcon size={14} /> {loadedModel === m.id ? 'LOADED' : 'OWNED'}
                           </span>
                         ) : (
                           <button 
                             onClick={() => handleDownload(m.id)}
-                            className="bg-camry-blackout text-white px-3.5 py-1.5 rounded text-xs sm:text-sm font-medium hover:bg-camry-graphite transition-colors"
+                            className={`px-3.5 py-1.5 rounded text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
+                              isLight ? 'bg-camry-blackout text-white hover:bg-black' : 'bg-[#0066FF] text-white hover:bg-[#0052CC]'
+                            }`}
                           >
                             Try
                           </button>
@@ -341,7 +395,7 @@ export const ModelStore: React.FC = () => {
             })}
             
             {filteredModels.length === 0 && (
-              <div className="text-center py-12 text-camry-graphite/50 font-martian text-sm">
+              <div className={`text-center py-12 font-martian text-sm ${isLight ? 'text-camry-graphite/50' : 'text-zinc-500'}`}>
                 NO MODELS MATCH CRITERIA
               </div>
             )}
@@ -352,35 +406,45 @@ export const ModelStore: React.FC = () => {
       {/* Side-by-Side Model Technical Comparison Modal / Drawer */}
       <AnimatePresence>
         {isCompareOpen && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-camry-paper/90 backdrop-blur-md">
+          <div className="absolute inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/60 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-white border border-black/10 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden"
+              className={`border rounded-2xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
               {/* Modal Header */}
-              <div className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-black/10 flex items-center justify-between bg-camry-paper/50">
+              <div className={`p-4 sm:p-6 pb-3 sm:pb-4 border-b flex items-center justify-between ${
+                isLight ? 'bg-camry-paper/50 border-black/10' : 'bg-[#141418] border-white/10'
+              }`}>
                 <div className="flex items-center gap-3">
-                  <Columns className="text-camry-carrier flex-shrink-0" size={20} />
+                  <Columns className="text-[#0066FF] flex-shrink-0" size={20} />
                   <div>
-                    <h2 className="font-bricolage text-base sm:text-xl text-camry-blackout">Model Technical Comparison</h2>
-                    <p className="font-martian text-[10px] sm:text-xs text-camry-graphite/60">Side-by-side hardware & spec analysis</p>
+                    <h2 className={`font-bricolage text-base sm:text-xl ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Model Technical Comparison</h2>
+                    <p className={`font-martian text-[10px] sm:text-xs ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>Side-by-side hardware & spec analysis</p>
                   </div>
                 </div>
 
                 <button 
                   onClick={() => setIsCompareOpen(false)}
-                  className="p-1.5 sm:p-2 text-camry-graphite/60 hover:text-black hover:bg-black/5 rounded-full transition-colors"
+                  className={`p-1.5 sm:p-2 rounded-full transition-colors cursor-pointer ${
+                    isLight ? 'text-camry-graphite/60 hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  }`}
                 >
                   <X size={18} />
                 </button>
               </div>
 
               {/* Model Selectors */}
-              <div className="p-4 sm:p-6 pb-3 sm:pb-4 bg-camry-graphite/5 border-b border-black/5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
+              <div className={`p-4 sm:p-6 pb-3 sm:pb-4 border-b grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 ${
+                isLight ? 'bg-camry-graphite/5 border-black/5' : 'bg-[#141418] border-white/10'
+              }`}>
                 <div>
-                  <label className="block font-martian text-[10px] text-camry-graphite/60 uppercase tracking-widest mb-1">Model A</label>
+                  <label className={`block font-martian text-[10px] uppercase tracking-widest mb-1 ${
+                    isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+                  }`}>Model A</label>
                   <CustomSelect
                     fullWidth
                     value={modelAId}
@@ -390,12 +454,14 @@ export const ModelStore: React.FC = () => {
                       label: m.name,
                       description: `${m.params} • ${m.size}`
                     }))}
-                    buttonClassName="bg-white border-black/10 rounded-lg"
+                    buttonClassName={isLight ? 'bg-white border-black/10 rounded-lg' : 'bg-[#1C1C22] border-white/15 rounded-lg text-white'}
                   />
                 </div>
 
                 <div>
-                  <label className="block font-martian text-[10px] text-camry-graphite/60 uppercase tracking-widest mb-1">Model B</label>
+                  <label className={`block font-martian text-[10px] uppercase tracking-widest mb-1 ${
+                    isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+                  }`}>Model B</label>
                   <CustomSelect
                     fullWidth
                     value={modelBId}
@@ -405,7 +471,7 @@ export const ModelStore: React.FC = () => {
                       label: m.name,
                       description: `${m.params} • ${m.size}`
                     }))}
-                    buttonClassName="bg-white border-black/10 rounded-lg"
+                    buttonClassName={isLight ? 'bg-white border-black/10 rounded-lg' : 'bg-[#1C1C22] border-white/15 rounded-lg text-white'}
                   />
                 </div>
               </div>
@@ -417,77 +483,94 @@ export const ModelStore: React.FC = () => {
                   valueA={modelA.name} 
                   valueB={modelB.name} 
                   highlight
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="Category / Type" 
                   valueA={modelA.type} 
                   valueB={modelB.type} 
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="Parameter Count" 
                   valueA={modelA.params} 
                   valueB={modelB.params} 
                   highlight
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="Architecture" 
                   valueA={specA.architecture} 
                   valueB={specB.architecture} 
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="Quantization Format" 
                   valueA={specA.quantization} 
                   valueB={specB.quantization} 
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="Context Window" 
                   valueA={specA.contextWindow} 
                   valueB={specB.contextWindow} 
                   highlight
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="Recommended VRAM" 
                   valueA={specA.recommendedVram} 
                   valueB={specB.recommendedVram} 
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="NPU Inference Latency" 
                   valueA={specA.npuLatency} 
                   valueB={specB.npuLatency} 
                   highlight
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="On-Prem Power Draw" 
                   valueA={specA.powerDraw} 
                   valueB={specB.powerDraw} 
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="KV Cache Manager" 
                   valueA={specA.kvCacheType} 
                   valueB={specB.kvCacheType} 
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="Storage Size" 
                   valueA={modelA.size} 
                   valueB={modelB.size} 
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="Software License" 
                   valueA={specA.license} 
                   valueB={specB.license} 
+                  isLight={isLight}
                 />
                 <SpecComparisonRow 
                   label="Community Downloads" 
                   valueA={`${modelA.downloads} verified runs`} 
                   valueB={`${modelB.downloads} verified runs`} 
+                  isLight={isLight}
                 />
               </div>
 
               {/* Modal Footer */}
-              <div className="p-4 border-t border-black/10 bg-camry-paper/50 flex justify-end gap-3">
+              <div className={`p-4 border-t flex justify-end gap-3 ${
+                isLight ? 'bg-camry-paper/50 border-black/10' : 'bg-[#141418] border-white/10'
+              }`}>
                 <button 
                   onClick={() => setIsCompareOpen(false)}
-                  className="px-4 py-2 bg-camry-blackout text-white text-xs font-martian rounded-lg hover:bg-camry-graphite transition-colors"
+                  className={`px-4 py-2 text-xs font-martian rounded-lg transition-colors cursor-pointer ${
+                    isLight ? 'bg-camry-blackout text-white hover:bg-black' : 'bg-[#0066FF] text-white hover:bg-[#0052CC]'
+                  }`}
                 >
                   Close Comparison
                 </button>
@@ -501,19 +584,27 @@ export const ModelStore: React.FC = () => {
 };
 
 // Extracted Helper Component for Spec Row
-const SpecComparisonRow = ({ label, valueA, valueB, highlight = false }: { label: string, valueA: string, valueB: string, highlight?: boolean }) => {
+const SpecComparisonRow = ({ label, valueA, valueB, highlight = false, isLight = true }: { label: string, valueA: string, valueB: string, highlight?: boolean, isLight?: boolean }) => {
   return (
     <div className={`p-3 rounded-xl border flex flex-col md:flex-row items-start md:items-center justify-between gap-2 ${
-      highlight ? 'bg-camry-carrier/5 border-camry-carrier/20' : 'bg-white border-black/5'
+      highlight 
+        ? (isLight ? 'bg-camry-carrier/10 border-camry-carrier/20' : 'bg-blue-950/40 border-blue-800/40') 
+        : (isLight ? 'bg-white border-black/5' : 'bg-[#141418] border-white/10')
     }`}>
-      <div className="w-full md:w-1/3 font-martian text-[11px] font-medium text-camry-graphite/60 uppercase tracking-wider">
+      <div className={`w-full md:w-1/3 font-martian text-[11px] font-medium uppercase tracking-wider ${
+        isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+      }`}>
         {label}
       </div>
       <div className="w-full md:w-2/3 grid grid-cols-2 gap-4">
-        <div className="font-martian text-xs text-camry-blackout font-medium bg-black/5 p-2 rounded border border-black/5 truncate">
+        <div className={`font-martian text-xs font-medium p-2 rounded border truncate ${
+          isLight ? 'text-camry-blackout bg-black/5 border-black/5' : 'text-white bg-white/5 border-white/10'
+        }`}>
           {valueA}
         </div>
-        <div className="font-martian text-xs text-camry-blackout font-medium bg-black/5 p-2 rounded border border-black/5 truncate">
+        <div className={`font-martian text-xs font-medium p-2 rounded border truncate ${
+          isLight ? 'text-camry-blackout bg-black/5 border-black/5' : 'text-white bg-white/5 border-white/10'
+        }`}>
           {valueB}
         </div>
       </div>

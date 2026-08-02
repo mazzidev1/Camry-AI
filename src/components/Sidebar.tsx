@@ -1,9 +1,11 @@
 import React from 'react';
 import { useAppContext, AVAILABLE_AGENTS } from '../store/AppContext';
-import { MessageSquare, Grid, Box, BarChart2, PanelLeftClose, Battery, BatteryCharging, BatteryLow, Zap, Layers, FileText, Sparkles } from 'lucide-react';
+import { PanelLeftClose, Battery, BatteryCharging, BatteryLow, Sparkles } from 'lucide-react';
 import { CamryLogo } from './CamryLogo';
 import { Tooltip } from './Tooltip';
-import { AnimatedIcon, IconAnimationType } from './AnimatedIcon';
+import { AnimatedIcon } from './AnimatedIcon';
+import { FillIcon, FillIconType } from './SolidFillIcons';
+import { AgentLogo } from './AgentLogo';
 
 export const Sidebar: React.FC = () => {
   const { 
@@ -72,30 +74,27 @@ export const Sidebar: React.FC = () => {
       <div className="flex-1 overflow-y-auto px-3 space-y-6 scrollbar-none">
         
         {/* Main Navigation */}
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <NavItem 
-            icon={<MessageSquare size={18} />} 
+            iconName="chat" 
             label="Chat" 
             tooltip="Chat & Local AI Workspace"
-            animation="bounce"
             isActive={currentScreen === 'chat' && !activeAgent}
             isLight={isLight}
             onClick={() => handleNav('chat', null)}
           />
           <NavItem 
-            icon={<Layers size={18} />} 
+            iconName="knowledge" 
             label="Knowledge Base" 
             tooltip="Knowledge Base & Vector Index"
-            animation="scale"
             isActive={currentScreen === 'knowledgeBase'}
             isLight={isLight}
             onClick={() => handleNav('knowledgeBase')}
           />
           <NavItem 
-            icon={<FileText size={18} />} 
+            iconName="library" 
             label="Library" 
             tooltip="Artifacts & Saved Documents"
-            animation="wiggle"
             isActive={currentScreen === 'library'}
             isLight={isLight}
             onClick={() => handleNav('library')}
@@ -109,8 +108,8 @@ export const Sidebar: React.FC = () => {
               onClick={() => startTour()}
               className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-mono font-semibold transition-all cursor-pointer shadow-sm group border ${
                 isLight 
-                  ? 'bg-zinc-50 border-zinc-200 text-zinc-800 hover:bg-zinc-100' 
-                  : 'bg-white/5 border-white/10 text-white/90 hover:bg-white/10'
+                  ? 'bg-zinc-50 border-zinc-200 text-zinc-800 hover:bg-zinc-100 hover:border-zinc-300' 
+                  : 'bg-white/5 border-white/10 text-white/90 hover:bg-white/10 hover:border-white/20'
               }`}
             >
               <AnimatedIcon type="spin" className={`${isLight ? 'text-amber-600' : 'text-amber-400'} group-hover:scale-110 transition-transform`}>
@@ -138,21 +137,17 @@ export const Sidebar: React.FC = () => {
                   <Tooltip key={agentId} content={`Launch ${agent.name}`} position="right" className="w-full">
                     <button
                       onClick={() => handleNav('chat', agentId)}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer group border ${
+                      className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs transition-all cursor-pointer group border ${
                         isActive 
                           ? isLight
-                            ? 'bg-sky-500/10 text-sky-600 font-semibold border-sky-500/20'
-                            : 'bg-sky-500/20 text-sky-300 font-semibold border-sky-400/30'
+                            ? 'bg-sky-500 text-white font-semibold border-sky-600 shadow-md shadow-sky-500/20'
+                            : 'bg-sky-500/20 text-sky-300 font-semibold border-sky-400/40 shadow-md shadow-sky-500/10'
                           : isLight
-                            ? 'hover:bg-zinc-100 hover:text-black border-transparent'
-                            : 'hover:bg-white/5 hover:text-white border-transparent'
+                            ? 'hover:bg-sky-50 hover:text-sky-900 border-transparent text-zinc-700'
+                            : 'hover:bg-sky-500/10 hover:text-sky-200 border-transparent text-white/70'
                       }`}
                     >
-                      <div className={`w-1.5 h-1.5 rounded-full transition-transform group-hover:scale-150 ${
-                        isActive 
-                          ? isLight ? 'bg-sky-600' : 'bg-sky-300' 
-                          : isLight ? 'bg-zinc-300' : 'bg-white/30'
-                      }`} />
+                      <AgentLogo agentId={agent.id} name={agent.name} size={20} className="shrink-0" />
                       <span className="truncate">{agent.name}</span>
                     </button>
                   </Tooltip>
@@ -170,30 +165,27 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Lower Nav */}
-      <div className="px-3 space-y-1 mt-auto pb-4">
+      <div className="px-3 space-y-1.5 mt-auto pb-4">
         <NavItem 
-          icon={<Grid size={18} />} 
+          iconName="agentStore" 
           label="Agent Store" 
           tooltip="Browse & Install Agent Workflows"
-          animation="wiggle"
           isActive={currentScreen === 'agentStore'}
           isLight={isLight}
           onClick={() => handleNav('agentStore')}
         />
         <NavItem 
-          icon={<Box size={18} />} 
+          iconName="modelStore" 
           label="Model Store" 
           tooltip="Manage Local LLM Weights & NPU"
-          animation="pulse"
           isActive={currentScreen === 'modelStore'}
           isLight={isLight}
           onClick={() => handleNav('modelStore')}
         />
         <NavItem 
-          icon={<BarChart2 size={18} />} 
+          iconName="dashboard" 
           label="Dashboard" 
           tooltip="NPU Telemetry & Analytics"
-          animation="lift"
           isActive={currentScreen === 'dashboard'}
           isLight={isLight}
           onClick={() => handleNav('dashboard')}
@@ -218,7 +210,7 @@ export const Sidebar: React.FC = () => {
               <span>{batteryLevel}% PWR</span>
             </div>
             <div className="flex items-center gap-1 font-mono text-[8px] opacity-80 uppercase tracking-widest font-bold">
-              {isCharging && <Zap size={10} className="fill-current" />}
+              {isCharging && <BatteryCharging size={10} />}
               <span>{batteryLevel <= 20 ? 'LOW POWER' : 'ON-PREM'}</span>
             </div>
           </div>
@@ -230,25 +222,35 @@ export const Sidebar: React.FC = () => {
             className={`w-full flex items-center gap-3 p-2 rounded-xl transition-all cursor-pointer group border ${
               currentScreen === 'settings' 
                 ? isLight
-                  ? 'bg-sky-500/10 border-sky-500/20'
-                  : 'bg-sky-500/20 border border-sky-400/30'
+                  ? 'bg-sky-500 text-white font-semibold border-sky-600 shadow-md shadow-sky-500/20'
+                  : 'bg-sky-500/20 border border-sky-400/40 text-sky-300 shadow-md shadow-sky-500/10'
                 : 'border-transparent'
-            } ${isLight ? 'hover:bg-zinc-100' : 'hover:bg-white/5'}`}
+            } ${
+              isLight 
+                ? 'hover:bg-sky-50 hover:text-sky-900' 
+                : 'hover:bg-sky-500/10 hover:text-sky-200'
+            }`}
           >
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm border group-hover:scale-105 transition-transform ${
-              isLight 
-                ? 'bg-[#EFECE6] border-[#E2DDD5] text-zinc-800' 
-                : 'bg-zinc-800 border-white/10 text-white'
+              currentScreen === 'settings'
+                ? isLight ? 'bg-white text-sky-600 border-sky-400' : 'bg-sky-500/30 text-sky-200 border-sky-400/40'
+                : isLight 
+                  ? 'bg-[#EFECE6] border-[#E2DDD5] text-zinc-800' 
+                  : 'bg-zinc-800 border-white/10 text-white'
             }`}>
-              D
+              <FillIcon name="settings" size={16} />
             </div>
             <div className="text-left flex-1 min-w-0">
               <div className={`text-xs font-semibold truncate ${
                 currentScreen === 'settings' 
-                  ? 'text-sky-500' 
-                  : isLight ? 'text-zinc-800' : 'text-white'
+                  ? isLight ? 'text-white' : 'text-sky-300'
+                  : isLight ? 'text-zinc-800 group-hover:text-sky-900' : 'text-white group-hover:text-sky-200'
               }`}>digitalix</div>
-              <div className={`text-[10px] font-mono truncate ${isLight ? 'text-zinc-400' : 'text-white/40'}`}>alex@nuvious.com</div>
+              <div className={`text-[10px] font-mono truncate ${
+                currentScreen === 'settings'
+                  ? isLight ? 'text-white/80' : 'text-sky-300/80'
+                  : isLight ? 'text-zinc-400' : 'text-white/40'
+              }`}>alex@nuvious.com</div>
             </div>
           </button>
         </Tooltip>
@@ -265,18 +267,16 @@ export const Sidebar: React.FC = () => {
 };
 
 const NavItem = ({ 
-  icon, 
+  iconName, 
   label, 
   tooltip,
-  animation = 'scale',
   isActive, 
   isLight,
   onClick 
 }: { 
-  icon: React.ReactNode, 
+  iconName: FillIconType, 
   label: string, 
   tooltip: string,
-  animation?: IconAnimationType,
   isActive: boolean, 
   isLight: boolean,
   onClick: () => void 
@@ -285,20 +285,35 @@ const NavItem = ({
     <Tooltip content={tooltip} position="right" className="w-full">
       <button
         onClick={onClick}
-        className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs transition-all duration-150 active:scale-[0.98] cursor-pointer group border ${
+        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all duration-150 active:scale-[0.98] cursor-pointer group border ${
           isActive 
             ? isLight
-              ? 'bg-sky-500/10 text-sky-600 font-semibold border-sky-500/20'
-              : 'bg-sky-500/20 text-sky-300 font-semibold border-sky-400/30' 
+              ? 'bg-[#0066FF] text-white font-semibold border-[#0052CC] shadow-md shadow-[#0066FF]/25'
+              : 'bg-[#0066FF]/25 text-white font-semibold border-[#0066FF]/50 shadow-md shadow-[#0066FF]/20' 
             : isLight
-              ? 'hover:bg-zinc-100 hover:text-black border-transparent text-zinc-700'
-              : 'hover:bg-white/10 hover:text-white border-transparent text-white/70'
+              ? 'hover:bg-[#0066FF]/10 hover:text-[#0066FF] hover:border-[#0066FF]/20 border-transparent text-zinc-700'
+              : 'hover:bg-[#0066FF]/15 hover:text-blue-300 hover:border-[#0066FF]/30 border-transparent text-white/70'
         }`}
       >
-        <AnimatedIcon type={animation} className={isActive ? isLight ? 'text-sky-600' : 'text-sky-300' : isLight ? 'text-zinc-400 group-hover:text-black' : 'text-white/60 group-hover:text-white'}>
-          {icon}
-        </AnimatedIcon>
-        <span className="font-medium">{label}</span>
+        <div className="flex items-center gap-3 min-w-0">
+          <div className={`transition-transform duration-200 group-hover:scale-110 ${
+            isActive 
+              ? isLight ? 'text-white' : 'text-sky-300' 
+              : isLight 
+                ? 'text-zinc-400 group-hover:text-sky-600' 
+                : 'text-zinc-400 group-hover:text-sky-300'
+          }`}>
+            <FillIcon name={iconName} size={18} />
+          </div>
+          <span className="font-medium truncate">{label}</span>
+        </div>
+
+        {/* Active state brand indicator dot */}
+        {isActive && (
+          <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+            isLight ? 'bg-white' : 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.8)]'
+          }`} />
+        )}
       </button>
     </Tooltip>
   );

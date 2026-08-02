@@ -1,83 +1,103 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { CamryMascot } from './CamryMascot';
 
 interface CamryOrbProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   interactive?: boolean;
+  useMascot?: boolean;
 }
 
 export const CamryOrb: React.FC<CamryOrbProps> = ({
   size = 'md',
   className = '',
-  interactive = true
+  interactive = true,
+  useMascot = false
 }) => {
-  const dimensions = {
-    sm: 'w-10 h-10',
-    md: 'w-16 h-16',
-    lg: 'w-24 h-24',
+  const pixelSizes = {
+    sm: 24,
+    md: 40,
+    lg: 64,
+    xl: 96
+  }[size];
+
+  const outerDimensions = {
+    sm: 'w-9 h-9',
+    md: 'w-14 h-14',
+    lg: 'w-22 h-22',
     xl: 'w-36 h-36 md:w-44 md:h-44'
   }[size];
 
+  const OriginalNpuCenter = (
+    <svg 
+      width={pixelSizes} 
+      height={pixelSizes} 
+      viewBox="0 0 100 100" 
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+      className="z-10 drop-shadow-md select-none shrink-0"
+    >
+      <rect x="36" y="16" width="32" height="12" rx="3" fill="#FFFFFF" />
+      <circle cx="78" cy="22" r="6" fill="#FFFFFF" />
+      <rect x="16" y="34" width="14" height="14" rx="3" fill="#F59E0B" />
+      <circle cx="43" cy="41" r="6" fill="#FFFFFF" />
+      <rect x="16" y="52" width="14" height="14" rx="3" fill="#FFFFFF" />
+      <rect x="36" y="52" width="14" height="14" rx="3" fill="#8B5CF6" />
+      <rect x="36" y="70" width="32" height="12" rx="3" fill="#FFFFFF" />
+      <circle cx="78" cy="76" r="6" fill="#FFFFFF" />
+    </svg>
+  );
+
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
-      {/* Outer Ambient Glow Effect */}
+      {/* Outer Ambient Blue Glow Effect */}
       <motion.div
-        className={`absolute rounded-full bg-gradient-to-r from-sky-500/30 via-blue-600/40 to-indigo-500/30 blur-2xl ${dimensions}`}
+        className={`absolute rounded-full bg-[#0066FF] opacity-40 blur-2xl ${outerDimensions}`}
         animate={interactive ? {
-          scale: [1, 1.15, 1],
-          opacity: [0.5, 0.8, 0.5],
+          scale: [1, 1.25, 1],
+          opacity: [0.35, 0.7, 0.35],
         } : {}}
         transition={{
-          duration: 4,
+          duration: 3.5,
           repeat: Infinity,
           ease: "easeInOut"
         }}
       />
 
-      {/* 3D Glass Sphere Body */}
+      {/* 3D Floating Glass Ring */}
       <motion.div
-        className={`relative rounded-full shadow-2xl overflow-hidden ${dimensions}`}
+        className={`relative flex items-center justify-center p-1 rounded-3xl overflow-hidden shadow-2xl ${outerDimensions}`}
         style={{
-          background: 'radial-gradient(circle at 35% 30%, rgba(186, 230, 253, 0.95) 0%, rgba(56, 189, 248, 0.85) 25%, rgba(37, 99, 235, 0.95) 60%, rgba(15, 23, 42, 0.98) 100%)',
-          boxShadow: '0 20px 40px -10px rgba(14, 165, 233, 0.4), inset 0 -12px 20px rgba(2, 132, 199, 0.6), inset 0 10px 18px rgba(255, 255, 255, 0.8)'
+          background: 'radial-gradient(circle at 35% 30%, #3385FF 0%, #0066FF 60%, #0040A8 100%)',
+          boxShadow: '0 20px 45px -10px rgba(0, 102, 255, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.6)'
         }}
         animate={interactive ? {
           y: [-4, 4, -4],
-          rotate: [0, 5, -5, 0]
+          rotate: [0, 2, -2, 0]
         } : {}}
         transition={{
-          duration: 6,
+          duration: 5,
           repeat: Infinity,
           ease: "easeInOut"
         }}
       >
         {/* Top Glare Light Reflection */}
         <div 
-          className="absolute top-1 left-2 w-1/2 h-1/3 rounded-full bg-gradient-to-b from-white/90 to-transparent blur-[1px] transform -rotate-12 pointer-events-none" 
+          className="absolute top-1 left-2 w-1/2 h-1/3 rounded-full bg-gradient-to-b from-white/70 to-transparent blur-[1px] transform -rotate-12 pointer-events-none z-20" 
         />
         
-        {/* Inner Caustic Highlight */}
-        <div 
-          className="absolute bottom-2 right-3 w-1/3 h-1/3 rounded-full bg-sky-300/60 blur-[3px] pointer-events-none" 
-        />
-
-        {/* Dynamic Inner Swirl Aura */}
-        <motion.div
-          className="absolute inset-0 rounded-full opacity-60 mix-blend-overlay pointer-events-none"
-          style={{
-            background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.8) 0%, transparent 70%)'
-          }}
-          animate={interactive ? {
-            scale: [0.9, 1.1, 0.9],
-            rotate: [0, 180, 360]
-          } : {}}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
+        {/* Centerpiece: Mascot or Original NPU Mark */}
+        {useMascot ? (
+          <CamryMascot 
+            size={pixelSizes * 1.3} 
+            variant="full" 
+            animated={interactive} 
+            className="w-full h-full drop-shadow-lg z-10" 
+          />
+        ) : (
+          OriginalNpuCenter
+        )}
       </motion.div>
     </div>
   );

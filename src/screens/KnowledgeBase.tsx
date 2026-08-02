@@ -47,8 +47,11 @@ export const KnowledgeBase: React.FC = () => {
     currentRole,
     setCurrentScreen,
     setPendingChatPrompt,
-    showToast 
+    showToast,
+    themeMode 
   } = useAppContext();
+
+  const isLight = themeMode === 'light';
 
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [selectedDocForPreview, setSelectedDocForPreview] = useState<KBDocument | null>(null);
@@ -301,29 +304,39 @@ export const KnowledgeBase: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-camry-paper/40 p-4 sm:p-8 space-y-6 font-familjen">
+    <div className={`flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 font-familjen transition-colors ${
+      isLight ? 'bg-camry-paper/40 text-camry-blackout' : 'bg-transparent text-white'
+    }`}>
       
       {/* Header Title Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-black/5">
+      <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b ${
+        isLight ? 'border-black/5' : 'border-white/10'
+      }`}>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bricolage text-camry-blackout font-bold tracking-tight">
+            <h1 className={`text-2xl sm:text-3xl font-bricolage font-bold tracking-tight ${
+              isLight ? 'text-camry-blackout' : 'text-white'
+            }`}>
               Knowledge Base
             </h1>
-            <span className="px-2 py-0.5 rounded-full bg-camry-carrier/20 text-camry-deep-carrier font-martian text-[10px] font-semibold uppercase tracking-wider">
+            <span className="px-2 py-0.5 rounded-full bg-[#0066FF]/20 text-[#0066FF] font-mono text-[10px] font-semibold uppercase tracking-wider">
               On-Premise RAG
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-camry-graphite/70 mt-1">
+          <p className={`text-xs sm:text-sm mt-1 ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
             Everything your Camry has learned about your organization. Nothing here leaves the building.
           </p>
         </div>
       </div>
 
       {/* ONBOARDING TIE-IN CALLOUT CARD */}
-      <div className="bg-camry-graphite text-white rounded-2xl p-5 sm:p-6 relative overflow-hidden shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4 border border-white/10">
+      <div className={`rounded-2xl p-5 sm:p-6 relative overflow-hidden shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4 border ${
+        isLight 
+          ? 'bg-camry-graphite text-white border-white/10' 
+          : 'bg-[#1C1C22] text-white border-white/15'
+      }`}>
         <div className="space-y-1.5 max-w-2xl relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-camry-carrier/20 text-camry-carrier rounded-md font-martian text-[10px] uppercase tracking-wider font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#0066FF]/20 text-[#0066FF] rounded-md font-mono text-[10px] uppercase tracking-wider font-semibold">
             <Sparkles size={12} />
             NEW-HIRE READY
           </div>
@@ -337,7 +350,7 @@ export const KnowledgeBase: React.FC = () => {
 
         <button
           onClick={handleTryQuestion}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-camry-blackout hover:bg-black text-white hover:text-camry-carrier border border-white/20 font-martian text-xs font-semibold shadow-sm transition-all flex-shrink-0 group"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white border border-white/20 font-martian text-xs font-semibold shadow-sm transition-all flex-shrink-0 group cursor-pointer"
         >
           <span>Try a question</span>
           <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -352,8 +365,10 @@ export const KnowledgeBase: React.FC = () => {
         onClick={() => fileInputRef.current?.click()}
         className={`border-2 border-dashed rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all ${
           isDragging 
-            ? 'border-camry-deep-carrier bg-camry-carrier/10 shadow-lg scale-[1.005]' 
-            : 'border-black/15 bg-white hover:border-black/30 hover:bg-zinc-50/80 shadow-sm'
+            ? 'border-[#0066FF] bg-[#0066FF]/10 shadow-lg scale-[1.005]' 
+            : isLight
+            ? 'border-black/15 bg-white hover:border-black/30 hover:bg-zinc-50/80 shadow-sm text-camry-blackout'
+            : 'border-white/15 bg-[#1C1C22] hover:border-white/30 hover:bg-[#25252D] shadow-xl text-white'
         }`}
       >
         <input 
@@ -364,13 +379,15 @@ export const KnowledgeBase: React.FC = () => {
           multiple
           accept=".pdf,.docx,.doc,.pptx,.ppt,.png,.jpg,.jpeg,.csv,.txt,.xlsx"
         />
-        <div className="w-12 h-12 rounded-2xl bg-camry-blackout text-white flex items-center justify-center mx-auto mb-3 shadow-md">
-          <Upload size={22} className={isDragging ? 'animate-bounce text-camry-carrier' : 'text-white'} />
+        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md ${
+          isLight ? 'bg-camry-blackout text-white' : 'bg-[#0066FF] text-white'
+        }`}>
+          <Upload size={22} className={isDragging ? 'animate-bounce text-[#0066FF]' : 'text-white'} />
         </div>
-        <h3 className="text-sm sm:text-base font-bricolage font-bold text-camry-blackout">
+        <h3 className={`text-sm sm:text-base font-bricolage font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
           Drag files here or click to upload
         </h3>
-        <p className="text-xs text-camry-graphite/60 mt-1 max-w-md mx-auto font-familjen">
+        <p className={`text-xs mt-1 max-w-md mx-auto font-familjen ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
           Supports PDF, DOCX, PPTX, Images, TXT, CSV. Files are chunked and embedded locally into Camry NVMe storage.
         </p>
 
@@ -378,7 +395,7 @@ export const KnowledgeBase: React.FC = () => {
           <button 
             type="button" 
             onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
-            className="px-4 py-2 rounded-xl bg-camry-blackout text-white hover:bg-camry-graphite text-xs font-martian font-semibold shadow transition-all hover:scale-[1.02]"
+            className="px-4 py-2 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-martian font-semibold shadow transition-all hover:scale-[1.02] cursor-pointer"
           >
             Browse files
           </button>
@@ -386,19 +403,21 @@ export const KnowledgeBase: React.FC = () => {
       </div>
 
       {/* LIVE STATS STRIP */}
-      <div className="bg-white border border-black/10 rounded-xl p-3.5 sm:p-4 shadow-sm flex flex-wrap items-center justify-between gap-3 font-martian text-xs text-camry-blackout">
+      <div className={`border rounded-xl p-3.5 sm:p-4 shadow-sm flex flex-wrap items-center justify-between gap-3 font-martian text-xs ${
+        isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/10 text-white'
+      }`}>
         <div className="flex items-center gap-2">
-          <Layers size={15} className="text-camry-deep-carrier" />
-          <span className="font-bold tracking-wider uppercase text-camry-graphite/60 text-[10px]">INDEX STATS:</span>
+          <Layers size={15} className="text-[#0066FF]" />
+          <span className={`font-bold tracking-wider uppercase text-[10px] ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>INDEX STATS:</span>
         </div>
         <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[11px]">
-          <div>DOCUMENTS <span className="font-bold text-camry-blackout">{totalDocs}</span></div>
-          <span className="text-black/20">•</span>
-          <div>PAGES <span className="font-bold text-camry-blackout">{totalPages.toLocaleString()}</span></div>
-          <span className="text-black/20">•</span>
-          <div>STORAGE <span className="font-bold text-camry-blackout">{totalStorageMb} / 256 GB</span></div>
-          <span className="text-black/20">•</span>
-          <div className="text-emerald-700 font-semibold flex items-center gap-1">
+          <div>DOCUMENTS <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{totalDocs}</span></div>
+          <span className={isLight ? 'text-black/20' : 'text-white/20'}>•</span>
+          <div>PAGES <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{totalPages.toLocaleString()}</span></div>
+          <span className={isLight ? 'text-black/20' : 'text-white/20'}>•</span>
+          <div>STORAGE <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{totalStorageMb} / 256 GB</span></div>
+          <span className={isLight ? 'text-black/20' : 'text-white/20'}>•</span>
+          <div className="text-emerald-400 font-semibold flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             LAST INDEXED 2 MIN AGO
           </div>
@@ -408,7 +427,9 @@ export const KnowledgeBase: React.FC = () => {
       {/* CATEGORY CHIPS */}
       <div className="space-y-1.5">
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none py-1">
-          <span className="font-martian text-[10px] text-camry-graphite/60 uppercase tracking-wider pr-1 flex-shrink-0">
+          <span className={`font-martian text-[10px] uppercase tracking-wider pr-1 flex-shrink-0 ${
+            isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
+          }`}>
             Category:
           </span>
 
@@ -417,13 +438,13 @@ export const KnowledgeBase: React.FC = () => {
             onClick={() => setActiveCategory('All')}
             className={`px-3 py-1.5 rounded-xl text-xs font-martian transition-all flex items-center gap-2 flex-shrink-0 cursor-pointer ${
               activeCategory === 'All' 
-                ? 'bg-camry-blackout text-white shadow-sm font-bold' 
-                : 'bg-white border border-black/10 text-camry-graphite hover:bg-black/5 font-medium'
+                ? (isLight ? 'bg-camry-blackout text-white shadow-sm font-bold' : 'bg-[#0066FF] text-white shadow-md font-bold')
+                : (isLight ? 'bg-white border border-black/10 text-camry-graphite hover:bg-black/5 font-medium' : 'bg-[#1C1C22] border border-white/10 text-zinc-300 hover:bg-[#25252E] font-medium')
             }`}
           >
             <span>ALL</span>
             <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md font-semibold ${
-              activeCategory === 'All' ? 'bg-white/20 text-white' : 'bg-black/5 text-camry-graphite'
+              activeCategory === 'All' ? 'bg-white/20 text-white' : (isLight ? 'bg-black/5 text-camry-graphite' : 'bg-white/10 text-zinc-300')
             }`}>
               {kbDocuments.length} DOCS
             </span>
@@ -444,10 +465,10 @@ export const KnowledgeBase: React.FC = () => {
                   onClick={() => setActiveCategory(cat.name)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-martian transition-all flex items-center gap-2 cursor-pointer ${
                     isActive 
-                      ? 'bg-camry-blackout text-white shadow-sm font-bold' 
+                      ? (isLight ? 'bg-camry-blackout text-white shadow-sm font-bold' : 'bg-[#0066FF] text-white shadow-md font-bold')
                       : isDenied
-                      ? 'bg-zinc-100 border border-black/10 text-zinc-400 hover:bg-zinc-200'
-                      : 'bg-white border border-black/10 text-camry-blackout hover:bg-black/5 font-medium'
+                      ? (isLight ? 'bg-zinc-100 border border-black/10 text-zinc-400 hover:bg-zinc-200' : 'bg-zinc-800/60 border border-white/10 text-zinc-500 hover:bg-zinc-800')
+                      : (isLight ? 'bg-white border border-black/10 text-camry-blackout hover:bg-black/5 font-medium' : 'bg-[#1C1C22] border border-white/10 text-zinc-200 hover:bg-[#25252E] font-medium')
                   }`}
                 >
                   <span 
@@ -457,10 +478,10 @@ export const KnowledgeBase: React.FC = () => {
                   <span>{cat.name}</span>
 
                   {isDenied ? (
-                    <Lock size={12} className="text-amber-600 ml-0.5" title="Access Denied for current role" />
+                    <Lock size={12} className="text-amber-500 ml-0.5" title="Access Denied for current role" />
                   ) : (
                     <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md font-semibold ${
-                      isActive ? 'bg-white/20 text-white' : 'bg-black/5 text-camry-graphite'
+                      isActive ? 'bg-white/20 text-white' : (isLight ? 'bg-black/5 text-camry-graphite' : 'bg-white/10 text-zinc-300')
                     }`}>
                       {count} DOCS
                     </span>
@@ -474,7 +495,9 @@ export const KnowledgeBase: React.FC = () => {
                       e.stopPropagation();
                       setEditingCategory(cat);
                     }}
-                    className="absolute -top-1.5 -right-1.5 bg-white border border-black/15 hover:bg-black hover:text-white text-camry-graphite p-1 rounded-full shadow-xs opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-pointer"
+                    className={`absolute -top-1.5 -right-1.5 p-1 rounded-full shadow-xs opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-pointer ${
+                      isLight ? 'bg-white border border-black/15 hover:bg-black hover:text-white text-camry-graphite' : 'bg-[#25252D] border border-white/15 hover:bg-[#0066FF] hover:text-white text-zinc-300'
+                    }`}
                     title="Edit or Delete Category"
                   >
                     <Pencil size={10} />
@@ -487,44 +510,54 @@ export const KnowledgeBase: React.FC = () => {
           {/* "+ NEW CATEGORY" CHIP BUTTON */}
           <button
             onClick={() => setIsNewCategoryModalOpen(true)}
-            className="px-3.5 py-1.5 rounded-xl border-2 border-dashed border-camry-deep-carrier/40 bg-camry-carrier/5 hover:bg-camry-carrier/15 text-camry-deep-carrier text-xs font-martian font-bold transition-all flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:scale-[1.02]"
+            className={`px-3.5 py-1.5 rounded-xl border-2 border-dashed text-xs font-martian font-bold transition-all flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:scale-[1.02] ${
+              isLight ? 'border-camry-deep-carrier/40 bg-camry-carrier/5 hover:bg-camry-carrier/15 text-camry-deep-carrier' : 'border-[#0066FF]/40 bg-[#0066FF]/10 hover:bg-[#0066FF]/20 text-sky-400'
+            }`}
           >
-            <Plus size={14} className="text-camry-deep-carrier" />
+            <Plus size={14} className="text-[#0066FF]" />
             <span>+ New category</span>
           </button>
         </div>
 
         {/* Dynamic Category Context Hint */}
-        <p className="text-[11px] text-camry-graphite/60 italic font-familjen pl-1">
+        <p className={`text-[11px] italic font-familjen pl-1 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
           Categories are yours to define — a hospital might use Departments and Patient Records; an airline might use Operations, Crew, and Maintenance.
         </p>
       </div>
 
       {/* DOCUMENT TABLE */}
-      <div className="bg-white border border-black/10 rounded-2xl shadow-sm overflow-hidden">
+      <div className={`border rounded-2xl shadow-sm overflow-hidden ${
+        isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'
+      }`}>
         {/* Table Toolbar */}
-        <div className="px-5 py-3.5 bg-zinc-50 border-b border-black/10 flex flex-wrap items-center justify-between gap-3">
+        <div className={`px-5 py-3.5 border-b flex flex-wrap items-center justify-between gap-3 ${
+          isLight ? 'bg-zinc-50 border-black/10' : 'bg-[#18181C] border-white/10'
+        }`}>
           <div className="flex items-center gap-2">
-            <h3 className="font-bricolage font-bold text-sm text-camry-blackout">
+            <h3 className={`font-bricolage font-bold text-sm ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
               Indexed Documents
             </h3>
-            <span className="font-martian text-[10px] bg-black/5 text-camry-graphite px-2 py-0.5 rounded font-semibold">
+            <span className={`font-martian text-[10px] px-2 py-0.5 rounded font-semibold ${
+              isLight ? 'bg-black/5 text-camry-graphite' : 'bg-white/10 text-zinc-300'
+            }`}>
               {filteredDocs.length} total
             </span>
           </div>
 
           <button
             onClick={handleSimulateBatchIngest}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-camry-blackout hover:bg-black text-white font-martian text-xs font-semibold shadow-xs transition-all hover:scale-[1.02] cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white font-martian text-xs font-semibold shadow-xs transition-all hover:scale-[1.02] cursor-pointer"
           >
-            <Play size={12} className="text-camry-carrier fill-camry-carrier" />
+            <Play size={12} className="text-white fill-white" />
             <span>Simulate File Ingest (QUEUED → INDEXED)</span>
           </button>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-familjen">
-            <thead className="bg-zinc-50/50 border-b border-black/10 font-martian text-[10px] text-camry-graphite/70 uppercase tracking-wider">
+            <thead className={`border-b font-martian text-[10px] uppercase tracking-wider ${
+              isLight ? 'bg-zinc-50/50 border-black/10 text-camry-graphite/70' : 'bg-[#18181C] border-white/10 text-zinc-400'
+            }`}>
               <tr>
                 <th className="py-3 px-4">Document Name</th>
                 <th className="py-3 px-3">Type</th>
@@ -536,7 +569,7 @@ export const KnowledgeBase: React.FC = () => {
                 <th className="py-3 px-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-black/5">
+            <tbody className={`divide-y ${isLight ? 'divide-black/5' : 'divide-white/5'}`}>
               {filteredDocs.map((doc) => {
                 const isRestrictedForCurrentRole = doc.restrictedRoles?.includes(currentRole) || 
                   (currentRole === 'Member' && doc.category === 'Finance') ||
@@ -545,25 +578,31 @@ export const KnowledgeBase: React.FC = () => {
                 return (
                   <tr 
                     key={doc.id} 
-                    className={`hover:bg-zinc-50/80 transition-colors ${isRestrictedForCurrentRole ? 'bg-amber-50/30' : ''}`}
+                    className={`transition-colors ${
+                      isLight 
+                        ? (isRestrictedForCurrentRole ? 'bg-amber-50/30 hover:bg-amber-50/50' : 'hover:bg-zinc-50/80') 
+                        : (isRestrictedForCurrentRole ? 'bg-amber-950/20 hover:bg-amber-950/30' : 'hover:bg-[#25252D]')
+                    }`}
                   >
-                    <td className="py-3 px-4 font-medium text-camry-blackout">
+                    <td className="py-3 px-4 font-medium">
                       <div className="flex items-center gap-2.5">
-                        <div className="p-2 rounded-lg bg-black/5 flex-shrink-0">
+                        <div className={`p-2 rounded-lg flex-shrink-0 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}>
                           {getFileIcon(doc.type)}
                         </div>
                         <div>
-                          <div className="font-semibold text-camry-blackout text-xs sm:text-sm flex items-center gap-1.5">
+                          <div className={`font-semibold text-xs sm:text-sm flex items-center gap-1.5 ${
+                            isLight ? 'text-camry-blackout' : 'text-white'
+                          }`}>
                             <span>{doc.name}</span>
                             {isRestrictedForCurrentRole && (
-                              <span className="px-1.5 py-0.5 bg-amber-100 text-amber-800 text-[9px] font-martian font-semibold rounded flex items-center gap-1">
+                              <span className="px-1.5 py-0.5 bg-amber-500/20 text-amber-300 text-[9px] font-martian font-semibold rounded flex items-center gap-1 border border-amber-500/30">
                                 <Lock size={10} />
                                 RESTRICTED ({currentRole.toUpperCase()})
                               </span>
                             )}
                           </div>
                           {doc.pages && (
-                            <div className="text-[10px] text-camry-graphite/50 font-martian">
+                            <div className={`text-[10px] font-martian ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>
                               {doc.pages} pages extracted
                             </div>
                           )}
@@ -572,26 +611,28 @@ export const KnowledgeBase: React.FC = () => {
                     </td>
 
                     <td className="py-3 px-3">
-                      <span className="px-2 py-0.5 rounded font-martian text-[10px] bg-black/5 text-camry-blackout font-medium">
+                      <span className={`px-2 py-0.5 rounded font-martian text-[10px] font-medium ${
+                        isLight ? 'bg-black/5 text-camry-blackout' : 'bg-white/10 text-zinc-200'
+                      }`}>
                         {doc.type}
                       </span>
                     </td>
 
                     <td className="py-3 px-3">
-                      <span className="text-xs font-medium text-camry-graphite">
+                      <span className={`text-xs font-medium ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>
                         {doc.category}
                       </span>
                     </td>
 
-                    <td className="py-3 px-3 font-martian text-[11px] text-camry-graphite">
+                    <td className={`py-3 px-3 font-martian text-[11px] ${isLight ? 'text-camry-graphite' : 'text-zinc-400'}`}>
                       {doc.size}
                     </td>
 
-                    <td className="py-3 px-3 font-medium text-camry-blackout">
+                    <td className={`py-3 px-3 font-medium ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>
                       {doc.uploadedBy}
                     </td>
 
-                    <td className="py-3 px-3 font-martian text-[10px] text-camry-graphite/70">
+                    <td className={`py-3 px-3 font-martian text-[10px] ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
                       {doc.date}
                     </td>
 
@@ -600,23 +641,29 @@ export const KnowledgeBase: React.FC = () => {
                         <motion.span 
                           initial={{ scale: 0.9, opacity: 0.8 }}
                           animate={{ scale: 1, opacity: 1 }}
-                          className="inline-flex items-center gap-1 font-martian text-[10px] text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md shadow-2xs"
+                          className={`inline-flex items-center gap-1 font-martian text-[10px] font-bold px-2.5 py-1 rounded-md shadow-2xs border ${
+                            isLight ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-emerald-300 bg-emerald-950/60 border-emerald-800/60'
+                          }`}
                         >
-                          <CheckCircle2 size={12} className="text-emerald-600" />
+                          <CheckCircle2 size={12} className="text-emerald-400" />
                           INDEXED ✓
                         </motion.span>
                       ) : doc.status === 'PROCESSING' ? (
                         <div className="w-36 space-y-1">
-                          <div className="flex justify-between items-center text-[9px] font-martian text-zinc-700 font-bold">
+                          <div className={`flex justify-between items-center text-[9px] font-martian font-bold ${
+                            isLight ? 'text-zinc-700' : 'text-zinc-300'
+                          }`}>
                             <span className="flex items-center gap-1">
-                              <Loader2 size={11} className="animate-spin text-zinc-500 shrink-0" />
+                              <Loader2 size={11} className="animate-spin text-zinc-400 shrink-0" />
                               PROCESSING…
                             </span>
                             <span className="font-mono">{doc.progress || 0}%</span>
                           </div>
-                          <div className="w-full h-2 bg-zinc-100 rounded-full overflow-hidden relative p-0.5 border border-zinc-200/50">
+                          <div className={`w-full h-2 rounded-full overflow-hidden relative p-0.5 border ${
+                            isLight ? 'bg-zinc-100 border-zinc-200/50' : 'bg-zinc-800 border-white/10'
+                          }`}>
                             <motion.div 
-                              className="h-full bg-gradient-to-r from-zinc-500 to-emerald-500 rounded-full" 
+                              className="h-full bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" 
                               initial={{ width: '0%' }}
                               animate={{ width: `${doc.progress || 0}%` }}
                               transition={{ ease: "easeInOut", duration: 0.4 }}
@@ -625,13 +672,15 @@ export const KnowledgeBase: React.FC = () => {
                         </div>
                       ) : (
                         <div className="flex items-center gap-2">
-                          <span className="inline-flex items-center gap-1 font-martian text-[10px] text-amber-800 font-bold bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-md shadow-2xs">
-                            <Clock size={11} className="animate-pulse text-amber-600 shrink-0" />
+                          <span className={`inline-flex items-center gap-1 font-martian text-[10px] font-bold px-2.5 py-1 rounded-md shadow-2xs border ${
+                            isLight ? 'text-amber-800 bg-amber-50 border-amber-200' : 'text-amber-300 bg-amber-950/60 border-amber-800/60'
+                          }`}>
+                            <Clock size={11} className="animate-pulse text-amber-400 shrink-0" />
                             QUEUED
                           </span>
                           <button
                             onClick={() => runProcessingSequence(doc.id, doc.name)}
-                            className="px-2 py-0.5 rounded bg-camry-blackout hover:bg-black text-white text-[10px] font-martian font-semibold transition-all hover:scale-105 shrink-0 cursor-pointer"
+                            className="px-2 py-0.5 rounded bg-[#0066FF] hover:bg-[#0052CC] text-white text-[10px] font-martian font-semibold transition-all hover:scale-105 shrink-0 cursor-pointer"
                             title="Start NPU Ingestion"
                           >
                             Start
@@ -644,7 +693,9 @@ export const KnowledgeBase: React.FC = () => {
                       <Tooltip content="Document Options & Actions" position="left">
                         <button
                           onClick={() => setMenuOpenId(menuOpenId === doc.id ? null : doc.id)}
-                          className="p-1.5 hover:bg-black/5 rounded-lg text-camry-graphite transition-colors cursor-pointer group"
+                          className={`p-1.5 rounded-lg transition-colors cursor-pointer group ${
+                            isLight ? 'hover:bg-black/5 text-camry-graphite' : 'hover:bg-white/10 text-zinc-300'
+                          }`}
                         >
                           <AnimatedIcon type="rotate">
                             <MoreVertical size={16} />
@@ -653,15 +704,19 @@ export const KnowledgeBase: React.FC = () => {
                       </Tooltip>
 
                       {menuOpenId === doc.id && (
-                        <div className="absolute right-3 top-10 w-48 bg-white border border-black/10 shadow-lg rounded-xl z-20 py-1 text-left text-xs font-familjen">
+                        <div className={`absolute right-3 top-10 w-48 border shadow-xl rounded-xl z-20 py-1 text-left text-xs font-familjen ${
+                          isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                        }`}>
                           <button
                             onClick={() => {
                               setSelectedDocForPreview(doc);
                               setMenuOpenId(null);
                             }}
-                            className="w-full px-3 py-2 hover:bg-black/5 flex items-center gap-2 text-camry-blackout group cursor-pointer"
+                            className={`w-full px-3 py-2 flex items-center gap-2 group cursor-pointer ${
+                              isLight ? 'hover:bg-black/5 text-camry-blackout' : 'hover:bg-white/10 text-white'
+                            }`}
                           >
-                            <AnimatedIcon type="scale" className="text-camry-graphite group-hover:text-camry-blackout">
+                            <AnimatedIcon type="scale" className={isLight ? 'text-camry-graphite group-hover:text-camry-blackout' : 'text-zinc-400 group-hover:text-white'}>
                               <Eye size={14} />
                             </AnimatedIcon>
                             <span>Preview extracted text</span>
@@ -672,9 +727,11 @@ export const KnowledgeBase: React.FC = () => {
                               handleReindex(doc);
                               setMenuOpenId(null);
                             }}
-                            className="w-full px-3 py-2 hover:bg-black/5 flex items-center gap-2 text-camry-blackout group cursor-pointer"
+                            className={`w-full px-3 py-2 flex items-center gap-2 group cursor-pointer ${
+                              isLight ? 'hover:bg-black/5 text-camry-blackout' : 'hover:bg-white/10 text-white'
+                            }`}
                           >
-                            <AnimatedIcon type="spin" className="text-camry-graphite group-hover:text-camry-blackout">
+                            <AnimatedIcon type="spin" className={isLight ? 'text-camry-graphite group-hover:text-camry-blackout' : 'text-zinc-400 group-hover:text-white'}>
                               <RefreshCw size={14} />
                             </AnimatedIcon>
                             <span>Re-index on NPU</span>
@@ -685,22 +742,26 @@ export const KnowledgeBase: React.FC = () => {
                               setSelectedDocForRestrict(doc);
                               setMenuOpenId(null);
                             }}
-                            className="w-full px-3 py-2 hover:bg-black/5 flex items-center gap-2 text-amber-800 font-medium group cursor-pointer"
+                            className={`w-full px-3 py-2 flex items-center gap-2 font-medium group cursor-pointer ${
+                              isLight ? 'hover:bg-black/5 text-amber-800' : 'hover:bg-white/10 text-amber-300'
+                            }`}
                           >
-                            <AnimatedIcon type="bounce" className="text-amber-600">
+                            <AnimatedIcon type="bounce" className="text-amber-500">
                               <ShieldAlert size={14} />
                             </AnimatedIcon>
                             <span>Restrict access</span>
                           </button>
 
-                          <div className="border-t border-black/5 my-1" />
+                          <div className={`my-1 border-t ${isLight ? 'border-black/5' : 'border-white/10'}`} />
 
                           <button
                             onClick={() => {
                               setDocToDelete(doc);
                               setMenuOpenId(null);
                             }}
-                            className="w-full px-3 py-2 hover:bg-red-50 flex items-center gap-2 text-red-600 font-medium group cursor-pointer"
+                            className={`w-full px-3 py-2 flex items-center gap-2 text-red-500 font-medium group cursor-pointer ${
+                              isLight ? 'hover:bg-red-50' : 'hover:bg-red-950/30'
+                            }`}
                           >
                             <AnimatedIcon type="wiggle" className="text-red-500">
                               <Trash2 size={14} />
@@ -721,44 +782,52 @@ export const KnowledgeBase: React.FC = () => {
       {/* PREVIEW MODAL */}
       <AnimatePresence>
         {selectedDocForPreview && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-lg w-full p-6 shadow-xl space-y-4 font-familjen"
+              className={`border rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
-              <div className="flex items-center justify-between pb-3 border-b border-black/10">
+              <div className={`flex items-center justify-between pb-3 border-b ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-lg bg-black/5">
+                  <div className={`p-2 rounded-lg ${isLight ? 'bg-black/5' : 'bg-white/10'}`}>
                     {getFileIcon(selectedDocForPreview.type)}
                   </div>
                   <div>
-                    <h3 className="font-bricolage font-bold text-base text-camry-blackout">{selectedDocForPreview.name}</h3>
-                    <p className="font-martian text-[10px] text-camry-graphite/60">{selectedDocForPreview.size} • Category: {selectedDocForPreview.category}</p>
+                    <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{selectedDocForPreview.name}</h3>
+                    <p className={`font-martian text-[10px] ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>{selectedDocForPreview.size} • Category: {selectedDocForPreview.category}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedDocForPreview(null)} className="p-1 text-camry-graphite hover:text-black">
+                <button onClick={() => setSelectedDocForPreview(null)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
 
               <div className="space-y-2">
-                <div className="font-martian text-[10px] font-bold uppercase text-camry-graphite/60 tracking-wider">
+                <div className={`font-martian text-[10px] font-bold uppercase tracking-wider ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                   LOCAL VECTOR SNIPPET PREVIEW:
                 </div>
-                <div className="p-3.5 bg-zinc-50 border border-black/10 rounded-xl text-xs text-camry-blackout leading-relaxed font-sans font-mono whitespace-pre-wrap max-h-60 overflow-y-auto">
+                <div className={`p-3.5 border rounded-xl text-xs leading-relaxed font-sans font-mono whitespace-pre-wrap max-h-60 overflow-y-auto ${
+                  isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/10 text-zinc-200'
+                }`}>
                   {selectedDocForPreview.extractedSnippet || "Full document indexed on local Camry NVMe array."}
                 </div>
               </div>
 
               <div className="flex justify-between items-center pt-2">
-                <div className="font-martian text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-1 rounded">
+                <div className={`font-martian text-[10px] font-bold px-2 py-1 rounded border ${
+                  isLight ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-emerald-300 bg-emerald-950/60 border-emerald-800/60'
+                }`}>
                   INDEX STATUS: {selectedDocForPreview.status}
                 </div>
                 <button 
                   onClick={() => setSelectedDocForPreview(null)}
-                  className="px-4 py-2 rounded-xl bg-camry-blackout text-white text-xs font-martian font-semibold"
+                  className="px-4 py-2 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-martian font-semibold cursor-pointer"
                 >
                   Close
                 </button>
@@ -771,33 +840,39 @@ export const KnowledgeBase: React.FC = () => {
       {/* RESTRICT ACCESS MODAL */}
       <AnimatePresence>
         {selectedDocForRestrict && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 font-familjen"
+              className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
-              <div className="flex items-center justify-between pb-3 border-b border-black/10">
+              <div className={`flex items-center justify-between pb-3 border-b ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <div className="flex items-center gap-2">
-                  <ShieldAlert className="text-amber-600" size={18} />
-                  <h3 className="font-bricolage font-bold text-base text-camry-blackout">Restrict Document Access</h3>
+                  <ShieldAlert className="text-amber-500" size={18} />
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Restrict Document Access</h3>
                 </div>
-                <button onClick={() => setSelectedDocForRestrict(null)} className="p-1 text-camry-graphite hover:text-black">
+                <button onClick={() => setSelectedDocForRestrict(null)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
 
-              <p className="text-xs text-camry-graphite">
-                Select roles that are <strong className="text-red-600">DENIED</strong> access to <span className="font-semibold text-camry-blackout">{selectedDocForRestrict.name}</span>. Restricted users will not see this file or any Library outputs derived from it.
+              <p className={`text-xs ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>
+                Select roles that are <strong className="text-red-500">DENIED</strong> access to <span className={`font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{selectedDocForRestrict.name}</span>. Restricted users will not see this file or any Library outputs derived from it.
               </p>
 
               <div className="space-y-2">
                 {(['Admin', 'Manager', 'Member', 'Guest'] as UserRole[]).map(r => {
                   const isRestricted = selectedDocForRestrict.restrictedRoles?.includes(r);
                   return (
-                    <label key={r} className="flex items-center justify-between p-2.5 rounded-xl border border-black/10 hover:bg-zinc-50 cursor-pointer">
-                      <span className="font-martian text-xs font-semibold text-camry-blackout">{r} Role</span>
+                    <label key={r} className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-colors ${
+                      isLight ? 'border-black/10 hover:bg-zinc-50' : 'border-white/10 hover:bg-[#25252D]'
+                    }`}>
+                      <span className={`font-martian text-xs font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{r} Role</span>
                       <input 
                         type="checkbox"
                         checked={!!isRestricted}
@@ -809,7 +884,7 @@ export const KnowledgeBase: React.FC = () => {
                           
                           setSelectedDocForRestrict({ ...selectedDocForRestrict, restrictedRoles: updated });
                         }}
-                        className="w-4 h-4 rounded text-camry-blackout focus:ring-black"
+                        className="w-4 h-4 rounded text-[#0066FF] focus:ring-[#0066FF]"
                       />
                     </label>
                   );
@@ -819,7 +894,9 @@ export const KnowledgeBase: React.FC = () => {
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button 
                   onClick={() => setSelectedDocForRestrict(null)}
-                  className="px-3.5 py-2 rounded-xl border border-black/10 text-xs font-martian hover:bg-black/5"
+                  className={`px-3.5 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
+                    isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                  }`}
                 >
                   Cancel
                 </button>
@@ -829,7 +906,7 @@ export const KnowledgeBase: React.FC = () => {
                     showToast(`Updated access rules for ${selectedDocForRestrict.name}`);
                     setSelectedDocForRestrict(null);
                   }}
-                  className="px-4 py-2 rounded-xl bg-camry-blackout text-white text-xs font-martian font-semibold hover:bg-camry-graphite"
+                  className="px-4 py-2 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-martian font-semibold cursor-pointer"
                 >
                   Save Access Rules
                 </button>
@@ -842,19 +919,23 @@ export const KnowledgeBase: React.FC = () => {
       {/* DELETE CONFIRM MODAL */}
       <AnimatePresence>
         {docToDelete && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-sm w-full p-6 shadow-xl space-y-4 font-familjen"
+              className={`border rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
-              <h3 className="font-bricolage font-bold text-base text-camry-blackout">Delete document from box?</h3>
-              <p className="text-xs text-camry-graphite">
-                Are you sure you want to delete <span className="font-semibold text-camry-blackout">{docToDelete.name}</span>? This will remove its vector indices from Camry NVMe storage.
+              <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Delete document from box?</h3>
+              <p className={`text-xs ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>
+                Are you sure you want to delete <span className={`font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{docToDelete.name}</span>? This will remove its vector indices from Camry NVMe storage.
               </p>
               <div className="flex items-center justify-end gap-2 pt-2">
-                <button onClick={() => setDocToDelete(null)} className="px-3.5 py-2 rounded-xl border border-black/10 text-xs font-martian hover:bg-black/5">
+                <button onClick={() => setDocToDelete(null)} className={`px-3.5 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
+                  isLight ? 'border-black/10 hover:bg-black/5' : 'border-white/10 hover:bg-white/10'
+                }`}>
                   Cancel
                 </button>
                 <button 
@@ -863,7 +944,7 @@ export const KnowledgeBase: React.FC = () => {
                     showToast(`Deleted ${docToDelete.name}`);
                     setDocToDelete(null);
                   }}
-                  className="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-martian font-semibold hover:bg-red-700"
+                  className="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-martian font-semibold hover:bg-red-700 cursor-pointer"
                 >
                   Confirm Delete
                 </button>
@@ -876,26 +957,30 @@ export const KnowledgeBase: React.FC = () => {
       {/* CREATE NEW CATEGORY MODAL */}
       <AnimatePresence>
         {isNewCategoryModalOpen && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-5 font-familjen"
+              className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
-              <div className="flex items-center justify-between pb-3 border-b border-black/10">
+              <div className={`flex items-center justify-between pb-3 border-b ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-xl bg-camry-carrier/10 text-camry-deep-carrier">
+                  <div className={`p-2 rounded-xl ${isLight ? 'bg-blue-50 text-[#0066FF]' : 'bg-blue-950/60 text-blue-400'}`}>
                     <FolderPlus size={18} />
                   </div>
                   <div>
-                    <h3 className="font-bricolage font-bold text-base text-camry-blackout">Create Category / Collection</h3>
-                    <p className="text-xs text-camry-graphite/60">Define custom organization space for your company</p>
+                    <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Create Category / Collection</h3>
+                    <p className={`text-xs ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>Define custom organization space for your company</p>
                   </div>
                 </div>
                 <button 
                   onClick={() => setIsNewCategoryModalOpen(false)} 
-                  className="p-1 text-camry-graphite hover:text-black rounded-lg hover:bg-black/5"
+                  className={`p-1 rounded-lg ${isLight ? 'text-camry-graphite hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/10'}`}
                 >
                   <X size={18} />
                 </button>
@@ -903,7 +988,9 @@ export const KnowledgeBase: React.FC = () => {
 
               <form onSubmit={handleCreateCategorySubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-martian font-bold text-camry-blackout mb-1.5 uppercase">
+                  <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                  }`}>
                     Category Name <span className="text-red-500">*</span>
                   </label>
                   <input 
@@ -912,12 +999,16 @@ export const KnowledgeBase: React.FC = () => {
                     value={newCatName}
                     onChange={(e) => setNewCatName(e.target.value)}
                     placeholder="e.g. Clinical Records, Crew Logs, IP Rights..."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-black/15 bg-zinc-50 text-xs text-camry-blackout focus:outline-none focus:ring-2 focus:ring-black font-familjen"
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-[#0066FF] font-familjen ${
+                      isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                    }`}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-martian font-bold text-camry-blackout mb-1.5 uppercase">
+                  <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                  }`}>
                     Color Badge Accent
                   </label>
                   <div className="flex flex-wrap items-center gap-2">
@@ -927,7 +1018,7 @@ export const KnowledgeBase: React.FC = () => {
                         key={c}
                         onClick={() => setNewCatColor(c)}
                         className={`w-7 h-7 rounded-full transition-transform cursor-pointer border-2 ${
-                          newCatColor === c ? 'scale-110 border-black shadow-md' : 'border-transparent hover:scale-105'
+                          newCatColor === c ? 'scale-110 border-blue-500 shadow-md' : 'border-transparent hover:scale-105'
                         }`}
                         style={{ backgroundColor: c }}
                       />
@@ -936,29 +1027,37 @@ export const KnowledgeBase: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-martian font-bold text-camry-blackout mb-1.5 uppercase">
-                    Description <span className="text-gray-400 font-normal">(Optional)</span>
+                  <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                  }`}>
+                    Description <span className={`font-normal ${isLight ? 'text-gray-400' : 'text-zinc-500'}`}>(Optional)</span>
                   </label>
                   <input 
                     type="text"
                     value={newCatDescription}
                     onChange={(e) => setNewCatDescription(e.target.value)}
                     placeholder="e.g. Patient intake sheets, shift logs, or supplier contracts"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-black/15 bg-zinc-50 text-xs text-camry-blackout focus:outline-none focus:ring-2 focus:ring-black font-familjen"
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-[#0066FF] font-familjen ${
+                      isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                    }`}
                   />
                 </div>
 
-                <div className="flex items-center justify-end gap-2 pt-2 border-t border-black/10">
+                <div className={`flex items-center justify-end gap-2 pt-2 border-t ${
+                  isLight ? 'border-black/10' : 'border-white/10'
+                }`}>
                   <button 
                     type="button"
                     onClick={() => setIsNewCategoryModalOpen(false)} 
-                    className="px-4 py-2 rounded-xl border border-black/10 text-xs font-martian font-medium hover:bg-black/5"
+                    className={`px-4 py-2 rounded-xl border text-xs font-martian font-medium cursor-pointer ${
+                      isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                    }`}
                   >
                     Cancel
                   </button>
                   <button 
                     type="submit"
-                    className="px-5 py-2 rounded-xl bg-camry-blackout text-white text-xs font-martian font-bold hover:bg-camry-graphite shadow-sm"
+                    className="px-5 py-2 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-martian font-bold shadow-sm cursor-pointer"
                   >
                     Create Category
                   </button>
@@ -972,25 +1071,29 @@ export const KnowledgeBase: React.FC = () => {
       {/* EDIT CATEGORY MODAL */}
       <AnimatePresence>
         {editingCategory && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-5 font-familjen"
+              className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
-              <div className="flex items-center justify-between pb-3 border-b border-black/10">
+              <div className={`flex items-center justify-between pb-3 border-b ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-xl bg-black/5 text-camry-blackout">
+                  <div className={`p-2 rounded-xl ${isLight ? 'bg-black/5 text-camry-blackout' : 'bg-white/10 text-white'}`}>
                     <Pencil size={18} />
                   </div>
-                  <h3 className="font-bricolage font-bold text-base text-camry-blackout">
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                     Manage "{editingCategory.name}"
                   </h3>
                 </div>
                 <button 
                   onClick={() => setEditingCategory(null)} 
-                  className="p-1 text-camry-graphite hover:text-black rounded-lg hover:bg-black/5"
+                  className={`p-1 rounded-lg ${isLight ? 'text-camry-graphite hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/10'}`}
                 >
                   <X size={18} />
                 </button>
@@ -998,7 +1101,9 @@ export const KnowledgeBase: React.FC = () => {
 
               <form onSubmit={handleEditCategorySubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-martian font-bold text-camry-blackout mb-1.5 uppercase">
+                  <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                  }`}>
                     Category Name
                   </label>
                   <input 
@@ -1006,12 +1111,16 @@ export const KnowledgeBase: React.FC = () => {
                     required
                     value={editingCategory.name}
                     onChange={(e) => setEditingCategory({ ...editingCategory, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-black/15 bg-zinc-50 text-xs text-camry-blackout focus:outline-none focus:ring-2 focus:ring-black"
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                      isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                    }`}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-martian font-bold text-camry-blackout mb-1.5 uppercase">
+                  <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                  }`}>
                     Color Badge Accent
                   </label>
                   <div className="flex flex-wrap items-center gap-2">
@@ -1021,7 +1130,7 @@ export const KnowledgeBase: React.FC = () => {
                         key={c}
                         onClick={() => setEditingCategory({ ...editingCategory, color: c })}
                         className={`w-7 h-7 rounded-full transition-transform cursor-pointer border-2 ${
-                          editingCategory.color === c ? 'scale-110 border-black shadow-md' : 'border-transparent hover:scale-105'
+                          editingCategory.color === c ? 'scale-110 border-blue-500 shadow-md' : 'border-transparent hover:scale-105'
                         }`}
                         style={{ backgroundColor: c }}
                       />
@@ -1030,18 +1139,24 @@ export const KnowledgeBase: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-martian font-bold text-camry-blackout mb-1.5 uppercase">
+                  <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                  }`}>
                     Description
                   </label>
                   <input 
                     type="text"
                     value={editingCategory.description || ''}
                     onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-black/15 bg-zinc-50 text-xs text-camry-blackout focus:outline-none focus:ring-2 focus:ring-black"
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                      isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                    }`}
                   />
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-black/10">
+                <div className={`flex items-center justify-between pt-3 border-t ${
+                  isLight ? 'border-black/10' : 'border-white/10'
+                }`}>
                   <button 
                     type="button"
                     onClick={() => {
@@ -1049,7 +1164,9 @@ export const KnowledgeBase: React.FC = () => {
                       setEditingCategory(null);
                       setCategoryToDelete(target);
                     }}
-                    className="px-3.5 py-2 rounded-xl text-red-600 hover:bg-red-50 text-xs font-martian font-semibold flex items-center gap-1.5"
+                    className={`px-3.5 py-2 rounded-xl text-red-500 text-xs font-martian font-semibold flex items-center gap-1.5 cursor-pointer ${
+                      isLight ? 'hover:bg-red-50' : 'hover:bg-red-950/30'
+                    }`}
                   >
                     <Trash2 size={14} />
                     <span>Delete Category</span>
@@ -1059,13 +1176,15 @@ export const KnowledgeBase: React.FC = () => {
                     <button 
                       type="button"
                       onClick={() => setEditingCategory(null)} 
-                      className="px-3.5 py-2 rounded-xl border border-black/10 text-xs font-martian font-medium hover:bg-black/5"
+                      className={`px-3.5 py-2 rounded-xl border text-xs font-martian font-medium cursor-pointer ${
+                        isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                      }`}
                     >
                       Cancel
                     </button>
                     <button 
                       type="submit"
-                      className="px-4 py-2 rounded-xl bg-camry-blackout text-white text-xs font-martian font-bold hover:bg-camry-graphite shadow-sm"
+                      className="px-4 py-2 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-martian font-bold shadow-sm cursor-pointer"
                     >
                       Save Changes
                     </button>
@@ -1080,37 +1199,45 @@ export const KnowledgeBase: React.FC = () => {
       {/* DELETE CATEGORY CONFIRMATION & DOCUMENT RE-ASSIGNMENT MODAL */}
       <AnimatePresence>
         {categoryToDelete && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 font-familjen"
+              className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
-              <div className="flex items-center justify-between pb-3 border-b border-black/10">
+              <div className={`flex items-center justify-between pb-3 border-b ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <div className="flex items-center gap-2">
-                  <Trash2 className="text-red-600" size={18} />
-                  <h3 className="font-bricolage font-bold text-base text-camry-blackout">
+                  <Trash2 className="text-red-500" size={18} />
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                     Delete "{categoryToDelete.name}"?
                   </h3>
                 </div>
-                <button onClick={() => setCategoryToDelete(null)} className="p-1 text-camry-graphite hover:text-black">
+                <button onClick={() => setCategoryToDelete(null)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
 
-              <p className="text-xs text-camry-graphite">
-                Deleting this category will not delete your documents. Please select where existing documents in <span className="font-bold text-camry-blackout">{categoryToDelete.name}</span> should be moved:
+              <p className={`text-xs ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>
+                Deleting this category will not delete your documents. Please select where existing documents in <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{categoryToDelete.name}</span> should be moved:
               </p>
 
               <div>
-                <label className="block text-xs font-martian font-bold text-camry-blackout mb-1.5 uppercase">
+                <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
+                  isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                }`}>
                   Reassign Documents To:
                 </label>
                 <select
                   value={reassignCategoryTarget}
                   onChange={(e) => setReassignCategoryTarget(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-black/15 bg-zinc-50 text-xs font-martian text-camry-blackout focus:outline-none focus:ring-2 focus:ring-black"
+                  className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-martian focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                    isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                  }`}
                 >
                   {categories.filter(c => c.id !== categoryToDelete.id).map(c => (
                     <option key={c.id} value={c.name}>{c.name}</option>
@@ -1118,16 +1245,20 @@ export const KnowledgeBase: React.FC = () => {
                 </select>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-black/10">
+              <div className={`flex items-center justify-end gap-2 pt-3 border-t ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <button 
                   onClick={() => setCategoryToDelete(null)} 
-                  className="px-3.5 py-2 rounded-xl border border-black/10 text-xs font-martian hover:bg-black/5"
+                  className={`px-3.5 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
+                    isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                  }`}
                 >
                   Cancel
                 </button>
                 <button 
                   onClick={handleDeleteCategoryConfirm}
-                  className="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-martian font-bold hover:bg-red-700 shadow-sm"
+                  className="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-martian font-bold hover:bg-red-700 shadow-sm cursor-pointer"
                 >
                   Delete & Reassign Docs
                 </button>
@@ -1140,37 +1271,45 @@ export const KnowledgeBase: React.FC = () => {
       {/* PENDING UPLOAD CATEGORY SELECTION MODAL */}
       <AnimatePresence>
         {pendingFiles && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-black/10 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 font-familjen"
+              className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 font-familjen ${
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+              }`}
             >
-              <div className="flex items-center justify-between pb-3 border-b border-black/10">
+              <div className={`flex items-center justify-between pb-3 border-b ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <div className="flex items-center gap-2">
-                  <Upload className="text-camry-deep-carrier" size={18} />
-                  <h3 className="font-bricolage font-bold text-base text-camry-blackout">
+                  <Upload className="text-[#0066FF]" size={18} />
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                     Assign Category for {pendingFiles.length} {pendingFiles.length === 1 ? 'File' : 'Files'}
                   </h3>
                 </div>
-                <button onClick={() => setPendingFiles(null)} className="p-1 text-camry-graphite hover:text-black">
+                <button onClick={() => setPendingFiles(null)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
 
-              <div className="space-y-1 bg-zinc-50 p-3 rounded-xl border border-black/10 max-h-36 overflow-y-auto">
-                <div className="text-[10px] font-martian font-bold text-camry-graphite uppercase">Files to index:</div>
+              <div className={`space-y-1 p-3 rounded-xl border max-h-36 overflow-y-auto ${
+                isLight ? 'bg-zinc-50 border-black/10' : 'bg-[#141418] border-white/10'
+              }`}>
+                <div className={`text-[10px] font-martian font-bold uppercase ${isLight ? 'text-camry-graphite' : 'text-zinc-400'}`}>Files to index:</div>
                 {pendingFiles.map((f, idx) => (
-                  <div key={idx} className="text-xs font-mono text-camry-blackout truncate flex items-center gap-1.5">
-                    <FileText size={12} className="text-camry-deep-carrier" />
+                  <div key={idx} className={`text-xs font-mono truncate flex items-center gap-1.5 ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>
+                    <FileText size={12} className="text-[#0066FF]" />
                     <span>{f.name}</span>
                   </div>
                 ))}
               </div>
 
               <div>
-                <label className="block text-xs font-martian font-bold text-camry-blackout mb-1.5 uppercase">
+                <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
+                  isLight ? 'text-camry-blackout' : 'text-zinc-200'
+                }`}>
                   Select Destination Category
                 </label>
                 
@@ -1179,7 +1318,9 @@ export const KnowledgeBase: React.FC = () => {
                     <select
                       value={uploadCategory}
                       onChange={(e) => setUploadCategory(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-black/15 bg-zinc-50 text-xs font-martian font-semibold text-camry-blackout focus:outline-none focus:ring-2 focus:ring-black"
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-martian font-semibold focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
+                        isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                      }`}
                     >
                       {categories.map(c => (
                         <option key={c.id} value={c.name}>{c.name}</option>
@@ -1189,20 +1330,24 @@ export const KnowledgeBase: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setShowInlineCatCreate(true)}
-                      className="text-xs text-camry-deep-carrier font-martian font-bold hover:underline flex items-center gap-1"
+                      className="text-xs text-[#0066FF] font-martian font-bold hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <Plus size={12} />
                       <span>Create new category on the fly</span>
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-2 p-3 bg-camry-carrier/10 rounded-xl border border-camry-carrier/30">
-                    <div className="flex items-center justify-between text-xs font-martian font-bold text-camry-blackout">
+                  <div className={`space-y-2 p-3 rounded-xl border ${
+                    isLight ? 'bg-blue-50/50 border-blue-200' : 'bg-blue-950/20 border-blue-800/40'
+                  }`}>
+                    <div className={`flex items-center justify-between text-xs font-martian font-bold ${
+                      isLight ? 'text-camry-blackout' : 'text-white'
+                    }`}>
                       <span>New Category Name</span>
                       <button 
                         type="button" 
                         onClick={() => setShowInlineCatCreate(false)}
-                        className="text-[10px] text-gray-500 hover:text-black"
+                        className={`text-[10px] ${isLight ? 'text-gray-500 hover:text-black' : 'text-zinc-400 hover:text-white'}`}
                       >
                         Cancel
                       </button>
@@ -1213,22 +1358,28 @@ export const KnowledgeBase: React.FC = () => {
                       placeholder="e.g. Avionics, Patient Records..."
                       value={inlineCatName}
                       onChange={(e) => setInlineCatName(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg border border-black/15 bg-white text-xs font-familjen text-camry-blackout focus:outline-none"
+                      className={`w-full px-3 py-2 rounded-lg border text-xs font-familjen focus:outline-none ${
+                        isLight ? 'border-black/15 bg-white text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                      }`}
                     />
                   </div>
                 )}
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-black/10">
+              <div className={`flex items-center justify-end gap-2 pt-3 border-t ${
+                isLight ? 'border-black/10' : 'border-white/10'
+              }`}>
                 <button 
                   onClick={() => setPendingFiles(null)} 
-                  className="px-3.5 py-2 rounded-xl border border-black/10 text-xs font-martian hover:bg-black/5"
+                  className={`px-3.5 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
+                    isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                  }`}
                 >
                   Cancel
                 </button>
                 <button 
                   onClick={handleConfirmUpload}
-                  className="px-5 py-2 rounded-xl bg-camry-blackout text-white text-xs font-martian font-bold hover:bg-camry-graphite shadow-sm flex items-center gap-1.5"
+                  className="px-5 py-2 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-martian font-bold shadow-sm flex items-center gap-1.5 cursor-pointer"
                 >
                   <Play size={12} className="fill-white" />
                   <span>Start NPU Ingestion</span>

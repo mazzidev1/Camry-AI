@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppContext } from '../store/AppContext';
 import { AnimatedIcon } from './AnimatedIcon';
+import { CamryMascot } from './CamryMascot';
 import { 
   X, 
   ChevronRight, 
@@ -26,9 +27,11 @@ export const GuidedTourOverlay: React.FC = () => {
     setTourStep, 
     setCurrentScreen, 
     setSettingsView,
-    showToast 
+    showToast,
+    themeMode
   } = useAppContext();
 
+  const isLight = themeMode === 'light';
   const totalSteps = 5;
 
   // Keyboard navigation support
@@ -61,7 +64,7 @@ export const GuidedTourOverlay: React.FC = () => {
       badge: 'WELCOME TO CAMRY OS',
       title: '100% Air-Gapped NPU AI Workstation',
       subtitle: 'Your private, on-premises AI intelligence appliance',
-      icon: <Cpu size={24} className="text-sky-400" />,
+      icon: <Cpu size={24} className={isLight ? "text-sky-600" : "text-sky-400"} />,
       description: 'Camry OS runs entirely inside your local network hardware. All document indexing, vector searches, and LLM inferences occur on your local NPU with zero internet dependencies or external data leakage.',
       highlights: [
         'Local NPU Acceleration with ~1,480 tokens/sec throughput',
@@ -76,7 +79,7 @@ export const GuidedTourOverlay: React.FC = () => {
       badge: 'FEATURE 1 OF 3 — KNOWLEDGE BASE',
       title: 'Knowledge Base & Vector Index',
       subtitle: 'Ingest & vectorize private company documents',
-      icon: <Layers size={24} className="text-sky-400" />,
+      icon: <Layers size={24} className={isLight ? "text-sky-600" : "text-sky-400"} />,
       description: 'Upload PDFs, Word docs, spreadsheets, and meeting notes. Documents are vectorized locally into categories (Contracts, Finance, HR) with granular role-level access controls.',
       highlights: [
         'Category-based security permissions for sensitive data',
@@ -91,7 +94,7 @@ export const GuidedTourOverlay: React.FC = () => {
       badge: 'FEATURE 2 OF 3 — LIBRARY',
       title: 'Library & Artifact Repository',
       subtitle: 'Central store for all generated outputs & documents',
-      icon: <FileText size={24} className="text-sky-400" />,
+      icon: <FileText size={24} className={isLight ? "text-sky-600" : "text-sky-400"} />,
       description: 'Access all AI-generated contract risk reports, executive meeting summaries, draft emails, and translation transcripts. Easily copy or download markdown files.',
       highlights: [
         'Organized by document types (Summaries, Analyses, Drafts)',
@@ -106,7 +109,7 @@ export const GuidedTourOverlay: React.FC = () => {
       badge: 'FEATURE 3 OF 3 — SETTINGS & HARDWARE',
       title: 'Settings, Telemetry & Team Control',
       subtitle: 'NPU metrics, local power rail, and backup options',
-      icon: <Settings size={24} className="text-sky-400" />,
+      icon: <Settings size={24} className={isLight ? "text-sky-600" : "text-sky-400"} />,
       description: 'Monitor live hardware stats, manage team member permissions, test role scopes ("View As"), and export or restore complete JSON system configurations.',
       highlights: [
         'Live NPU VRAM, temperature, and token throughput counters',
@@ -122,7 +125,7 @@ export const GuidedTourOverlay: React.FC = () => {
       badge: 'GET STARTED NOW',
       title: 'Local LLM Hub & AI Agents',
       subtitle: 'Deploy specialized local agents for Legal, Finance & Code',
-      icon: <Bot size={24} className="text-sky-400" />,
+      icon: <Bot size={24} className={isLight ? "text-sky-600" : "text-sky-400"} />,
       description: 'Switch between loaded models (Qwen 2.5, Llama 3) and install specialized agent workflows from the local Agent Store to customize prompt instructions.',
       highlights: [
         'Pre-loaded local models with no token usage limits',
@@ -163,36 +166,52 @@ export const GuidedTourOverlay: React.FC = () => {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+      <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-colors ${
+        isLight ? 'bg-zinc-900/35 backdrop-blur-md' : 'bg-black/75 backdrop-blur-md'
+      }`}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
           transition={{ duration: 0.2 }}
-          className="relative w-full max-w-xl bg-camry-blackout text-white rounded-2xl border border-white/15 shadow-2xl overflow-hidden font-familjen"
+          className={`relative w-full max-w-xl rounded-2xl border shadow-2xl overflow-hidden font-sans ${
+            isLight 
+              ? 'bg-white text-zinc-900 border-[#E2DDD5]' 
+              : 'bg-[#16161A] text-white border-white/15'
+          }`}
         >
           {/* Top Progress Bar */}
-          <div className="w-full bg-white/10 h-1.5">
+          <div className={`w-full h-1.5 ${isLight ? 'bg-zinc-100' : 'bg-white/10'}`}>
             <motion.div 
-              className="bg-gradient-to-r from-sky-400 to-blue-500 h-1.5 transition-all duration-300"
+              className="bg-gradient-to-r from-sky-500 to-blue-600 h-1.5 transition-all duration-300"
               style={{ width: `${(tourStep / totalSteps) * 100}%` }}
             />
           </div>
 
           {/* Header Bar */}
-          <div className="p-6 pb-2 flex items-center justify-between border-b border-white/10">
+          <div className={`p-5 pb-3 flex items-center justify-between border-b ${
+            isLight ? 'border-zinc-100 bg-zinc-50/50' : 'border-white/10'
+          }`}>
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30 font-martian text-[10px] font-bold uppercase tracking-wider">
+              <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                isLight 
+                  ? 'bg-sky-50 text-sky-700 border-sky-200' 
+                  : 'bg-sky-500/20 text-sky-300 border-sky-400/30'
+              }`}>
                 {currentStepData.badge}
               </span>
-              <span className="text-white/40 font-martian text-xs">
+              <span className={`text-xs font-mono font-medium ${isLight ? 'text-zinc-400' : 'text-white/40'}`}>
                 {tourStep} of {totalSteps}
               </span>
             </div>
 
             <button
               onClick={closeTour}
-              className="p-1.5 text-white/50 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                isLight 
+                  ? 'text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100' 
+                  : 'text-white/50 hover:text-white hover:bg-white/10'
+              }`}
               title="Close tour"
             >
               <X size={18} />
@@ -200,39 +219,51 @@ export const GuidedTourOverlay: React.FC = () => {
           </div>
 
           {/* Modal Content */}
-          <div className="p-6 space-y-5">
+          <div className="p-5 sm:p-6 space-y-4">
             {/* Title & Icon Header */}
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500/20 to-blue-600/30 border border-sky-400/30 flex items-center justify-center shrink-0 shadow-inner">
-                <AnimatedIcon type="scale">
-                  {currentStepData.icon}
-                </AnimatedIcon>
-              </div>
+            <div className="flex items-start gap-3.5">
+              {tourStep === 1 ? (
+                <CamryMascot size={48} variant="full" animated={true} className="shrink-0 shadow-md" />
+              ) : (
+                <div className={`w-12 h-12 rounded-xl border flex items-center justify-center shrink-0 shadow-sm ${
+                  isLight 
+                    ? 'bg-[#0066FF]/10 border-[#0066FF]/20 text-[#0066FF]' 
+                    : 'bg-[#0066FF]/20 border-[#0066FF]/40 text-blue-300'
+                }`}>
+                  <AnimatedIcon type="scale">
+                    {currentStepData.icon}
+                  </AnimatedIcon>
+                </div>
+              )}
 
               <div>
-                <h2 className="text-xl font-bricolage font-bold text-white tracking-tight">
+                <h2 className={`text-xl font-bold tracking-tight ${isLight ? 'text-zinc-900' : 'text-white'}`}>
                   {currentStepData.title}
                 </h2>
-                <p className="text-xs text-sky-300/90 font-medium mt-0.5">
+                <p className={`text-xs font-medium mt-0.5 ${isLight ? 'text-sky-700' : 'text-sky-300/90'}`}>
                   {currentStepData.subtitle}
                 </p>
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-sm text-white/80 leading-relaxed font-normal">
+            <p className={`text-sm leading-relaxed ${isLight ? 'text-zinc-600' : 'text-white/80'}`}>
               {currentStepData.description}
             </p>
 
             {/* Highlights Bullet List */}
-            <div className="bg-white/5 border border-white/10 rounded-xl p-3.5 space-y-2">
-              <div className="text-[11px] font-martian text-white/50 uppercase tracking-wider font-semibold">
+            <div className={`border rounded-xl p-3.5 space-y-2 ${
+              isLight ? 'bg-zinc-50/80 border-zinc-200/80' : 'bg-white/5 border-white/10'
+            }`}>
+              <div className={`text-[11px] uppercase tracking-wider font-semibold font-mono ${
+                isLight ? 'text-zinc-400' : 'text-white/50'
+              }`}>
                 Key Highlights
               </div>
-              <ul className="space-y-2 text-xs text-white/90">
+              <ul className={`space-y-2 text-xs ${isLight ? 'text-zinc-700' : 'text-white/90'}`}>
                 {currentStepData.highlights.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 size={14} className="text-sky-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 size={14} className={`shrink-0 mt-0.5 ${isLight ? 'text-sky-600' : 'text-sky-400'}`} />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -241,41 +272,55 @@ export const GuidedTourOverlay: React.FC = () => {
           </div>
 
           {/* Footer Controls */}
-          <div className="p-6 pt-2 bg-white/5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className={`p-4 sm:p-5 border-t flex flex-wrap items-center justify-between gap-3 ${
+            isLight ? 'bg-zinc-50/80 border-zinc-100' : 'bg-white/5 border-white/10'
+          }`}>
             {/* Left: Direct Feature Jump Action */}
             <button
               onClick={handleJumpToScreen}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/30 text-sky-200 hover:text-white text-xs font-martian font-semibold transition-all cursor-pointer group"
+              className={`flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer group whitespace-nowrap shrink-0 border ${
+                isLight 
+                  ? 'bg-sky-50 hover:bg-sky-100 border-sky-200 text-sky-700 hover:text-sky-900' 
+                  : 'bg-sky-500/15 hover:bg-sky-500/25 border-sky-400/30 text-sky-200 hover:text-white'
+              }`}
             >
-              <span>{currentStepData.actionLabel}</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              <span className="whitespace-nowrap">{currentStepData.actionLabel}</span>
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform shrink-0" />
             </button>
 
             {/* Right: Next / Prev / Skip Controls */}
-            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <div className="flex items-center gap-2 ml-auto shrink-0 flex-nowrap">
               {tourStep > 1 && (
                 <button
                   onClick={handlePrev}
-                  className="px-3 py-2 rounded-xl border border-white/10 hover:bg-white/10 text-white/80 hover:text-white text-xs font-martian transition-colors cursor-pointer flex items-center gap-1"
+                  className={`px-3 py-2.5 rounded-xl border text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0 ${
+                    isLight 
+                      ? 'border-zinc-200 hover:bg-zinc-100 text-zinc-700' 
+                      : 'border-white/10 hover:bg-white/10 text-white/80 hover:text-white'
+                  }`}
                 >
-                  <ChevronLeft size={14} />
+                  <ChevronLeft size={14} className="shrink-0" />
                   <span>Back</span>
                 </button>
               )}
 
               <button
                 onClick={closeTour}
-                className="px-3 py-2 rounded-xl text-white/50 hover:text-white hover:bg-white/10 text-xs font-martian transition-colors cursor-pointer"
+                className={`px-3 py-2.5 rounded-xl text-xs font-medium transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+                  isLight 
+                    ? 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100' 
+                    : 'text-white/50 hover:text-white hover:bg-white/10'
+                }`}
               >
                 Skip
               </button>
 
               <button
                 onClick={handleNext}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-martian text-xs font-bold shadow-md hover:shadow-sky-500/20 transition-all cursor-pointer flex items-center gap-1.5"
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-semibold shadow-md shadow-sky-500/20 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0"
               >
-                <span>{tourStep === totalSteps ? 'Finish Tour' : 'Next Step'}</span>
-                <ChevronRight size={14} />
+                <span className="whitespace-nowrap">{tourStep === totalSteps ? 'Finish Tour' : 'Next Step'}</span>
+                <ChevronRight size={14} className="shrink-0" />
               </button>
             </div>
           </div>
