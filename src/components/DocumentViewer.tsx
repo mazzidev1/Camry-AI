@@ -254,7 +254,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
       <div className="bg-[#121418] border-t border-white/10 px-4 py-2 flex items-center justify-between text-[11px] font-martian text-white/40 flex-shrink-0">
         <div className="flex items-center gap-2">
           <FileText size={13} className="text-zinc-400/80" />
-          <span>Camry On-Premise Generated Document</span>
+          <span>Kamry On-Premise Generated Document</span>
         </div>
         <span>{doc.content.split(/\s+/).length} words</span>
       </div>

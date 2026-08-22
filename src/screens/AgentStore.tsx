@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useAppContext, Agent, AgentVersion, AVAILABLE_MODELS } from '../store/AppContext';
 import { CustomSelect } from '../components/CustomSelect';
 import { AgentLogo } from '../components/AgentLogo';
-import { Grid, Heart, Plus, Search, Trash2, Check, X, Bot, History, RotateCcw, BarChart3, Cpu, Eye, GripVertical, Move, Sparkles, Send, Sliders, RefreshCw, AlertCircle, Play } from 'lucide-react';
+import { MemberInteractionLog } from '../components/MemberInteractionLog';
+import { Grid, Heart, Plus, Search, Trash2, Check, X, Bot, History, RotateCcw, BarChart3, Cpu, Eye, Sparkles, Send, Sliders, RefreshCw, AlertCircle, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
 
@@ -171,7 +172,7 @@ export const AgentStore: React.FC = () => {
     setTestInput('');
     setIsTestThinking(true);
 
-    const activePrompt = newAgentPrompt.trim() || `You are ${newAgentName.trim() || 'Custom Agent'}, a specialized AI agent on Camry OS.`;
+    const activePrompt = newAgentPrompt.trim() || `You are ${newAgentName.trim() || 'Custom Agent'}, a specialized AI agent on Kamry OS.`;
 
     try {
       const response = await fetch('/api/chat', {
@@ -205,7 +206,7 @@ export const AgentStore: React.FC = () => {
 
 Regarding your test input "${userMsg.content}":
 
-The local model on your Camry ONE appliance has executed this dry-run query using your customized system prompt:
+The local model on your Kamry ONE appliance has executed this dry-run query using your customized system prompt:
 "${activePrompt.slice(0, 100)}${activePrompt.length > 100 ? '...' : ''}"
 
 Output alignment looks excellent! No regressions detected across simulated memory space. Configure further on the left panel or install whenever you are ready!`;
@@ -268,9 +269,9 @@ Output alignment looks excellent! No regressions detected across simulated memor
 
     updateCustomAgent(editingAgentId, {
       name: editAgentName.trim(),
-      description: editAgentDesc.trim() || 'Custom functional AI agent updated on Camry ONE.',
+      description: editAgentDesc.trim() || 'Custom functional AI agent updated on Kamry ONE.',
       category: editAgentCat,
-      systemPrompt: editAgentPrompt.trim() || `You are ${editAgentName.trim()}, a specialized AI agent on Camry OS.`,
+      systemPrompt: editAgentPrompt.trim() || `You are ${editAgentName.trim()}, a specialized AI agent on Kamry OS.`,
     });
 
     setShowEditModal(false);
@@ -323,7 +324,7 @@ Refining system prompt adjustments for "${editAgentName}":
 
 Regarding: "${userMsg.content}"
 
-The Camry ONE offline compiler has successfully validated your updated rules:
+The Kamry ONE offline compiler has successfully validated your updated rules:
 "${editAgentPrompt.slice(0, 100)}${editAgentPrompt.length > 100 ? '...' : ''}"
 
 The simulated response matches expected precision parameters!`;
@@ -390,7 +391,7 @@ Using custom system instructions from agent "${currentAgent?.name}":
 
 Tested Query: "${userMsg.content}"
 
-Response parameters processed securely on-premises within your Camry ONE hardware clusters. No internet connection was used.`;
+Response parameters processed securely on-premises within your Kamry ONE hardware clusters. No internet connection was used.`;
 
         if (currentAgent?.id === 'legal') {
           simulatedText = `[Legal Assistant Sandbox Engine]
@@ -484,17 +485,17 @@ Recommendation Alignment:
     const initialVersionObj = {
       version: 'v1.0.0',
       updatedAt: new Date().toISOString().split('T')[0],
-      prompt: newAgentPrompt.trim() || `You are ${newAgentName.trim()}, a specialized AI agent on Camry OS.`,
-      changes: 'Initial release on Camry ONE NPU.',
+      prompt: newAgentPrompt.trim() || `You are ${newAgentName.trim()}, a specialized AI agent on Kamry OS.`,
+      changes: 'Initial release on Kamry ONE NPU.',
       author: 'System Owner (Admin)'
     };
 
     addCustomAgent({
       id,
       name: newAgentName.trim(),
-      description: newAgentDesc.trim() || 'Custom functional AI agent created on Camry ONE.',
+      description: newAgentDesc.trim() || 'Custom functional AI agent created on Kamry ONE.',
       category: newAgentCat,
-      systemPrompt: newAgentPrompt.trim() || `You are ${newAgentName.trim()}, a specialized AI agent on Camry OS.`,
+      systemPrompt: newAgentPrompt.trim() || `You are ${newAgentName.trim()}, a specialized AI agent on Kamry OS.`,
       status: 'active',
       statusReason: `Active processing thread running on ${activeModelId}`,
       currentVersion: 'v1.0.0',
@@ -505,59 +506,48 @@ Recommendation Alignment:
   };
 
   return (
-    <div className={`flex-1 h-full flex flex-col overflow-hidden relative transition-colors ${
-      isLight ? 'bg-camry-paper' : 'bg-[#141418] text-white'
+    <div className={`flex-1 h-full flex flex-col overflow-y-auto kamry-page-container kamry-section-gap relative transition-colors ${
+      isLight ? 'bg-kamry-paper' : 'bg-[#141418] text-white'
     }`}>
       {/* Header */}
-      <div className={`p-4 sm:p-8 pb-4 border-b z-10 flex-shrink-0 space-y-3 ${
-        isLight ? 'bg-camry-paper/50 border-black/5' : 'bg-[#141418]/80 border-white/10'
+      <div className={`pb-4 border-b shrink-0 space-y-4 ${
+        isLight ? 'bg-kamry-paper/50 border-black/5' : 'bg-[#141418]/80 border-white/10'
       }`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Grid className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-[#0066FF]'}`} size={22} />
-            <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Agent Store</h1>
+            <Grid className={`flex-shrink-0 ${isLight ? 'text-kamry-blackout' : 'text-[#0EA5E9]'}`} size={22} />
+            <h1 className={`kamry-h1-title ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Agent Store</h1>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Search input */}
             <div className="relative flex-1 sm:flex-none">
               <Search size={14} className={`absolute left-3 top-1/2 -translate-y-1/2 ${
-                isLight ? 'text-camry-graphite/40' : 'text-zinc-500'
+                isLight ? 'text-kamry-graphite/40' : 'text-zinc-500'
               }`} />
               <input 
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search agents..."
-                className={`w-full sm:w-48 pl-8 pr-3 py-1.5 border rounded-lg text-xs font-familjen transition-all focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
-                  isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white placeholder:text-zinc-500'
+                className={`w-full sm:w-48 pl-8 pr-3 py-2 border rounded-[10px] text-xs font-familjen transition-all focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
+                  isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white placeholder:text-zinc-500'
                 }`}
               />
             </div>
-
-            {/* Create Custom Agent Button */}
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shadow-xs flex-shrink-0 cursor-pointer ${
-                isLight ? 'bg-camry-blackout hover:bg-black text-white' : 'bg-[#0066FF] hover:bg-[#0052CC] text-white'
-              }`}
-            >
-              <Plus size={14} />
-              <span>Build Agent</span>
-            </button>
           </div>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex gap-1.5 overflow-x-auto pb-1 sm:pb-0 no-scrollbar flex-nowrap sm:flex-wrap">
-            {['All', 'Installed', 'Playground Sandbox 🧪', 'Legal', 'Medical', 'Government', 'Industrial', 'Finance', 'Other'].map(cat => (
+          <div className="flex gap-3 overflow-x-auto pb-1 sm:pb-0 no-scrollbar flex-nowrap sm:flex-wrap">
+            {['All', 'Installed', 'Legal', 'Medical', 'Government', 'Industrial', 'Finance', 'Other'].map(cat => (
               <button 
                 key={cat}
                 onClick={() => setActiveCat(cat)}
-                className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors whitespace-nowrap flex-shrink-0 cursor-pointer ${
+                className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors whitespace-nowrap flex-shrink-0 cursor-pointer kamry-touch-target ${
                   activeCat === cat 
-                    ? (isLight ? 'bg-camry-blackout text-white border-transparent' : 'bg-[#0066FF] text-white border-transparent')
-                    : (isLight ? 'bg-white border-black/10 text-camry-graphite hover:bg-camry-graphite/5' : 'bg-[#1C1C22] border-white/10 text-zinc-300 hover:bg-white/10')
+                    ? (isLight ? 'bg-kamry-blackout text-white border-transparent' : 'bg-[#0EA5E9] text-white border-transparent')
+                    : (isLight ? 'bg-white border-black/10 text-kamry-graphite hover:bg-kamry-graphite/5' : 'bg-[#1C1C22] border-white/10 text-zinc-300 hover:bg-white/10')
                 }`}
               >
                 {cat}
@@ -567,349 +557,24 @@ Recommendation Alignment:
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 sm:p-8 pt-4 sm:pt-6">
+      <div className="flex-1 space-y-4">
         {/* Grid */}
         {activeCat === 'Installed' && (
-          <div className={`mb-4 p-3 border rounded-xl flex items-center justify-between font-martian text-xs shadow-xs ${
-            isLight ? 'bg-camry-carrier/10 border-camry-deep-carrier/20 text-camry-blackout' : 'bg-blue-950/40 border-blue-800/40 text-blue-200'
+          <div className={`p-4 border rounded-[10px] flex items-center justify-between font-martian text-xs shadow-xs ${
+            isLight ? 'bg-kamry-carrier/10 border-kamry-deep-carrier/20 text-kamry-blackout' : 'bg-blue-950/40 border-blue-800/40 text-blue-200'
           }`}>
-            <div className="flex items-center gap-2.5">
-              <Move size={16} className={`flex-shrink-0 ${isLight ? 'text-camry-deep-carrier' : 'text-blue-400'}`} />
-              <span>Drag & drop agent cards by the handle <GripVertical size={14} className="inline-block opacity-70" /> to customize priority order.</span>
-            </div>
-            <span className={`text-[10px] px-2 py-0.5 rounded border ${
-              isLight ? 'text-camry-graphite/60 bg-white/60 border-black/5' : 'text-zinc-300 bg-white/10 border-white/10'
+            <span className={`text-xs ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+              Installed Workspace Agents
+            </span>
+            <span className={`text-[10px] px-2 py-0.5 rounded-[6px] border ${
+              isLight ? 'text-kamry-graphite/60 bg-white/60 border-black/5' : 'text-zinc-300 bg-white/10 border-white/10'
             }`}>
               {filteredAgents.length} Installed
             </span>
           </div>
         )}
 
-        {activeCat === 'Playground Sandbox 🧪' ? (
-          <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-220px)] min-h-[500px] overflow-hidden">
-            {/* Left Column: Config Panel */}
-            <div className="w-full lg:w-96 flex flex-col gap-4 overflow-y-auto pr-0 lg:pr-2 no-scrollbar shrink-0">
-              {/* Agent Picker Card */}
-              <div className={`p-4 rounded-xl border flex flex-col gap-3 ${
-                isLight ? 'bg-white border-black/5 shadow-xs' : 'bg-[#1C1C22] border-white/10 shadow-xs'
-              }`}>
-                <h3 className="font-bricolage text-sm font-semibold flex items-center gap-2">
-                  <Bot size={16} className="text-[#0066FF]" />
-                  Blueprint Selection
-                </h3>
-                <p className={`text-xs ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'} leading-relaxed`}>
-                  Select a pre-installed or custom AI agent blueprint to load into the sandbox.
-                </p>
-                <div className="flex flex-col gap-1">
-                  <label className="text-[10px] font-martian font-bold opacity-60">SELECT ACTIVE AGENT</label>
-                  <select 
-                    value={playgroundSelectedAgentId}
-                    onChange={(e) => {
-                      setPlaygroundSelectedAgentId(e.target.value);
-                      setPlaygroundMessages([]);
-                    }}
-                    className={`p-2 rounded-lg text-xs font-familjen border focus:ring-1 focus:ring-[#0066FF] ${
-                      isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
-                    }`}
-                  >
-                    {allAgents.map(a => (
-                      <option key={a.id} value={a.id}>{a.name} ({getAgentCat(a)})</option>
-                    ))}
-                  </select>
-                </div>
-                
-                {/* Active Prompt Preview */}
-                {(() => {
-                  const currentAgent = allAgents.find(a => a.id === playgroundSelectedAgentId) || allAgents[0];
-                  if (!currentAgent) return null;
-                  return (
-                    <div className="flex flex-col gap-1.5 mt-2 pt-3 border-t border-dashed border-black/5 dark:border-white/10">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-martian font-bold opacity-60">SYSTEM COMPILER RULES</span>
-                        <span className="text-[9px] font-martian opacity-50 px-1.5 py-0.25 bg-black/5 dark:bg-white/5 rounded">
-                          {currentAgent.currentVersion || 'v1.0.0'}
-                        </span>
-                      </div>
-                      <div className={`p-2.5 rounded-lg text-xs font-mono max-h-36 overflow-y-auto break-words whitespace-pre-wrap ${
-                        isLight ? 'bg-zinc-100 text-camry-graphite' : 'bg-[#141418] text-zinc-300'
-                      }`}>
-                        {currentAgent.systemPrompt || 'No specific prompt rules configured.'}
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
-
-              {/* Hardware / Model Configuration Card */}
-              <div className={`p-4 rounded-xl border flex flex-col gap-3 ${
-                isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'
-              }`}>
-                <h3 className="font-bricolage text-sm font-semibold flex items-center gap-2">
-                  <Cpu size={16} className="text-[#0066FF]" />
-                  Sovereign NPU Target
-                </h3>
-                
-                {/* Camry recommendation */}
-                {(() => {
-                  const currentAgent = allAgents.find(a => a.id === playgroundSelectedAgentId) || allAgents[0];
-                  const rec = getRecommendedModel(currentAgent?.category || 'Other', currentAgent?.systemPrompt || '');
-                  return (
-                    <div className={`p-2.5 rounded-lg text-xs leading-relaxed flex flex-col gap-1 ${
-                      isLight ? 'bg-emerald-50 text-emerald-800' : 'bg-emerald-950/20 text-emerald-300'
-                    }`}>
-                      <div className="flex items-center gap-1 font-semibold text-[10px] font-martian">
-                        <Sparkles size={12} className="text-emerald-500" />
-                        RECOMMENDED NPU COMPILATION
-                      </div>
-                      <div>
-                        Use <strong className="font-mono">{rec.id}</strong> — {rec.reason}
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-martian font-bold opacity-60">TARGET CHIP COMPILER MODEL</label>
-                  <select 
-                    value={playgroundSelectedModelId || ''}
-                    onChange={(e) => setPlaygroundSelectedModelId(e.target.value || null)}
-                    className={`p-2 rounded-lg text-xs font-familjen border focus:ring-1 focus:ring-[#0066FF] ${
-                      isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
-                    }`}
-                  >
-                    <option value="">Recommended (Auto-tune)</option>
-                    {AVAILABLE_MODELS.map(m => (
-                      <option key={m.id} value={m.id}>{m.name} ({m.params} / {m.size})</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Hyperparameter Simulators */}
-                <div className="flex flex-col gap-3 mt-2 pt-3 border-t border-black/5 dark:border-white/10">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex justify-between items-center text-[10px] font-martian opacity-75">
-                      <span>TEMPERATURE</span>
-                      <span className="font-mono">0.2 (Low-Risk Analytical)</span>
-                    </div>
-                    <input type="range" min="0" max="1" step="0.1" defaultValue="0.2" className="accent-[#0066FF] h-1 bg-black/10 dark:bg-white/10 rounded-lg cursor-pointer" />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="flex justify-between items-center text-[10px] font-martian opacity-75">
-                      <span>TOP_P (NUCLEUS)</span>
-                      <span className="font-mono">0.95</span>
-                    </div>
-                    <input type="range" min="0" max="1" step="0.05" defaultValue="0.95" className="accent-[#0066FF] h-1 bg-black/10 dark:bg-white/10 rounded-lg cursor-pointer" />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="flex justify-between items-center text-[10px] font-martian opacity-75">
-                      <span>NPU CORE PRIORITY</span>
-                      <span className="font-mono text-emerald-500">MAX_PERF</span>
-                    </div>
-                    <input type="range" min="1" max="4" step="1" defaultValue="4" className="accent-[#0066FF] h-1 bg-black/10 dark:bg-white/10 rounded-lg cursor-pointer" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Simulation Scenarios Deck */}
-              <div className={`p-4 rounded-xl border flex flex-col gap-3 ${
-                isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'
-              }`}>
-                <h3 className="font-bricolage text-sm font-semibold flex items-center gap-2">
-                  <Sliders size={16} className="text-[#0066FF]" />
-                  Simulated Input Templates
-                </h3>
-                <p className={`text-xs ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'} leading-relaxed`}>
-                  Inject simulated high-complexity enterprise contexts to stress-test your agent prompt rules.
-                </p>
-                <div className="flex flex-col gap-2">
-                  {[
-                    {
-                      label: 'NDA Clause Audit',
-                      text: 'Analyze standard mutual NDA liability provisions for cross-border African data sovereignty guidelines.',
-                      cat: 'Legal'
-                    },
-                    {
-                      label: 'Clinical EHR Synopsis',
-                      text: 'Synthesize 12-month patient electronic health record data regarding diabetic medication contraindications.',
-                      cat: 'Medical'
-                    },
-                    {
-                      label: 'Ledger Audit Profile',
-                      text: 'Review corporate balance sheet transaction histories for repetitive sub-dollar rounding discrepancies.',
-                      cat: 'Finance'
-                    },
-                    {
-                      label: 'Sovereign Compliance Risk',
-                      text: 'Conduct high-precision regulatory audit simulation against localized compliance frameworks.',
-                      cat: 'Government'
-                    }
-                  ].map((tpl, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => setPlaygroundInput(tpl.text)}
-                      className={`p-2.5 rounded-lg text-left border text-xs transition-all hover:border-[#0066FF]/40 cursor-pointer ${
-                        isLight ? 'bg-zinc-50 border-black/5 text-camry-blackout hover:bg-zinc-100' : 'bg-[#141418] border-white/5 text-zinc-300 hover:bg-white/5'
-                      }`}
-                    >
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="font-semibold text-[10px] font-martian">{tpl.label}</span>
-                        <span className="text-[8px] font-martian opacity-60 uppercase bg-black/5 dark:bg-white/5 px-1 rounded">{tpl.cat}</span>
-                      </div>
-                      <p className="line-clamp-1 opacity-80 text-[10px] leading-snug">{tpl.text}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Interaction Sandbox & Metrics */}
-            <div className="flex-1 flex flex-col gap-4 overflow-hidden h-full">
-              {/* Telemetry Monitor Panel */}
-              <div className={`p-4 rounded-xl border flex flex-col gap-3 flex-shrink-0 ${
-                isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'
-              }`}>
-                <div className="flex justify-between items-center">
-                  <h3 className="font-bricolage text-sm font-semibold flex items-center gap-2">
-                    <RefreshCw size={15} className={`text-[#0066FF] ${isPlaygroundThinking ? 'animate-spin' : ''}`} />
-                    Real-time Response Telemetry
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <span className="text-[9px] font-martian opacity-60">CAMRY NPU LIVE</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {[
-                    { label: 'INFERENCE LATENCY', value: isPlaygroundThinking ? 'Computing...' : '18.4ms (avg)', desc: 'NPU dispatch latency' },
-                    { label: 'COMPILING SPEED', value: isPlaygroundThinking ? 'Generating...' : '1,480 tok/s', desc: 'Hardware burst limit' },
-                    { label: 'VRAM ALLOCATION', value: '22.4 GB / 64 GB', desc: 'Sovereign Cluster-04' },
-                    { label: 'COMPILER ALIGNMENT', value: '99.4% Pass', desc: 'Pre-deployment audit' }
-                  ].map((m, idx) => (
-                    <div key={idx} className={`p-2.5 rounded-lg border flex flex-col justify-between ${
-                      isLight ? 'bg-zinc-50 border-black/5' : 'bg-[#141418] border-white/5'
-                    }`}>
-                      <span className="text-[9px] font-martian opacity-50 block truncate">{m.label}</span>
-                      <span className={`text-xs font-semibold my-1 font-martian ${
-                        idx === 0 && isPlaygroundThinking ? 'text-blue-500' :
-                        idx === 3 ? 'text-emerald-500' : ''
-                      }`}>{m.value}</span>
-                      <span className="text-[8px] opacity-40 block truncate">{m.desc}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Chat Simulator Canvas */}
-              <div className={`flex-1 rounded-xl border flex flex-col overflow-hidden ${
-                isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'
-              }`}>
-                {/* Chat header info */}
-                <div className={`px-4 py-2 border-b flex items-center justify-between text-xs font-martian ${
-                  isLight ? 'bg-zinc-50 border-black/5 text-camry-graphite/70' : 'bg-[#141418] border-white/10 text-zinc-400'
-                }`}>
-                  <div className="flex items-center gap-2">
-                    <span className="px-1.5 py-0.5 bg-blue-500/10 text-blue-500 rounded font-semibold text-[9px]">SANDBOX SHELL</span>
-                    <span>Active blueprint: <strong className="text-[#0066FF]">{(allAgents.find(a => a.id === playgroundSelectedAgentId) || allAgents[0])?.name}</strong></span>
-                  </div>
-                  <button 
-                    onClick={() => setPlaygroundMessages([])}
-                    className="hover:text-red-500 transition-colors flex items-center gap-1 cursor-pointer"
-                  >
-                    Clear Feed
-                  </button>
-                </div>
-
-                {/* Messages Panel */}
-                <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 no-scrollbar">
-                  {playgroundMessages.length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-60">
-                      <div className="p-4 bg-blue-500/10 text-blue-500 rounded-full mb-3">
-                        <Bot size={36} />
-                      </div>
-                      <h4 className="font-bricolage text-sm font-semibold mb-1">Interactive Blueprint Playground</h4>
-                      <p className="text-xs max-w-sm leading-relaxed">
-                        Simulate real-time inputs or load a template from the left deck to monitor NPU alignment, response accuracy, and localized compiler performance metrics securely.
-                      </p>
-                    </div>
-                  ) : (
-                    playgroundMessages.map((msg, i) => (
-                      <div 
-                        key={i} 
-                        className={`flex flex-col max-w-[85%] ${
-                          msg.role === 'user' ? 'self-end items-end' : 'self-start items-start'
-                        }`}
-                      >
-                        <div className={`p-3 rounded-xl text-xs leading-relaxed ${
-                          msg.role === 'user' 
-                            ? (isLight ? 'bg-camry-blackout text-white rounded-tr-none' : 'bg-[#0066FF] text-white rounded-tr-none')
-                            : (isLight ? 'bg-zinc-100 text-camry-blackout rounded-tl-none border border-black/5' : 'bg-[#141418] text-white rounded-tl-none border border-white/10')
-                        }`}>
-                          <p className="whitespace-pre-wrap">{msg.content}</p>
-                        </div>
-                        <div className="flex items-center gap-2 mt-1 text-[9px] font-martian opacity-50">
-                          <span>{msg.role === 'user' ? 'Simulator User' : msg.model || 'Camry NPU Thread'}</span>
-                          <span>•</span>
-                          <span>{msg.timestamp}</span>
-                        </div>
-                      </div>
-                    ))
-                  )}
-
-                  {isPlaygroundThinking && (
-                    <div className="self-start flex flex-col max-w-[85%] items-start">
-                      <div className={`p-3 rounded-xl rounded-tl-none text-xs leading-relaxed flex items-center gap-2 ${
-                        isLight ? 'bg-zinc-100 text-camry-graphite border border-black/5' : 'bg-[#141418] text-zinc-400 border border-white/10'
-                      }`}>
-                        <div className="flex gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '300ms' }} />
-                        </div>
-                        <span className="font-mono text-[10px]">Processing securely on Camry ONE NPU cluster...</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Input Panel */}
-                <div className={`p-3 border-t flex gap-2 items-center ${
-                  isLight ? 'border-black/5 bg-zinc-50' : 'border-white/10 bg-[#16161C]'
-                }`}>
-                  <input
-                    type="text"
-                    value={playgroundInput}
-                    onChange={(e) => setPlaygroundInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleSendPlaygroundTest();
-                    }}
-                    placeholder="Enter test user prompt to simulate NPU compilation..."
-                    className={`flex-1 p-2 rounded-lg text-xs border focus:outline-none focus:ring-1 focus:ring-[#0066FF] ${
-                      isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
-                    }`}
-                  />
-                  <button
-                    onClick={handleSendPlaygroundTest}
-                    disabled={isPlaygroundThinking || !playgroundInput.trim()}
-                    className={`p-2 rounded-lg text-white transition-all cursor-pointer flex items-center justify-center ${
-                      playgroundInput.trim() && !isPlaygroundThinking 
-                        ? 'bg-[#0066FF] hover:bg-[#0052CC]' 
-                        : 'bg-zinc-500/20 text-zinc-400 cursor-not-allowed'
-                    }`}
-                  >
-                    <Send size={14} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 pb-8">
+        <div className="kamry-card-grid pb-8">
           {filteredAgents.map(agent => {
             const isInstalled = installedAgents.includes(agent.id);
             const isDownloading = downloading === agent.id;
@@ -918,53 +583,12 @@ Recommendation Alignment:
             return (
               <div 
                 key={agent.id} 
-                draggable={true}
-                onDragStart={(e) => {
-                  setDraggedAgentId(agent.id);
-                  e.dataTransfer.setData('text/plain', agent.id);
-                  e.dataTransfer.effectAllowed = 'move';
-                }}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  e.dataTransfer.dropEffect = 'move';
-                  if (dragOverAgentId !== agent.id) {
-                    setDragOverAgentId(agent.id);
-                  }
-                }}
-                onDragLeave={() => {
-                  if (dragOverAgentId === agent.id) {
-                    setDragOverAgentId(null);
-                  }
-                }}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  const sourceId = e.dataTransfer.getData('text/plain') || draggedAgentId;
-                  if (sourceId && sourceId !== agent.id) {
-                    handleReorderAgents(sourceId, agent.id);
-                  }
-                  setDraggedAgentId(null);
-                  setDragOverAgentId(null);
-                }}
-                onDragEnd={() => {
-                  setDraggedAgentId(null);
-                  setDragOverAgentId(null);
-                }}
-                className={`rounded-xl p-4 sm:p-5 border transition-all flex flex-col h-full group relative ${
-                  draggedAgentId === agent.id ? 'opacity-30 border-dashed border-[#0066FF] scale-[0.98]' :
-                  dragOverAgentId === agent.id ? 'border-2 border-[#0066FF] bg-blue-500/10 scale-[1.02] shadow-lg' : 
+                className={`rounded-[10px] kamry-card-padding border transition-all flex flex-col h-full group relative ${
                   isLight ? 'bg-white border-black/5 shadow-xs hover:shadow-md' : 'bg-[#1C1C22] border-white/10 shadow-xs hover:border-white/20'
                 }`}
               >
                 <div className="flex justify-between items-start mb-3 gap-2">
                   <div className="flex items-center gap-2 min-w-0">
-                    <div 
-                      className={`cursor-grab active:cursor-grabbing p-1 rounded transition-colors flex-shrink-0 ${
-                        isLight ? 'hover:bg-black/5 text-camry-graphite/40 hover:text-black' : 'hover:bg-white/10 text-zinc-500 hover:text-white'
-                      }`}
-                      title="Drag to reorder agent priority"
-                    >
-                      <GripVertical size={16} />
-                    </div>
                     <AgentLogo 
                       agentId={agent.id} 
                       name={agent.name} 
@@ -980,55 +604,31 @@ Recommendation Alignment:
                         <Check size={11} /> INSTALLED
                       </span>
                     ) : null}
-
-                    {/* Agent Status Badge */}
-                    <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-martian text-[9px] sm:text-[10px] font-bold shadow-xs ${
-                      status === 'active' 
-                        ? 'bg-emerald-600 text-white' 
-                        : status === 'error'
-                        ? 'bg-red-600 text-white'
-                        : 'bg-amber-500 text-white'
-                    }`}>
-                      <span className={`w-1.5 h-1.5 rounded-full bg-white ${
-                        status === 'active' ? 'animate-pulse' :
-                        status === 'error' ? 'animate-ping' : ''
-                      }`} />
-                      <span className="capitalize">{status}</span>
-                    </div>
                   </div>
                 </div>
                 
                 <div className="flex items-center justify-between mb-1 gap-2">
-                  <h3 className={`font-bricolage text-base sm:text-lg font-medium ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{agent.name}</h3>
+                  <h3 className={`font-bricolage text-base sm:text-lg font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{agent.name}</h3>
                   <span className={`font-martian text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded flex-shrink-0 ${
-                    isLight ? 'bg-black/5 text-camry-graphite/60' : 'bg-white/10 text-zinc-400'
+                    isLight ? 'bg-black/5 text-kamry-graphite/60' : 'bg-white/10 text-zinc-400'
                   }`}>
                     {agent.currentVersion || 'v1.0.0'}
                   </span>
                 </div>
 
                 <p className={`font-familjen text-xs sm:text-sm flex-1 leading-relaxed mb-3 ${
-                  isLight ? 'text-camry-graphite/70' : 'text-zinc-300'
+                  isLight ? 'text-kamry-graphite/70' : 'text-zinc-300'
                 }`}>{agent.description}</p>
-                
-                {/* Status Reason Banner */}
-                {agent.statusReason && (
-                  <div className={`text-[9px] sm:text-[10px] font-martian px-2 py-1 rounded mb-3 break-words ${
-                    status === 'error' ? (isLight ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-red-950/40 text-red-300 border border-red-800/40') :
-                    status === 'active' ? (isLight ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-emerald-950/40 text-emerald-300 border border-emerald-800/40') :
-                    (isLight ? 'bg-camry-graphite/5 text-camry-graphite/60' : 'bg-white/5 text-zinc-400')
-                  }`}>
-                    <span className="font-semibold uppercase tracking-wider mr-1">NPU Status:</span>
-                    {agent.statusReason}
-                  </div>
-                )}
+
+                {/* Member Interactions Log */}
+                <MemberInteractionLog agentId={agent.id} agentName={agent.name} />
 
                 <div className={`mt-auto pt-3 border-t flex items-center justify-between gap-2 ${
                   isLight ? 'border-black/5' : 'border-white/10'
                 }`}>
                   <div className="flex items-center gap-2">
                     <div className={`flex items-center gap-1 font-martian text-xs ${
-                      isLight ? 'text-camry-graphite/40' : 'text-zinc-500'
+                      isLight ? 'text-kamry-graphite/40' : 'text-zinc-500'
                     }`}>
                       <Heart size={13} /> {agent.likes}
                     </div>
@@ -1040,7 +640,7 @@ Recommendation Alignment:
                         setShowHistoryModal(true);
                       }}
                       className={`p-1 rounded transition-colors flex items-center gap-1 text-[10px] sm:text-[11px] font-martian cursor-pointer ${
-                        isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                        isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
                       }`}
                       title="View Version History & Rollback"
                     >
@@ -1061,28 +661,12 @@ Recommendation Alignment:
                         <span>Edit</span>
                       </button>
                     )}
-
-                    {/* Quick Sandbox Tester */}
-                    <button
-                      onClick={() => {
-                        setPlaygroundSelectedAgentId(agent.id);
-                        setActiveCat('Playground Sandbox 🧪');
-                        showToast(`Loaded ${agent.name} into Sandbox`, 'info', 'PLAYGROUND');
-                      }}
-                      className={`p-1 rounded transition-colors flex items-center gap-1 text-[10px] sm:text-[11px] font-martian cursor-pointer ${
-                        isLight ? 'hover:bg-black/5 text-[#0066FF] hover:text-[#0052CC]' : 'hover:bg-white/10 text-blue-400 hover:text-blue-300'
-                      }`}
-                      title="Test in Playground Sandbox"
-                    >
-                      <Play size={12} />
-                      <span>Sandbox</span>
-                    </button>
                   </div>
                   
                   {isDownloading ? (
                     <div className="w-20">
-                      <div className={`w-full h-1 rounded-full overflow-hidden ${isLight ? 'bg-camry-graphite/10' : 'bg-white/10'}`}>
-                        <div className="h-full bg-[#0066FF] transition-all duration-200" style={{ width: `${downloadProgress}%` }} />
+                      <div className={`w-full h-1 rounded-full overflow-hidden ${isLight ? 'bg-kamry-graphite/10' : 'bg-white/10'}`}>
+                        <div className="h-full bg-[#0EA5E9] transition-all duration-200" style={{ width: `${downloadProgress}%` }} />
                       </div>
                     </div>
                   ) : isInstalled ? (
@@ -1090,7 +674,7 @@ Recommendation Alignment:
                       <button 
                         onClick={() => handleOpen(agent.id)}
                         className={`px-3 py-1.5 rounded text-xs font-medium transition-colors cursor-pointer ${
-                          isLight ? 'bg-camry-blackout text-white hover:bg-black' : 'bg-[#0066FF] text-white hover:bg-[#0052CC]'
+                          isLight ? 'bg-kamry-blackout text-white hover:bg-black' : 'bg-[#0EA5E9] text-white hover:bg-[#0EA5E9]'
                         }`}
                       >
                         Launch
@@ -1107,7 +691,7 @@ Recommendation Alignment:
                     <button 
                       onClick={() => handleInstall(agent.id)}
                       className={`px-4 py-1.5 rounded text-xs font-medium transition-colors cursor-pointer ${
-                        isLight ? 'bg-camry-graphite/10 text-camry-blackout hover:bg-camry-graphite/20' : 'bg-white/10 text-white hover:bg-white/20'
+                        isLight ? 'bg-kamry-graphite/10 text-kamry-blackout hover:bg-kamry-graphite/20' : 'bg-white/10 text-white hover:bg-white/20'
                       }`}
                     >
                       Get Agent
@@ -1118,9 +702,6 @@ Recommendation Alignment:
             )
           })}
         </div>
-      </>
-    )}
-
       </div>
 
       {/* Create Custom Agent Modal */}
@@ -1132,7 +713,7 @@ Recommendation Alignment:
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`rounded-2xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl border relative font-familjen ${
-                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               {/* Modal Header */}
@@ -1140,14 +721,14 @@ Recommendation Alignment:
                 isLight ? 'border-black/5 bg-zinc-50/50' : 'border-white/10 bg-[#16161C]'
               }`}>
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-[#0066FF] rounded-lg text-white">
+                  <div className="p-2 bg-[#0EA5E9] rounded-lg text-white">
                     <Bot size={20} />
                   </div>
                   <div>
-                    <h3 className={`text-lg font-bold font-bricolage leading-none ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
+                    <h3 className={`text-lg font-bold font-bricolage leading-none ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
                       On-Device Agent Workshop
                     </h3>
-                    <p className={`text-xs mt-1 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
+                    <p className={`text-xs mt-1 ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
                       Design specialized agent blueprints and simulate NPU compilation.
                     </p>
                   </div>
@@ -1158,7 +739,7 @@ Recommendation Alignment:
                     setShowCreateModal(false);
                   }} 
                   className={`p-1 rounded-lg transition-colors cursor-pointer ${
-                    isLight ? 'hover:bg-black/5 text-camry-graphite/50 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                    isLight ? 'hover:bg-black/5 text-kamry-graphite/50 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
                   }`}
                 >
                   <X size={18} />
@@ -1175,7 +756,7 @@ Recommendation Alignment:
                       <span className="text-[10px] font-martian font-bold tracking-wider text-blue-500 uppercase block mb-1">
                         STEP 1: AGENT IDENTITY
                       </span>
-                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                         Agent Name
                       </label>
                       <input 
@@ -1184,15 +765,15 @@ Recommendation Alignment:
                         placeholder="e.g. Risk Auditor Pro"
                         value={newAgentName}
                         onChange={(e) => setNewAgentName(e.target.value)}
-                        className={`w-full border rounded-lg px-3 py-2 text-sm font-familjen focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
-                          isLight ? 'border-black/10 bg-camry-graphite/5 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                        className={`w-full border rounded-lg px-3 py-2 text-sm font-familjen focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
+                          isLight ? 'border-black/10 bg-kamry-graphite/5 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                           Industry Category
                         </label>
                         <CustomSelect
@@ -1207,12 +788,12 @@ Recommendation Alignment:
                             { value: 'Finance', label: 'Finance' },
                             { value: 'Other', label: 'Other' },
                           ]}
-                          buttonClassName={isLight ? 'bg-camry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
+                          buttonClassName={isLight ? 'bg-kamry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
                         />
                       </div>
 
                       <div>
-                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                           Short Purpose
                         </label>
                         <input 
@@ -1220,8 +801,8 @@ Recommendation Alignment:
                           placeholder="e.g. Scans and reviews files"
                           value={newAgentDesc}
                           onChange={(e) => setNewAgentDesc(e.target.value)}
-                          className={`w-full border rounded-lg px-3 py-2 text-xs font-familjen focus:outline-none focus:ring-2 focus:ring-[#0066FF] ${
-                            isLight ? 'border-black/10 bg-camry-graphite/5 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                          className={`w-full border rounded-lg px-3 py-2 text-xs font-familjen focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
+                            isLight ? 'border-black/10 bg-kamry-graphite/5 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
                           }`}
                         />
                       </div>
@@ -1232,7 +813,7 @@ Recommendation Alignment:
                         STEP 2: SYSTEM INSTRUCTIONS
                       </span>
                       <div className="flex items-center justify-between mb-1">
-                        <label className={`block text-xs font-semibold ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                           Instruction Persona Prompt
                         </label>
                         <span className="text-[10px] text-zinc-400 font-mono">Max token budget: 4,096</span>
@@ -1243,8 +824,8 @@ Recommendation Alignment:
                         placeholder="e.g. You are an expert risk analyst. Audit the inputted financial ledgers and flag discrepancies, showing your compliance confidence rating..."
                         value={newAgentPrompt}
                         onChange={(e) => setNewAgentPrompt(e.target.value)}
-                        className={`w-full border rounded-lg px-3 py-2 text-xs font-familjen focus:outline-none focus:ring-2 focus:ring-[#0066FF] resize-none leading-relaxed ${
-                          isLight ? 'border-black/10 bg-camry-graphite/5 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                        className={`w-full border rounded-lg px-3 py-2 text-xs font-familjen focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] resize-none leading-relaxed ${
+                          isLight ? 'border-black/10 bg-kamry-graphite/5 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
@@ -1267,7 +848,7 @@ Recommendation Alignment:
                               <Sparkles size={18} className="text-emerald-500 shrink-0 mt-0.5 animate-pulse" />
                               <div className="space-y-1">
                                 <h4 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-martian uppercase tracking-wider">
-                                  <span>Camry NPU Recommends</span>
+                                  <span>Kamry NPU Recommends</span>
                                   <span className="px-1.5 py-0.5 bg-emerald-600 text-white font-mono text-[9px] rounded font-bold">
                                     {modelDetails.params} Local
                                   </span>
@@ -1284,7 +865,7 @@ Recommendation Alignment:
                             {/* Dropdown Selector Override */}
                             <div>
                               <div className="flex items-center justify-between mb-1.5">
-                                <label className={`block text-xs font-semibold ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                                <label className={`block text-xs font-semibold ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                                   Target On-Device LLM (Override)
                                 </label>
                                 {customSelectedModelId && (
@@ -1308,7 +889,7 @@ Recommendation Alignment:
                                     label: `${m.name} (${m.params}) ${isRec ? '★ RECOMMENDED' : ''}`
                                   };
                                 })}
-                                buttonClassName={isLight ? 'bg-camry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
+                                buttonClassName={isLight ? 'bg-kamry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
                               />
                             </div>
                           </div>
@@ -1321,7 +902,7 @@ Recommendation Alignment:
                   <div className="md:col-span-6 flex flex-col h-full min-h-[350px] overflow-hidden">
                     <div className="flex items-center justify-between pb-2 mb-2 border-b border-black/5 dark:border-white/10 flex-shrink-0">
                       <div>
-                        <span className="text-[10px] font-martian font-bold tracking-wider text-[#0066FF] uppercase block">
+                        <span className="text-[10px] font-martian font-bold tracking-wider text-[#0EA5E9] uppercase block">
                           VALIDATION PLAYGROUND
                         </span>
                         <span className="text-xs font-bold block mt-0.5">
@@ -1364,7 +945,7 @@ Recommendation Alignment:
                               >
                                 <div className={`px-3 py-2 rounded-2xl text-xs leading-relaxed ${
                                   msg.role === 'user'
-                                    ? 'bg-[#0066FF] text-white rounded-br-none'
+                                    ? 'bg-[#0EA5E9] text-white rounded-br-none'
                                     : isLight
                                     ? 'bg-zinc-100 text-zinc-800 border border-black/5 rounded-bl-none'
                                     : 'bg-zinc-800 text-zinc-200 border border-white/5 rounded-bl-none'
@@ -1430,14 +1011,14 @@ Recommendation Alignment:
                               }
                             }}
                             className={`flex-1 border rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                              isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/10 bg-[#121216] text-white'
+                              isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/10 bg-[#121216] text-white'
                             }`}
                           />
                           <button 
                             type="button"
                             disabled={!testInput.trim() || isTestThinking}
                             onClick={() => handleSendTest()}
-                            className="px-3.5 py-2 bg-[#0066FF] hover:bg-[#0052CC] text-white rounded-lg flex items-center justify-center transition-colors disabled:opacity-50 cursor-pointer"
+                            className="px-3.5 py-2 bg-[#0EA5E9] hover:bg-[#0EA5E9] text-white rounded-lg flex items-center justify-center transition-colors disabled:opacity-50 cursor-pointer"
                           >
                             <Send size={12} />
                           </button>
@@ -1465,7 +1046,7 @@ Recommendation Alignment:
                         setShowCreateModal(false);
                       }}
                       className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                        isLight ? 'text-camry-graphite hover:bg-black/5' : 'text-zinc-300 hover:bg-white/10'
+                        isLight ? 'text-kamry-graphite hover:bg-black/5' : 'text-zinc-300 hover:bg-white/10'
                       }`}
                     >
                       Cancel
@@ -1473,7 +1054,7 @@ Recommendation Alignment:
                     <button 
                       type="submit"
                       disabled={!newAgentName.trim()}
-                      className="px-5 py-2 rounded-lg text-xs font-semibold bg-[#0066FF] hover:bg-[#0052CC] text-white shadow-md disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+                      className="px-5 py-2 rounded-lg text-xs font-semibold bg-[#0EA5E9] hover:bg-[#0EA5E9] text-white shadow-md disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
                     >
                       <Play size={11} className="fill-white" /> Compile & Install Agent
                     </button>
@@ -1494,7 +1075,7 @@ Recommendation Alignment:
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`rounded-2xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl border relative font-familjen ${
-                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               {/* Modal Header */}
@@ -1506,10 +1087,10 @@ Recommendation Alignment:
                     <Sliders size={20} />
                   </div>
                   <div>
-                    <h3 className={`text-lg font-bold font-bricolage leading-none ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
+                    <h3 className={`text-lg font-bold font-bricolage leading-none ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
                       Modify Custom Agent Blueprint
                     </h3>
-                    <p className={`text-xs mt-1 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
+                    <p className={`text-xs mt-1 ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
                       Update instructions, categories, or system prompts. Saves will generate a new auto-incremented version.
                     </p>
                   </div>
@@ -1520,7 +1101,7 @@ Recommendation Alignment:
                     setShowEditModal(false);
                   }} 
                   className={`p-1 rounded-lg transition-colors cursor-pointer ${
-                    isLight ? 'hover:bg-black/5 text-camry-graphite/50 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                    isLight ? 'hover:bg-black/5 text-kamry-graphite/50 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
                   }`}
                 >
                   <X size={18} />
@@ -1537,7 +1118,7 @@ Recommendation Alignment:
                       <span className="text-[10px] font-martian font-bold tracking-wider text-amber-500 uppercase block mb-1">
                         IDENTITY & DOMAIN
                       </span>
-                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                         Agent Name
                       </label>
                       <input 
@@ -1547,14 +1128,14 @@ Recommendation Alignment:
                         onChange={(e) => setEditAgentName(e.target.value)}
                         placeholder="e.g. Legal Drafter"
                         className={`w-full px-3 py-2 text-xs border rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-500 ${
-                          isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                          isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                           Taxonomy Category
                         </label>
                         <CustomSelect
@@ -1569,12 +1150,12 @@ Recommendation Alignment:
                             { value: 'Finance', label: 'Finance' },
                             { value: 'Other', label: 'Other' }
                           ]}
-                          buttonClassName={isLight ? 'bg-camry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
+                          buttonClassName={isLight ? 'bg-kamry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
                         />
                       </div>
                       
                       <div>
-                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                           Agent Status
                         </label>
                         <div className={`p-2 rounded-lg text-xs font-semibold border flex items-center gap-1.5 ${
@@ -1587,7 +1168,7 @@ Recommendation Alignment:
                     </div>
 
                     <div>
-                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                         Blueprint Purpose / Description
                       </label>
                       <input 
@@ -1596,14 +1177,14 @@ Recommendation Alignment:
                         onChange={(e) => setEditAgentDesc(e.target.value)}
                         placeholder="Provide a brief summary of what this agent does..."
                         className={`w-full px-3 py-2 text-xs border rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-500 ${
-                          isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                          isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
 
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <label className={`block text-xs font-semibold ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                           System Instructions (Prompt Rules)
                         </label>
                         <span className="text-[10px] font-martian opacity-50 font-bold uppercase">Sovereign Compiler System</span>
@@ -1615,7 +1196,7 @@ Recommendation Alignment:
                         onChange={(e) => setEditAgentPrompt(e.target.value)}
                         placeholder="Explain step-by-step how the custom agent should think, react, and structure responses..."
                         className={`w-full px-3 py-2 text-xs border rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-500 font-mono ${
-                          isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                          isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
@@ -1637,7 +1218,7 @@ Recommendation Alignment:
                               </div>
                               <div className="space-y-0.5">
                                 <h4 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-martian uppercase tracking-wider">
-                                  <span>Camry NPU Recommends</span>
+                                  <span>Kamry NPU Recommends</span>
                                   <span className="px-1.5 py-0.5 bg-emerald-600 text-white font-mono text-[9px] rounded font-bold">
                                     {modelDetails.params} Local
                                   </span>
@@ -1654,7 +1235,7 @@ Recommendation Alignment:
                             {/* Dropdown Selector Override */}
                             <div>
                               <div className="flex items-center justify-between mb-1.5">
-                                <label className={`block text-xs font-semibold ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
+                                <label className={`block text-xs font-semibold ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
                                   Target On-Device LLM (Override)
                                 </label>
                                 {editSelectedModelId && (
@@ -1678,7 +1259,7 @@ Recommendation Alignment:
                                     label: `${m.name} (${m.params}) ${isRec ? '★ RECOMMENDED' : ''}`
                                   };
                                 })}
-                                buttonClassName={isLight ? 'bg-camry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
+                                buttonClassName={isLight ? 'bg-kamry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
                               />
                             </div>
                           </div>
@@ -1800,7 +1381,7 @@ Recommendation Alignment:
                               }
                             }}
                             className={`flex-1 border rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 ${
-                              isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/10 bg-[#121216] text-white'
+                              isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/10 bg-[#121216] text-white'
                             }`}
                           />
                           <button 
@@ -1835,7 +1416,7 @@ Recommendation Alignment:
                         setShowEditModal(false);
                       }}
                       className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                        isLight ? 'text-camry-graphite hover:bg-black/5' : 'text-zinc-300 hover:bg-white/10'
+                        isLight ? 'text-kamry-graphite hover:bg-black/5' : 'text-zinc-300 hover:bg-white/10'
                       }`}
                     >
                       Cancel
@@ -1864,19 +1445,19 @@ Recommendation Alignment:
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`rounded-2xl max-w-xl w-full p-6 shadow-2xl border relative max-h-[85vh] flex flex-col font-familjen ${
-                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               <div className={`flex items-center justify-between pb-4 mb-4 border-b ${
                 isLight ? 'border-black/10' : 'border-white/10'
               }`}>
                 <div className="flex items-center gap-3">
-                  <div className={`p-2.5 rounded-xl ${isLight ? 'bg-camry-blackout text-white' : 'bg-[#0066FF] text-white'}`}>
+                  <div className={`p-2.5 rounded-xl ${isLight ? 'bg-kamry-blackout text-white' : 'bg-[#0EA5E9] text-white'}`}>
                     <History size={18} />
                   </div>
                   <div>
-                    <h3 className={`text-lg font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{selectedAgentForHistory.name} — Version History</h3>
-                    <p className={`font-familjen text-xs ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
+                    <h3 className={`text-lg font-bricolage ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{selectedAgentForHistory.name} — Version History</h3>
+                    <p className={`font-familjen text-xs ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
                       View prompt iterations and restore previous agent configurations on-device
                     </p>
                   </div>
@@ -1884,7 +1465,7 @@ Recommendation Alignment:
                 <button 
                   onClick={() => setShowHistoryModal(false)} 
                   className={`p-1 rounded-lg transition-colors cursor-pointer ${
-                    isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                    isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
                   }`}
                 >
                   <X size={18} />
@@ -1894,7 +1475,7 @@ Recommendation Alignment:
               {/* Version Timeline */}
               <div className="flex-1 overflow-y-auto space-y-4 pr-1">
                 {(selectedAgentForHistory.versionHistory || [
-                  { version: selectedAgentForHistory.currentVersion || 'v1.0.0', updatedAt: '2026-07-20', prompt: selectedAgentForHistory.systemPrompt || 'Default agent system prompt.', changes: 'Initial release on Camry ONE NPU.', author: 'Camry System' }
+                  { version: selectedAgentForHistory.currentVersion || 'v1.0.0', updatedAt: '2026-07-20', prompt: selectedAgentForHistory.systemPrompt || 'Default agent system prompt.', changes: 'Initial release on Kamry ONE NPU.', author: 'Kamry System' }
                 ]).map((ver) => {
                   const isCurrent = (selectedAgentForHistory.currentVersion || 'v1.0.0') === ver.version;
 
@@ -1904,13 +1485,13 @@ Recommendation Alignment:
                       className={`p-4 rounded-xl border transition-all ${
                         isCurrent 
                           ? (isLight ? 'bg-emerald-50/60 border-emerald-200 shadow-xs' : 'bg-emerald-950/40 border-emerald-800/40 shadow-xs')
-                          : (isLight ? 'bg-camry-graphite/5 border-black/5 hover:border-black/15' : 'bg-[#141418] border-white/10 hover:border-white/20')
+                          : (isLight ? 'bg-kamry-graphite/5 border-black/5 hover:border-black/15' : 'bg-[#141418] border-white/10 hover:border-white/20')
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <span className={`px-2.5 py-0.5 rounded font-martian text-xs font-bold ${
-                            isCurrent ? 'bg-emerald-600 text-white' : (isLight ? 'bg-camry-blackout text-white' : 'bg-[#0066FF] text-white')
+                            isCurrent ? 'bg-emerald-600 text-white' : (isLight ? 'bg-kamry-blackout text-white' : 'bg-[#0EA5E9] text-white')
                           }`}>
                             {ver.version}
                           </span>
@@ -1919,7 +1500,7 @@ Recommendation Alignment:
                               ACTIVE VERSION
                             </span>
                           )}
-                          <span className={`font-familjen text-xs ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
+                          <span className={`font-familjen text-xs ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
                             • Released {ver.updatedAt} by {ver.author}
                           </span>
                         </div>
@@ -1930,7 +1511,7 @@ Recommendation Alignment:
                               rollbackAgentVersion(selectedAgentForHistory.id, ver.version);
                               setShowHistoryModal(false);
                             }}
-                            className="px-3 py-1 rounded bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-martian transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
+                            className="px-3 py-1 rounded bg-[#0EA5E9] hover:bg-[#0EA5E9] text-white text-xs font-martian transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
                           >
                             <RotateCcw size={12} />
                             <span>Rollback</span>
@@ -1938,16 +1519,9 @@ Recommendation Alignment:
                         )}
                       </div>
 
-                      <div className={`text-xs font-familjen font-medium mb-2 ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
-                        <span className={`font-martian text-[10px] uppercase tracking-wider block ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>Changelog:</span>
+                      <div className={`text-xs font-familjen font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                        <span className={`font-martian text-[10px] uppercase tracking-wider block ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>Changelog:</span>
                         {ver.changes}
-                      </div>
-
-                      <div className={`p-3 rounded-lg border font-mono text-[11px] leading-relaxed ${
-                        isLight ? 'bg-white/80 border-black/5 text-camry-graphite' : 'bg-[#141418] border-white/10 text-emerald-400'
-                      }`}>
-                        <span className={`font-martian text-[10px] uppercase tracking-wider block mb-1 ${isLight ? 'text-camry-graphite/50' : 'text-zinc-500'}`}>System Prompt:</span>
-                        "{ver.prompt}"
                       </div>
                     </div>
                   );
@@ -1958,7 +1532,7 @@ Recommendation Alignment:
                 <button
                   onClick={() => setShowHistoryModal(false)}
                   className={`px-4 py-2 rounded-lg text-xs font-medium cursor-pointer ${
-                    isLight ? 'bg-camry-blackout text-white hover:bg-black' : 'bg-white/10 text-white hover:bg-white/20'
+                    isLight ? 'bg-kamry-blackout text-white hover:bg-black' : 'bg-white/10 text-white hover:bg-white/20'
                   }`}
                 >
                   Close History

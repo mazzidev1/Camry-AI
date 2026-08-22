@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppContext } from '../store/AppContext';
 import { AnimatedIcon } from './AnimatedIcon';
-import { CamryMascot } from './CamryMascot';
+import { KamryOrb } from './KamryOrb';
 import { 
   X, 
   ChevronRight, 
@@ -65,7 +65,7 @@ export const GuidedTourOverlay: React.FC = () => {
       title: '100% Air-Gapped NPU AI Workstation',
       subtitle: 'Your private, on-premises AI intelligence appliance',
       icon: <Cpu size={24} className={isLight ? "text-sky-600" : "text-sky-400"} />,
-      description: 'Camry OS runs entirely inside your local network hardware. All document indexing, vector searches, and LLM inferences occur on your local NPU with zero internet dependencies or external data leakage.',
+      description: 'Kamry OS runs entirely inside your local network hardware. All document indexing, vector searches, and LLM inferences occur on your local NPU with zero internet dependencies or external data leakage.',
       highlights: [
         'Local NPU Acceleration with ~1,480 tokens/sec throughput',
         'Strict Air-Gapped Security & Zero Cloud Telemetry',
@@ -91,18 +91,18 @@ export const GuidedTourOverlay: React.FC = () => {
     },
     {
       step: 3,
-      badge: 'FEATURE 2 OF 3 — LIBRARY',
-      title: 'Library & Artifact Repository',
-      subtitle: 'Central store for all generated outputs & documents',
-      icon: <FileText size={24} className={isLight ? "text-sky-600" : "text-sky-400"} />,
-      description: 'Access all AI-generated contract risk reports, executive meeting summaries, draft emails, and translation transcripts. Easily copy or download markdown files.',
+      badge: 'FEATURE 2 OF 3 — COMPANY AGENTS',
+      title: 'Company AI Agents Hub',
+      subtitle: 'Deploy and manage on-premise AI agents',
+      icon: <Bot size={24} className={isLight ? "text-sky-600" : "text-sky-400"} />,
+      description: 'Deploy, customize, and ground on-premise AI agents with enterprise knowledge base files and local NPU RAG capabilities.',
       highlights: [
-        'Organized by document types (Summaries, Analyses, Drafts)',
-        'One-click Markdown export and content copying',
-        'Role-filtered views to protect confidential executive reports'
+        'Organized by department scope (Legal, Medical, Finance, Custom)',
+        'Direct document grounding via local upload & Knowledge Base',
+        'System prompt version audit logs and instant chat launching'
       ],
-      actionLabel: 'Open Library',
-      targetScreen: 'library' as const
+      actionLabel: 'Open Company Agents Hub',
+      targetScreen: 'companyAgents' as const
     },
     {
       step: 4,
@@ -144,7 +144,7 @@ export const GuidedTourOverlay: React.FC = () => {
       setTourStep(tourStep + 1);
     } else {
       closeTour();
-      showToast('Tour completed! Welcome to Camry OS.', 'success');
+      showToast('Tour completed! Welcome to Kamry OS.', 'success');
     }
   };
 
@@ -223,13 +223,9 @@ export const GuidedTourOverlay: React.FC = () => {
             {/* Title & Icon Header */}
             <div className="flex items-start gap-3.5">
               {tourStep === 1 ? (
-                <CamryMascot size={48} variant="full" animated={true} className="shrink-0 shadow-md" />
+                <KamryOrb size="md" interactive={true} className="shrink-0" />
               ) : (
-                <div className={`w-12 h-12 rounded-xl border flex items-center justify-center shrink-0 shadow-sm ${
-                  isLight 
-                    ? 'bg-[#0066FF]/10 border-[#0066FF]/20 text-[#0066FF]' 
-                    : 'bg-[#0066FF]/20 border-[#0066FF]/40 text-blue-300'
-                }`}>
+                <div className="w-12 h-12 rounded-xl border flex items-center justify-center shrink-0 shadow-sm bg-sky-500/10 border-sky-500/20 text-sky-500">
                   <AnimatedIcon type="scale">
                     {currentStepData.icon}
                   </AnimatedIcon>

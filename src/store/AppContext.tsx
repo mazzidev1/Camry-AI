@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type Screen = 'onboarding' | 'chat' | 'knowledgeBase' | 'library' | 'team' | 'modelStore' | 'agentStore' | 'dashboard' | 'settings';
+export type Screen = 'onboarding' | 'chat' | 'knowledgeBase' | 'library' | 'companyAgents' | 'team' | 'modelStore' | 'agentStore' | 'dashboard' | 'settings';
 
 export type UserRole = 'Admin' | 'Manager' | 'Member' | 'Guest';
+
+export type PowerStage = 'turbo' | 'performance' | 'balanced' | 'eco';
 
 export interface Category {
   id: string;
@@ -28,10 +30,12 @@ export interface KBDocument {
   pages?: number;
 }
 
+export type FileFormatType = 'PDF' | 'Doc' | 'Sheet' | 'MD' | 'Image' | 'Video';
+
 export interface LibraryItem {
   id: string;
   title: string;
-  type: 'Drafts' | 'Summaries' | 'Analyses' | 'Transcripts' | 'Images';
+  type: 'PDF' | 'Doc' | 'Sheet' | 'MD' | 'Image' | 'Video' | string;
   category: string;
   snippet: string;
   content: string;
@@ -41,6 +45,7 @@ export interface LibraryItem {
   date: string;
   restrictedRoles?: UserRole[];
   imageUrl?: string;
+  videoUrl?: string;
 }
 
 export interface TeamCapabilities {
@@ -71,6 +76,10 @@ export interface GeneratedDocument {
   content: string;
   createdAt: string;
   messageId?: string;
+  category?: string;
+  author?: string;
+  modelUsed?: string;
+  agentName?: string;
 }
 
 export interface Message {
@@ -99,6 +108,30 @@ export interface AgentVersion {
   author: string;
 }
 
+export interface AgentInteraction {
+  id: string;
+  agentId: string;
+  memberId: string;
+  memberName: string;
+  memberEmail: string;
+  memberRole: UserRole;
+  memberAvatar?: string;
+  lastActive: string;
+  summary: string;
+  messageCount: number;
+  chatHistory: Message[];
+}
+
+export interface AgentAttachedDoc {
+  id: string;
+  name: string;
+  type: string;
+  size: string;
+  source: 'upload' | 'knowledgeBase';
+  category?: string;
+  date?: string;
+}
+
 export interface Agent {
   id: string;
   name: string;
@@ -112,6 +145,7 @@ export interface Agent {
   statusReason?: string;
   versionHistory?: AgentVersion[];
   currentVersion?: string;
+  attachedDocuments?: AgentAttachedDoc[];
 }
 
 export const AVAILABLE_MODELS: Model[] = [
@@ -137,9 +171,9 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are an expert corporate legal assistant. Provide structured legal analysis, risk ratings, and contract clause advice.',
     currentVersion: 'v1.2.0',
     versionHistory: [
-      { version: 'v1.2.0', updatedAt: '2026-07-24', prompt: 'You are an expert corporate legal assistant. Provide structured legal analysis, risk ratings, and contract clause advice.', changes: 'Added risk rating guidelines and contract clause recommendations.', author: 'Camry System' },
-      { version: 'v1.1.0', updatedAt: '2026-07-10', prompt: 'You are an expert corporate legal assistant. Provide structured legal analysis and contract clause advice.', changes: 'Optimized for 30B parameter local model latency.', author: 'Camry System' },
-      { version: 'v1.0.0', updatedAt: '2026-06-01', prompt: 'You are a legal assistant. Help draft and review contracts.', changes: 'Initial release on Camry ONE NPU.', author: 'Camry System' }
+      { version: 'v1.2.0', updatedAt: '2026-07-24', prompt: 'You are an expert corporate legal assistant. Provide structured legal analysis, risk ratings, and contract clause advice.', changes: 'Added risk rating guidelines and contract clause recommendations.', author: 'Kamry System' },
+      { version: 'v1.1.0', updatedAt: '2026-07-10', prompt: 'You are an expert corporate legal assistant. Provide structured legal analysis and contract clause advice.', changes: 'Optimized for 30B parameter local model latency.', author: 'Kamry System' },
+      { version: 'v1.0.0', updatedAt: '2026-06-01', prompt: 'You are a legal assistant. Help draft and review contracts.', changes: 'Initial release on Kamry ONE NPU.', author: 'Kamry System' }
     ]
   },
   { 
@@ -153,8 +187,8 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are an agreement redline specialist. Identify liabilities and suggest replacement terms.',
     currentVersion: 'v1.1.0',
     versionHistory: [
-      { version: 'v1.1.0', updatedAt: '2026-07-18', prompt: 'You are an agreement redline specialist. Identify liabilities and suggest replacement terms.', changes: 'Added liability cap detection rule.', author: 'Camry System' },
-      { version: 'v1.0.0', updatedAt: '2026-06-15', prompt: 'You review contracts and highlight risky terms.', changes: 'Initial release.', author: 'Camry System' }
+      { version: 'v1.1.0', updatedAt: '2026-07-18', prompt: 'You are an agreement redline specialist. Identify liabilities and suggest replacement terms.', changes: 'Added liability cap detection rule.', author: 'Kamry System' },
+      { version: 'v1.0.0', updatedAt: '2026-06-15', prompt: 'You review contracts and highlight risky terms.', changes: 'Initial release.', author: 'Kamry System' }
     ]
   },
   { 
@@ -168,8 +202,8 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are a medical scribe. Convert clinical inputs into clear SOAP notes format.',
     currentVersion: 'v1.0.1',
     versionHistory: [
-      { version: 'v1.0.1', updatedAt: '2026-07-02', prompt: 'You are a medical scribe. Convert clinical inputs into clear SOAP notes format.', changes: 'Standardized SOAP note sections.', author: 'Camry System' },
-      { version: 'v1.0.0', updatedAt: '2026-05-20', prompt: 'You convert clinical consultations into notes.', changes: 'Initial release.', author: 'Camry System' }
+      { version: 'v1.0.1', updatedAt: '2026-07-02', prompt: 'You are a medical scribe. Convert clinical inputs into clear SOAP notes format.', changes: 'Standardized SOAP note sections.', author: 'Kamry System' },
+      { version: 'v1.0.0', updatedAt: '2026-05-20', prompt: 'You convert clinical consultations into notes.', changes: 'Initial release.', author: 'Kamry System' }
     ]
   },
   { 
@@ -183,7 +217,7 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are a government regulatory compliance officer. Structure official filings and verify standards.',
     currentVersion: 'v1.0.0',
     versionHistory: [
-      { version: 'v1.0.0', updatedAt: '2026-06-10', prompt: 'You are a government regulatory compliance officer. Structure official filings and verify standards.', changes: 'Initial release.', author: 'Camry System' }
+      { version: 'v1.0.0', updatedAt: '2026-06-10', prompt: 'You are a government regulatory compliance officer. Structure official filings and verify standards.', changes: 'Initial release.', author: 'Kamry System' }
     ]
   },
   { 
@@ -197,7 +231,7 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are an industrial field systems co-pilot. Help troubleshoot equipment, read schematics, and parse logs.',
     currentVersion: 'v1.0.0',
     versionHistory: [
-      { version: 'v1.0.0', updatedAt: '2026-06-12', prompt: 'You are an industrial field systems co-pilot. Help troubleshoot equipment, read schematics, and parse logs.', changes: 'Initial release.', author: 'Camry System' }
+      { version: 'v1.0.0', updatedAt: '2026-06-12', prompt: 'You are an industrial field systems co-pilot. Help troubleshoot equipment, read schematics, and parse logs.', changes: 'Initial release.', author: 'Kamry System' }
     ]
   },
   { 
@@ -211,7 +245,7 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are a financial controller. Provide ledger reconciliation, financial ratio calculations, and audit summaries.',
     currentVersion: 'v1.0.0',
     versionHistory: [
-      { version: 'v1.0.0', updatedAt: '2026-06-18', prompt: 'You are a financial controller. Provide ledger reconciliation, financial ratio calculations, and audit summaries.', changes: 'Initial release.', author: 'Camry System' }
+      { version: 'v1.0.0', updatedAt: '2026-06-18', prompt: 'You are a financial controller. Provide ledger reconciliation, financial ratio calculations, and audit summaries.', changes: 'Initial release.', author: 'Kamry System' }
     ]
   },
   { 
@@ -225,8 +259,8 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are an executive meeting recorder. Extract decisions, action items, and owners from transcriptions.',
     currentVersion: 'v1.2.0',
     versionHistory: [
-      { version: 'v1.2.0', updatedAt: '2026-07-22', prompt: 'You are an executive meeting recorder. Extract decisions, action items, and owners from transcriptions.', changes: 'Added owner assignment formatting.', author: 'Camry System' },
-      { version: 'v1.1.0', updatedAt: '2026-07-05', prompt: 'You transcribe meetings and summarize key decisions.', changes: 'Improved summary layout.', author: 'Camry System' }
+      { version: 'v1.2.0', updatedAt: '2026-07-22', prompt: 'You are an executive meeting recorder. Extract decisions, action items, and owners from transcriptions.', changes: 'Added owner assignment formatting.', author: 'Kamry System' },
+      { version: 'v1.1.0', updatedAt: '2026-07-05', prompt: 'You transcribe meetings and summarize key decisions.', changes: 'Improved summary layout.', author: 'Kamry System' }
     ]
   },
   { 
@@ -240,12 +274,97 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are a multilingual local translator specializing in West African and European languages.',
     currentVersion: 'v1.0.0',
     versionHistory: [
-      { version: 'v1.0.0', updatedAt: '2026-06-25', prompt: 'You are a multilingual local translator specializing in West African and European languages.', changes: 'Initial release.', author: 'Camry System' }
+      { version: 'v1.0.0', updatedAt: '2026-06-25', prompt: 'You are a multilingual local translator specializing in West African and European languages.', changes: 'Initial release.', author: 'Kamry System' }
     ]
   },
 ];
 
 export let AVAILABLE_AGENTS: Agent[] = [...INITIAL_AGENTS];
+
+export const INITIAL_AGENT_INTERACTIONS: AgentInteraction[] = [
+  {
+    id: 'int-1',
+    agentId: 'legal',
+    memberId: 'm-1',
+    memberName: 'Tunde Bakare',
+    memberEmail: 'tunde@nuvious.com',
+    memberRole: 'Manager',
+    memberAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120',
+    lastActive: '10 mins ago',
+    summary: 'Reviewed Master Services Agreement clause 4.2 for Client Acme Corp',
+    messageCount: 8,
+    chatHistory: [
+      { id: 'm1-1', role: 'user', content: 'Can you review clause 4.2 in Acme MSA regarding indemnification liability limits?', model: 'gpt-oss-120b' },
+      { id: 'm1-2', role: 'assistant', content: 'Clause 4.2 limits liability to 12 months of paid fees. I recommend requesting a mutual 2x fee cap for IP infringement claims.', model: 'gpt-oss-120b' },
+      { id: 'm1-3', role: 'user', content: 'Draft a revised counter-clause for indemnification.', model: 'gpt-oss-120b' },
+      { id: 'm1-4', role: 'assistant', content: 'Drafted Counter-Clause 4.2:\n"Neither party\'s aggregate liability shall exceed two times (2x) the total fees paid under this Agreement in the preceding 12 months."', model: 'gpt-oss-120b' }
+    ]
+  },
+  {
+    id: 'int-2',
+    agentId: 'legal',
+    memberId: 'm-2',
+    memberName: 'Amina Bello',
+    memberEmail: 'amina@nuvious.com',
+    memberRole: 'Member',
+    memberAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=120',
+    lastActive: '2 hours ago',
+    summary: 'Precedent lookup on employment non-compete clauses in Lagos jurisdiction',
+    messageCount: 5,
+    chatHistory: [
+      { id: 'm2-1', role: 'user', content: 'Search legal precedents for non-compete enforceability under Nigerian labor law.', model: 'gpt-oss-120b' },
+      { id: 'm2-2', role: 'assistant', content: 'Under Nigerian law, non-competes are enforceable if reasonable in scope, geographic area (max 10km), and duration (max 12 months).', model: 'gpt-oss-120b' }
+    ]
+  },
+  {
+    id: 'int-3',
+    agentId: 'contract',
+    memberId: 'm-3',
+    memberName: 'Chidi Okonkwo',
+    memberEmail: 'chidi@nuvious.com',
+    memberRole: 'Member',
+    memberAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120',
+    lastActive: '30 mins ago',
+    summary: 'Redlined NDA agreement for Vendor Logistics Ltd',
+    messageCount: 12,
+    chatHistory: [
+      { id: 'm3-1', role: 'user', content: 'Flag risky unilateral disclosure terms in Vendor NDA.', model: 'Qwen3-30B-Instruct-2507' },
+      { id: 'm3-2', role: 'assistant', content: 'Flagged Section 2: Disclosures are currently one-way. Suggest converting to mutual NDA terms with 3-year survival.', model: 'Qwen3-30B-Instruct-2507' }
+    ]
+  },
+  {
+    id: 'int-4',
+    agentId: 'meeting',
+    memberId: 'm-1',
+    memberName: 'Tunde Bakare',
+    memberEmail: 'tunde@nuvious.com',
+    memberRole: 'Manager',
+    memberAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120',
+    lastActive: '1 day ago',
+    summary: 'Extracted key action items from Q3 Strategic Planning transcript',
+    messageCount: 6,
+    chatHistory: [
+      { id: 'm4-1', role: 'user', content: 'Extract action items and assignees from Q3 strategy meeting audio.', model: 'Qwen3-30B-Instruct-2507' },
+      { id: 'm4-2', role: 'assistant', content: 'Action Items:\n1. Tunde - Finalize Kamry NPU cluster expansion by Friday\n2. Amina - Audit knowledge base vector indexing categories', model: 'Qwen3-30B-Instruct-2507' }
+    ]
+  },
+  {
+    id: 'int-5',
+    agentId: 'medical',
+    memberId: 'm-4',
+    memberName: 'Sarah Jenkins',
+    memberEmail: 'sarah@nuvious.com',
+    memberRole: 'Manager',
+    memberAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120',
+    lastActive: '3 hours ago',
+    summary: 'Converted clinical audio logs to structured SOAP notes format',
+    messageCount: 4,
+    chatHistory: [
+      { id: 'm5-1', role: 'user', content: 'Format consultation audio notes into SOAP format for Patient #8821.', model: 'Qwen3-30B-Thinking-2507' },
+      { id: 'm5-2', role: 'assistant', content: 'SOAP Note:\nS: Patient reports mild fever and fatigue.\nO: Temp 38.1C, BP 120/80.\nA: Acute viral syndrome.\nP: Hydration, rest, review in 48 hours.', model: 'Qwen3-30B-Thinking-2507' }
+    ]
+  }
+];
 
 export const INITIAL_CATEGORIES: Category[] = [
   { id: 'cat-1', name: 'Client Files', color: '#1D4ED8', icon: 'FolderGit2', description: 'Active and archived client matter files & correspondence' },
@@ -305,8 +424,8 @@ interface AppContextType {
   sessionDocuments: GeneratedDocument[];
   addDocument: (doc: GeneratedDocument) => void;
   
-  settingsView: 'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy' | 'team';
-  setSettingsView: (view: 'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy' | 'team') => void;
+  settingsView: 'main' | 'analytics' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy' | 'team';
+  setSettingsView: (view: 'main' | 'analytics' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy' | 'team') => void;
   
   // Dynamic Category / Collections Management
   categories: Category[];
@@ -334,6 +453,11 @@ interface AppContextType {
   updateTeamMember: (id: string, updates: Partial<TeamMember>) => void;
   deleteTeamMember: (id: string) => void;
 
+  // Agent Interaction Logs
+  agentInteractions: AgentInteraction[];
+  getAgentInteractions: (agentId: string) => AgentInteraction[];
+  addAgentInteraction: (interaction: Omit<AgentInteraction, 'id'>) => void;
+
   // Demo Role Simulation
   currentRole: UserRole;
   setCurrentRole: (role: UserRole) => void;
@@ -348,9 +472,15 @@ interface AppContextType {
   
   batteryLevel: number;
   isCharging: boolean;
+  powerStage: PowerStage;
+  setPowerStage: (stage: PowerStage) => void;
+  cyclePowerStage: () => void;
   
   isMobileMenuOpen: boolean;
   setIsMobileMenuOpen: (val: boolean) => void;
+  
+  isSidebarCollapsed: boolean;
+  setIsSidebarCollapsed: (val: boolean) => void;
   
   exportConfig: () => void;
   importConfig: (jsonData: string) => boolean;
@@ -371,7 +501,7 @@ interface AppContextType {
 
 const INITIAL_SAMPLE_DOC: GeneratedDocument = {
   id: 'doc-1',
-  title: 'Camry app design prompt',
+  title: 'Kamry app design prompt',
   type: 'MD',
   createdAt: 'Just now',
   messageId: 'msg-2',
@@ -382,7 +512,7 @@ const INITIAL_SAMPLE_DOC: GeneratedDocument = {
 ---
 
 ### 0. WHAT YOU ARE BUILDING
-Build a **clickable desktop-application prototype** for **Camry** — the desktop client (macOS/Windows) that a business installs on their computers to talk to the Camry AI appliance: a headless on-premise AI box sitting on the office network. The box has **no screen of its own**; this app is the entire interface to it.
+Build a **clickable desktop-application prototype** for **Kamry** — the desktop client (macOS/Windows) that a business installs on their computers to talk to the Kamry AI appliance: a headless on-premise AI box sitting on the office network. The box has **no screen of its own**; this app is the entire interface to it.
 
 The app is a **local client for a networked device**. It talks to the box over the local network via an OpenAI-compatible API at a local IP. Every "device" control in the app (Wi-Fi, storage, power, updates) is the app reaching into the box and controlling it remotely. Keep this mental model visible in the design: the user always feels they are operating *their own machine in the building*, not a cloud service.
 
@@ -399,7 +529,7 @@ Build **six primary screens** plus their sub-states:
 ---
 
 ### 1. BRAND SYSTEM (APPLY THROUGHOUT — THIS IS NON-NEGOTIABLE)
-Camry's identity is disciplined, engineering-serious, quiet. The opposite of playful. Think "precision instrument," not "consumer gadget."
+Kamry's identity is disciplined, engineering-serious, quiet. The opposite of playful. Think "precision instrument," not "consumer gadget."
 
 **Colors:**
 - Backgrounds: Warm Paper \`#EDEBE4\` and Dark Graphite \`#121418\`
@@ -417,7 +547,7 @@ const INITIAL_SAMPLE_CHAT: Message[] = [
   {
     id: 'msg-2',
     role: 'assistant',
-    content: "Here's a version that fits the 3-4 sentence limit while hitting all four asks (idea, problem, market, why you):\n\nCamry builds on-premise AI appliances for African businesses — a device you plug into your office network that gives your whole team private AI, paid for once, with no subscriptions and no data ever leaving the building. The problem is that African enterprises are being pushed to cloud AI that is expensive, laggy, and risky for sensitive client data.",
+    content: "Here's a version that fits the 3-4 sentence limit while hitting all four asks (idea, problem, market, why you):\n\nKamry builds on-premise AI appliances for African businesses — a device you plug into your office network that gives your whole team private AI, paid for once, with no subscriptions and no data ever leaving the building. The problem is that African enterprises are being pushed to cloud AI that is expensive, laggy, and risky for sensitive client data.",
     model: 'gpt-oss-120b',
     document: INITIAL_SAMPLE_DOC
   }
@@ -434,7 +564,7 @@ export const INITIAL_KB_DOCUMENTS: KBDocument[] = [
     date: '12 JUN 2026',
     status: 'INDEXED',
     pages: 42,
-    extractedSnippet: 'Camry Inc Employee Guide 2026: Working hours, remote conduct, hardware usage policies, and code of ethics.'
+    extractedSnippet: 'Kamry Inc Employee Guide 2026: Working hours, remote conduct, hardware usage policies, and code of ethics.'
   },
   {
     id: 'kb-2',
@@ -484,7 +614,7 @@ export const INITIAL_KB_DOCUMENTS: KBDocument[] = [
     date: '02 MAY 2026',
     status: 'INDEXED',
     pages: 1,
-    extractedSnippet: 'Server room physical security layout, badge access zones, and Camry hardware enclosure rack location.'
+    extractedSnippet: 'Server room physical security layout, badge access zones, and Kamry hardware enclosure rack location.'
   },
   {
     id: 'kb-6',
@@ -552,11 +682,11 @@ export const INITIAL_KB_DOCUMENTS: KBDocument[] = [
 export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   {
     id: 'lib-1',
-    title: 'Contract Risk Analysis — Acme MSA',
-    type: 'Analyses',
+    title: 'Acme MSA — Contract Risk Analysis.pdf',
+    type: 'PDF',
     category: 'Contracts',
     snippet: 'Key risks identified in Section 8 (Indemnity limits capped at $50k) and Section 14 (Governing law in foreign jurisdiction). Recommend standard redline terms.',
-    content: `# Contract Risk Analysis — Acme MSA\n\n### Summary\nThe Acme Master Services Agreement contains two high-priority risk clauses that require legal redlining before executive signature.\n\n### Key Risk Observations\n1. **Section 8 (Indemnification Cap)**: Liability is currently capped at $50,000, which does not adequately protect against potential hardware outage losses.\n2. **Section 14 (Jurisdiction)**: Governed by external arbitration rules. Recommend changing to local commercial court.\n3. **Data Security**: Compliant with on-premise execution rules. Zero external API calls detected.\n\n### Recommended Action\nReplace Clause 8.2 with Camry standard indemnification wording.`,
+    content: `# Contract Risk Analysis — Acme MSA\n\n### Summary\nThe Acme Master Services Agreement contains two high-priority risk clauses that require legal redlining before executive signature.\n\n### Key Risk Observations\n1. **Section 8 (Indemnification Cap)**: Liability is currently capped at $50,000, which does not adequately protect against potential hardware outage losses.\n2. **Section 14 (Jurisdiction)**: Governed by external arbitration rules. Recommend changing to local commercial court.\n3. **Data Security**: Compliant with on-premise execution rules. Zero external API calls detected.\n\n### Recommended Action\nReplace Clause 8.2 with Kamry standard indemnification wording.`,
     author: 'Amford',
     modelUsed: 'gpt-oss-120b',
     agentName: 'Legal Assistant',
@@ -564,11 +694,11 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   },
   {
     id: 'lib-2',
-    title: 'Client Pitch Email Draft',
-    type: 'Drafts',
+    title: 'Client Enterprise Pitch Proposal.doc',
+    type: 'Doc',
     category: 'Client Files',
-    snippet: 'Dear Client, Following our discussion on on-premise AI security, Camry ONE operates completely offline inside your firewall...',
-    content: `Subject: Private On-Premise AI for Your Enterprise — Camry ONE\n\nDear Client,\n\nFollowing our recent discussion on data privacy and AI adoption, I am sharing details on **Camry ONE**.\n\nUnlike cloud AI providers that process your corporate data on external servers, Camry ONE is a dedicated hardware appliance that sits directly inside your office server room.\n\nKey Highlights:\n- **100% On-Premise**: Your contracts, financial ledgers, and patient records never touch the public internet.\n- **Flat-Rate Hardware**: Pay once for the appliance with zero monthly token fees.\n- **Local NPU Acceleration**: Instant responses with sub-15ms local latency.\n\nLet us know when you would like a live hardware demonstration in your office.\n\nBest regards,\nSarah Jenkins`,
+    snippet: 'Dear Client, Following our discussion on on-premise AI security, Kamry ONE operates completely offline inside your firewall...',
+    content: `Subject: Private On-Premise AI for Your Enterprise — Kamry ONE\n\nDear Client,\n\nFollowing our recent discussion on data privacy and AI adoption, I am sharing details on **Kamry ONE**.\n\nUnlike cloud AI providers that process your corporate data on external servers, Kamry ONE is a dedicated hardware appliance that sits directly inside your office server room.\n\nKey Highlights:\n- **100% On-Premise**: Your contracts, financial ledgers, and patient records never touch the public internet.\n- **Flat-Rate Hardware**: Pay once for the appliance with zero monthly token fees.\n- **Local NPU Acceleration**: Instant responses with sub-15ms local latency.\n\nLet us know when you would like a live hardware demonstration in your office.\n\nBest regards,\nSarah Jenkins`,
     author: 'Sarah',
     modelUsed: 'Qwen3-30B-Instruct-2507',
     agentName: 'General Assistant',
@@ -576,11 +706,11 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   },
   {
     id: 'lib-3',
-    title: 'Q2 Executive Board Meeting Summary',
-    type: 'Summaries',
+    title: 'Q2 Executive Board Meeting Minutes.md',
+    type: 'MD',
     category: 'Finance',
     snippet: 'Decisions: 1. Approved $1.2M VRAM expansion. 2. Finalized Q3 hiring plan. 3. Approved local audit protocol.',
-    content: `# Q2 Executive Board Meeting Summary\n\n**Date:** July 22, 2026\n**Attendees:** Amford, Francis, Sarah, David\n\n### Key Decisions\n1. **Capital Allocation**: Approved $1.2M budget for additional Camry NPU cluster expansion.\n2. **Q3 Recruitment**: Approved hiring 4 senior hardware engineers and 2 compliance leads.\n3. **Data Governance**: Formally adopted zero-cloud policy across all regional offices.\n\n### Action Items\n- [ ] Amford: Finalize hardware supplier procurement.\n- [ ] Sarah: Publish updated Onboarding Guide in Knowledge Base.`,
+    content: `# Q2 Executive Board Meeting Summary\n\n**Date:** July 22, 2026\n**Attendees:** Amford, Francis, Sarah, David\n\n### Key Decisions\n1. **Capital Allocation**: Approved $1.2M budget for additional Kamry NPU cluster expansion.\n2. **Q3 Recruitment**: Approved hiring 4 senior hardware engineers and 2 compliance leads.\n3. **Data Governance**: Formally adopted zero-cloud policy across all regional offices.\n\n### Action Items\n- [ ] Amford: Finalize hardware supplier procurement.\n- [ ] Sarah: Publish updated Onboarding Guide in Knowledge Base.`,
     author: 'Amford',
     modelUsed: 'gpt-oss-120b',
     agentName: 'Meeting Notetaker',
@@ -589,20 +719,8 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   },
   {
     id: 'lib-4',
-    title: 'French Commercial Agreement Translation',
-    type: 'Transcripts',
-    category: 'Contracts',
-    snippet: 'Accord de Niveau de Service Commercial : Les parties conviennent par la présente de maintenir un temps de fonctionnement de 99.9%...',
-    content: `# Accord de Niveau de Service Commercial (SLA)\n\n**parties :** Camry Hardware Systems & Client Enterprise\n**Statut :** Traduction certifiée sur NPU local\n\n### Clause 1. Service et Disponibilité\nLes parties conviennent par la présente de maintenir un temps de fonctionnement minimal de 99,9% pour l'équipement d'intelligence artificielle sur site.\n\n### Clause 2. Confidentialité des Données\nToutes les opérations d'inférence doivent demeurer au sein du réseau local de l'entreprise sans transmission externe.`,
-    author: 'Francis',
-    modelUsed: 'Qwen3-Coder-30B',
-    agentName: 'Translator (Local)',
-    date: '04 JUN 2026'
-  },
-  {
-    id: 'lib-5',
-    title: 'Suspicious Transaction Fraud Pattern Report',
-    type: 'Analyses',
+    title: 'Suspicious Transaction Ledger Audit.sheet',
+    type: 'Sheet',
     category: 'Finance',
     snippet: 'Anomaly detected in ledgerbatch_409: 14 structured wires under $10,000 threshold within 48 hours. Recommend compliance review.',
     content: `# Suspicious Transaction Fraud Pattern Report\n\n**Batch:** ledgerbatch_409\n**Model:** gpt-oss-120b (Finance Agent)\n\n### Findings\nDuring automated local ledger audit, 14 structured wire transfers totaling $134,200 were identified within a 48-hour window. Each individual wire was set at $9,800 to avoid standard reporting triggers.\n\n### Compliance Recommendation\nFlag account ACCT-8839 for manual review by the Internal Audit Committee.`,
@@ -613,12 +731,12 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
     restrictedRoles: ['Member', 'Guest']
   },
   {
-    id: 'lib-6',
-    title: 'Hardware Architecture Diagram Render',
-    type: 'Images',
+    id: 'lib-5',
+    title: 'Kamry NPU Dual-Die Topology.png',
+    type: 'Image',
     category: 'Client Files',
-    snippet: 'Conceptual rendering of Camry NPU dual-die module layout with active cooling fins and local NVMe caching array.',
-    content: 'Conceptual high-performance rendering of Camry NPU hardware topology generated on local image model.',
+    snippet: 'Conceptual rendering of Kamry NPU dual-die module layout with active cooling fins and local NVMe caching array.',
+    content: 'Conceptual high-performance rendering of Kamry NPU hardware topology generated on local image model.',
     author: 'Francis',
     modelUsed: 'Z-Image-Turbo',
     agentName: 'Image Creator',
@@ -626,12 +744,25 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
     imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'
   },
   {
+    id: 'lib-6',
+    title: 'Hardware Setup & Installation Walkthrough.mp4',
+    type: 'Video',
+    category: 'Internal Policies',
+    snippet: 'Offline video walkthrough demonstrating physical rack installation, power redundancy, and dual 10GbE local network wiring.',
+    content: 'Step-by-step video instructions for unboxing, rack mounting, and network provisioning of the Kamry ONE appliance.',
+    author: 'Amford',
+    modelUsed: 'gpt-oss-120b',
+    agentName: 'Industrial Copilot',
+    date: '05 AUG 2026',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+  },
+  {
     id: 'lib-7',
-    title: 'New Employee Onboarding FAQ Guide',
-    type: 'Drafts',
+    title: 'New Employee Onboarding FAQ Guide.pdf',
+    type: 'PDF',
     category: 'HR',
-    snippet: 'Welcome to Camry! Your hardware box is pre-loaded with company policies. Here is how to query the Knowledge Base on Day 1...',
-    content: `# New Employee Onboarding FAQ\n\nWelcome to the team! All company policies, benefits, and handbooks are indexed locally on your Camry box.\n\n### FAQ\n**Q: How do I ask Camry about company policies?**\nA: Open the Chat interface and ask natural questions. Camry reads directly from the Knowledge Base.\n\n**Q: Is my chat private?**\nA: Yes. All inference runs locally on the Camry NPU in your building. No data ever leaves the hardware.`,
+    snippet: 'Welcome to Kamry! Your hardware box is pre-loaded with company policies. Here is how to query the Knowledge Base on Day 1...',
+    content: `# New Employee Onboarding FAQ\n\nWelcome to the team! All company policies, benefits, and handbooks are indexed locally on your Kamry box.\n\n### FAQ\n**Q: How do I ask Kamry about company policies?**\nA: Open the Chat interface and ask natural questions. Kamry reads directly from the Knowledge Base.\n\n**Q: Is my chat private?**\nA: Yes. All inference runs locally on the Kamry NPU in your building. No data ever leaves the hardware.`,
     author: 'Sarah',
     modelUsed: 'gpt-oss-120b',
     agentName: 'HR Copilot',
@@ -639,8 +770,8 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   },
   {
     id: 'lib-8',
-    title: 'Vendor SLA Redline & Indemnity Review',
-    type: 'Analyses',
+    title: 'Vendor SLA Redline & Indemnity Review.doc',
+    type: 'Doc',
     category: 'Contracts',
     snippet: 'Redline recommendation: Clause 4.2 mutual indemnification must require 30-day cure period for intellectual property disputes.',
     content: `# Vendor SLA Redline & Indemnity Review\n\n**Agreement:** TechServices Master Vendor Contract\n**Agent:** Contract Reviewer\n\n### Redline Clause 4.2\n*Original:* "Vendor shall indemnify Customer against all claims immediately upon notice."\n*Revised:* "Vendor shall indemnify Customer against third-party IP infringement claims, provided Vendor receives written notice within 30 days and sole control of defense."`,
@@ -651,15 +782,27 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   },
   {
     id: 'lib-9',
-    title: 'Product Technical Specs Summary',
-    type: 'Summaries',
+    title: 'Product Technical Specs Summary.md',
+    type: 'MD',
     category: 'Case Law',
-    snippet: 'Camry ONE Specs: Dual NPU array, 256GB unified RAM, 2TB PCIe 5.0 local storage, zero external telemetry ports.',
-    content: `# Camry ONE Appliance Specifications\n\n- **Compute:** Dual Custom NPU Accelerators (480 TOPS FP16)\n- **Memory:** 256 GB LPDDR5 Unified System RAM\n- **Storage:** 2 TB NVMe PCIe 5.0 Encrypted Local Flash\n- **Networking:** Dual 10GbE RJ45 Local LAN Ports (Air-gapped capable)\n- **Security:** Hardware TPM 2.0, AES-256 Flash Encryption`,
+    snippet: 'Kamry ONE Specs: Dual NPU array, 256GB unified RAM, 2TB PCIe 5.0 local storage, zero external telemetry ports.',
+    content: `# Kamry ONE Appliance Specifications\n\n- **Compute:** Dual Custom NPU Accelerators (480 TOPS FP16)\n- **Memory:** 256 GB LPDDR5 Unified System RAM\n- **Storage:** 2 TB NVMe PCIe 5.0 Encrypted Local Flash\n- **Networking:** Dual 10GbE RJ45 Local LAN Ports (Air-gapped capable)\n- **Security:** Hardware TPM 2.0, AES-256 Flash Encryption`,
     author: 'Francis',
     modelUsed: 'Qwen3-Coder-30B',
     agentName: 'Industrial Copilot',
     date: '28 JUN 2026'
+  },
+  {
+    id: 'lib-10',
+    title: 'French Commercial Agreement SLA.doc',
+    type: 'Doc',
+    category: 'Contracts',
+    snippet: 'Accord de Niveau de Service Commercial : Les parties conviennent par la présente de maintenir un temps de fonctionnement de 99.9%...',
+    content: `# Accord de Niveau de Service Commercial (SLA)\n\n**parties :** Kamry Hardware Systems & Client Enterprise\n**Statut :** Traduction certifiée sur NPU local\n\n### Clause 1. Service et Disponibilité\nLes parties conviennent par la présente de maintenir un temps de fonctionnement minimal de 99,9% pour l'équipement d'intelligence artificielle sur site.\n\n### Clause 2. Confidentialité des Données\nToutes les opérations d'inférence doivent demeurer au sein du réseau local de l'entreprise sans transmission externe.`,
+    author: 'Francis',
+    modelUsed: 'Qwen3-Coder-30B',
+    agentName: 'Translator (Local)',
+    date: '04 JUN 2026'
   }
 ];
 
@@ -940,6 +1083,20 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setTeamMembers(prev => prev.filter(m => m.id !== id));
   };
 
+  const [agentInteractions, setAgentInteractions] = useState<AgentInteraction[]>(INITIAL_AGENT_INTERACTIONS);
+
+  const getAgentInteractions = (agentId: string) => {
+    return agentInteractions.filter(i => i.agentId === agentId);
+  };
+
+  const addAgentInteraction = (interactionData: Omit<AgentInteraction, 'id'>) => {
+    const newInteraction: AgentInteraction = {
+      ...interactionData,
+      id: `int-${Date.now()}`
+    };
+    setAgentInteractions(prev => [newInteraction, ...prev]);
+  };
+
   const reorderAgents = (newAgents: Agent[]) => {
     setAgentsList(newAgents);
     showToast(`Agent priority order updated`);
@@ -952,12 +1109,30 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const addDocument = (doc: GeneratedDocument) => {
     setSessionDocuments(prev => [doc, ...prev.filter(d => d.id !== doc.id)]);
   };
-  const [settingsView, setSettingsView] = useState<'main' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy' | 'team'>('main');
+  const [settingsView, setSettingsView] = useState<'main' | 'analytics' | 'api_key' | 'console' | 'device_info' | 'storage' | 'wifi' | 'update' | 'privacy' | 'team'>('main');
   
   const [toastData, setToastData] = useState<ToastData | null>(null);
   const [batteryLevel, setBatteryLevel] = useState<number>(88);
   const [isCharging, setIsCharging] = useState<boolean>(true);
+  const [powerStage, setPowerStage] = useState<PowerStage>('performance');
+
+  const cyclePowerStage = () => {
+    setPowerStage(prev => {
+      const stages: PowerStage[] = ['turbo', 'performance', 'balanced', 'eco'];
+      const currentIndex = stages.indexOf(prev);
+      const nextStage = stages[(currentIndex + 1) % stages.length];
+      const stageLabels: Record<PowerStage, string> = {
+        turbo: 'Turbo Max Mode (185W)',
+        performance: 'High Performance Mode (110W)',
+        balanced: 'Balanced Mode (65W)',
+        eco: 'Eco Saver Mode (35W)'
+      };
+      showToast(`Power Stage: ${stageLabels[nextStage]}`);
+      return nextStage;
+    });
+  };
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   
   // Tour State
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
@@ -1101,11 +1276,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   // Export configuration and agent settings to JSON file
   const exportConfig = () => {
     const backupData = {
-      app: "Camry OS",
+      app: "Kamry OS",
       version: "1.0.4",
       exportedAt: new Date().toISOString(),
       device: {
-        model: "Camry Gen 1",
+        model: "Kamry Gen 1",
         serial: "C1-X992-0041",
         firmware: "v1.0.3"
       },
@@ -1125,7 +1300,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `camry-os-config-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = `kamry-os-config-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -1220,6 +1395,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       addTeamMember,
       updateTeamMember,
       deleteTeamMember,
+      agentInteractions,
+      getAgentInteractions,
+      addAgentInteraction,
       currentRole,
       setCurrentRole,
       pendingChatPrompt,
@@ -1229,8 +1407,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       showToast,
       batteryLevel,
       isCharging,
+      powerStage,
+      setPowerStage,
+      cyclePowerStage,
       isMobileMenuOpen,
       setIsMobileMenuOpen,
+      isSidebarCollapsed,
+      setIsSidebarCollapsed,
       exportConfig,
       importConfig,
       isTourOpen,

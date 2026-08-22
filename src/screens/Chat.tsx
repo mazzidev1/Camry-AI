@@ -6,19 +6,17 @@ import {
   Hand, Download, Eye, Files, Sparkles, ExternalLink, Plus
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CamryLoadingIcon } from '../components/CamryLoadingIcon';
+import { KamryLoadingIcon } from '../components/KamryLoadingIcon';
 import { DocumentViewer } from '../components/DocumentViewer';
-import { CamryOrb } from '../components/CamryOrb';
-import { CamryMascot } from '../components/CamryMascot';
+import { KamryOrb } from '../components/KamryOrb';
 import { AgentLogo } from '../components/AgentLogo';
-import { AxolotlStatusBadge } from '../components/AxolotlStatusBadge';
-import { AxolotlVariantCard } from '../components/AxolotlVariants';
+import { Icon } from '@iconify/react';
 
 const SUGGESTIONS = [
-  { icon: <Scale size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Summarize the key obligations in this contract.' },
-  { icon: <FileText size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Draft a formal prompt for Camry desktop app design.' },
-  { icon: <Search size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Extract every date and deadline from this document.' },
-  { icon: <Folder size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Turn these meeting notes into action items.' },
+  { icon: <Scale size={20} className="text-kamry-graphite/60 group-hover:text-kamry-blackout transition-colors" />, text: 'Summarize the key obligations in this contract.' },
+  { icon: <FileText size={20} className="text-kamry-graphite/60 group-hover:text-kamry-blackout transition-colors" />, text: 'Draft a formal prompt for Kamry desktop app design.' },
+  { icon: <Search size={20} className="text-kamry-graphite/60 group-hover:text-kamry-blackout transition-colors" />, text: 'Extract every date and deadline from this document.' },
+  { icon: <Folder size={20} className="text-kamry-graphite/60 group-hover:text-kamry-blackout transition-colors" />, text: 'Turn these meeting notes into action items.' },
 ];
 
 const VoiceWaveIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = "" }) => (
@@ -56,7 +54,7 @@ const ThinkingIndicator: React.FC = () => {
       }`}>
         <div className="flex items-center justify-between gap-3 mb-2">
           <div className="flex items-center gap-2">
-            <CamryMascot size={22} mood="thinking" animated={true} />
+            <Icon icon="line-md:loading-alt-loop" className="text-sky-500 shrink-0" width={18} height={18} />
             <span className={`font-mono text-[10px] font-bold tracking-wider uppercase ${
               isLight ? 'text-zinc-700' : 'text-zinc-300'
             }`}>
@@ -287,7 +285,15 @@ export const Chat: React.FC = () => {
       recognition.onerror = (event: any) => {
         console.error('Speech recognition error:', event.error);
         setIsListening(false);
-        showToast(`Dictation status: ${event.error}`);
+        if (event.error === 'not-allowed') {
+          showToast('Microphone access denied. Please grant microphone permission or open in a new tab.', 'error');
+        } else if (event.error === 'no-speech') {
+          showToast('No speech detected. Speak clearly into your microphone.', 'info');
+        } else if (event.error === 'audio-capture') {
+          showToast('No microphone detected.', 'error');
+        } else {
+          showToast(`Dictation paused: ${event.error}`, 'info');
+        }
       };
 
       recognition.onend = () => {
@@ -356,7 +362,7 @@ export const Chat: React.FC = () => {
       }
     } catch (fetchErr) {
       console.warn("Fetch failed, using local engine fallback:", fetchErr);
-      responseText = `Processed on Camry Local Engine.\n\nRegarding "${text}":\n\nQuery executed on-device.`;
+      responseText = `Processed on Kamry Local Engine.\n\nRegarding "${text}":\n\nQuery executed on-device.`;
     }
 
     setIsThinking(false);
@@ -452,7 +458,7 @@ export const Chat: React.FC = () => {
       }`}>
         
         {/* Top Header Bar for Chat Section (Includes Document Icon in Top Right) */}
-        <div className={`h-12 border-b border-t-0 border-l-0 border-r-0 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-10 transition-all duration-300 camry-glass rounded-none ${
+        <div className={`h-12 border-b border-t-0 border-l-0 border-r-0 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-10 transition-all duration-300 kamry-glass rounded-none ${
           isLight ? 'border-[#E2DDD5]' : 'border-white/5'
         }`}>
           <div className="flex items-center gap-2">
@@ -527,7 +533,7 @@ export const Chat: React.FC = () => {
                       <div className="text-center py-6 space-y-2">
                         <FileText size={28} className="mx-auto opacity-40 text-sky-500" />
                         <p className="font-sans text-xs font-medium">No documents generated in this session yet.</p>
-                        <p className="font-mono text-[10px] text-zinc-400">Ask Camry to draft a contract, design prompt, or spec!</p>
+                        <p className="font-mono text-[10px] text-zinc-400">Ask Kamry to draft a contract, design prompt, or spec!</p>
                       </div>
                     ) : (
                       <div className="max-h-72 overflow-y-auto space-y-2 pr-1">
@@ -598,11 +604,9 @@ export const Chat: React.FC = () => {
                 />
               ) : (
                 <div className="relative mb-6 flex flex-col items-center">
-                  <CamryMascot size={84} variant="full" animated={true} className="shadow-2xl hover:scale-105 transition-transform" />
-                  <div className={`mt-3.5 px-3 py-1 rounded-full text-xs font-mono font-semibold border shadow-sm ${
-                    isLight ? 'bg-[#0066FF]/10 text-[#0066FF] border-[#0066FF]/20' : 'bg-[#0066FF]/20 text-blue-300 border-[#0066FF]/40'
-                  }`}>
-                    Hi, I'm Camry! · Local NPU AI
+                  <KamryOrb size="lg" interactive={true} />
+                  <div className="mt-4 px-3 py-1 rounded-full text-xs font-mono font-semibold border shadow-sm bg-sky-500/10 text-sky-500 border-sky-500/20">
+                    Kamry OS · Local NPU AI
                   </div>
                 </div>
               )}
@@ -703,41 +707,6 @@ export const Chat: React.FC = () => {
                     Connect
                   </span>
                 </button>
-              </div>
-
-              {/* Live Axolotl Mascot NPU Activity Status & State Cards in Chat */}
-              <div className="w-full text-left space-y-4 pt-2 border-t border-black/5">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-bold tracking-wider uppercase text-zinc-400">
-                    AXOLOTL MASCOT SYSTEM STATES & NOTIFICATIONS
-                  </span>
-                </div>
-                
-                <AxolotlStatusBadge showSelector={true} className="w-full shadow-sm" />
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                  <AxolotlVariantCard 
-                    variant="idle" 
-                    title="Standby Mode" 
-                    description="Zero external telemetry. Local NPU standing by." 
-                    actionText="Check Hardware"
-                    onAction={() => showToast("Local NPU hardware status: 100% nominal", "success", "NPU READY")}
-                  />
-                  <AxolotlVariantCard 
-                    variant="success" 
-                    title="Task Completed" 
-                    description="Documents and query vector index successfully synced." 
-                    actionText="View Output"
-                    onAction={() => showToast("All chat & RAG indexes updated", "success", "SYNC OK")}
-                  />
-                  <AxolotlVariantCard 
-                    variant="empty" 
-                    title="No Documents" 
-                    description="Query returned zero matching local document files." 
-                    actionText="Upload File"
-                    onAction={() => setInput("Draft a new contract document for me")}
-                  />
-                </div>
               </div>
             </div>
           ) : (
@@ -918,7 +887,7 @@ export const Chat: React.FC = () => {
         } to-transparent ${isEmpty ? 'top-1/4' : ''}`}>
           <div className="max-w-2xl w-full relative">
             
-            <div className={`relative rounded-2xl shadow-sm border flex flex-col transition-all duration-300 focus-within:shadow-md p-2.5 sm:p-3.5 camry-glass ${
+            <div className={`relative rounded-2xl shadow-sm border flex flex-col transition-all duration-300 focus-within:shadow-md p-2.5 sm:p-3.5 kamry-glass ${
               isLight 
                 ? 'border-[#E2DDD5] focus-within:border-sky-500' 
                 : 'border-[#2E2E38] focus-within:border-sky-500'
@@ -1278,7 +1247,7 @@ export const Chat: React.FC = () => {
                     }}
                     className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all shadow-md shrink-0 active:scale-95 ${
                       input.trim()
-                        ? 'bg-[#0066FF] text-white hover:bg-[#0052CC] shadow-[#0066FF]/30'
+                        ? 'bg-[#0EA5E9] text-white hover:bg-[#0EA5E9] shadow-[#0EA5E9]/30'
                         : isLight 
                           ? 'bg-zinc-900 text-white hover:bg-black' 
                           : 'bg-white text-zinc-950 hover:bg-zinc-100'

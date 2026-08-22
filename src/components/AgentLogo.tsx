@@ -185,21 +185,21 @@ export const AgentLogo: React.FC<AgentLogoProps> = ({
       );
 
     case 'meeting':
-      // 7. Meeting Notetaker: Cosmic Violet + Soundwave Capsule & Ring Emblem
+      // 7. Meeting Notetaker: Deep Navy & Sky Soundwave
       return (
         <div 
           style={{ width, height }} 
-          className={`relative rounded-xl overflow-hidden shadow-md flex items-center justify-center select-none bg-gradient-to-br from-[#1E1B4B] via-[#2E1065] to-[#4C1D95] border border-purple-400/40 shrink-0 ${className}`}
+          className={`relative rounded-xl overflow-hidden shadow-md flex items-center justify-center select-none bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0284C7] border border-sky-400/40 shrink-0 ${className}`}
         >
           {/* Concentric Audio Wave Rings */}
           <svg className="absolute inset-0 w-full h-full opacity-45" viewBox="0 0 100 100" fill="none">
-            <circle cx="50" cy="50" r="40" stroke="#C084FC" strokeWidth="2" strokeDasharray="3 3" />
-            <circle cx="50" cy="50" r="28" stroke="#A855F7" strokeWidth="1.5" />
+            <circle cx="50" cy="50" r="40" stroke="#38BDF8" strokeWidth="2" strokeDasharray="3 3" />
+            <circle cx="50" cy="50" r="28" stroke="#0284C7" strokeWidth="1.5" />
           </svg>
 
           {/* Acoustic Microphone Sound Capsule Emblem */}
-          <svg className="relative z-10 w-3/5 h-3/5 drop-shadow" viewBox="0 0 24 24" fill="none" stroke="#F0ABFC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" fill="rgba(240, 171, 252, 0.25)" />
+          <svg className="relative z-10 w-3/5 h-3/5 drop-shadow" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" fill="rgba(125, 211, 252, 0.25)" />
             <path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8" />
           </svg>
         </div>
@@ -236,8 +236,8 @@ export const AgentLogo: React.FC<AgentLogoProps> = ({
       
       const styles = [
         { 
-          bg: 'bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700', 
-          border: 'border-purple-300/40',
+          bg: 'bg-gradient-to-br from-indigo-600 via-blue-600 to-sky-700', 
+          border: 'border-sky-300/40',
           svg: (
             <svg className="w-3/5 h-3/5 drop-shadow" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2">
               <rect x="3" y="3" width="8" height="8" rx="2" fill="rgba(255,255,255,0.2)" />

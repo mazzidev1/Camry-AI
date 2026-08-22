@@ -1,6 +1,6 @@
 {
-  "name": "Camry OS",
-  "description": "Camry OS local AI appliance and signal engine",
-  "requestFramePermissions": [],
+  "name": "Kamry OS",
+  "description": "Kamry OS local AI appliance and signal engine",
+  "requestFramePermissions": ["microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
