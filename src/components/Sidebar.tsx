@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppContext, AVAILABLE_AGENTS } from '../store/AppContext';
 import { PanelLeft, PanelLeftClose, Battery, BatteryCharging, BatteryLow, GraduationCap, Settings } from 'lucide-react';
-import { KamryLogo } from './KamryLogo';
+import { CamryLogo } from './CamryLogo';
 import { Tooltip } from './Tooltip';
 import { AnimatedIcon } from './AnimatedIcon';
 import { FillIcon, FillIconType } from './SolidFillIcons';
@@ -87,7 +87,7 @@ export const Sidebar: React.FC = () => {
   return (
     <div className={`${
       isSidebarCollapsed ? 'w-[72px]' : 'w-[240px]'
-    } flex-shrink-0 flex flex-col h-full border-r border-t-0 border-b-0 border-l-0 pt-4 pb-4 transition-all duration-300 kamry-glass rounded-none ${
+    } flex-shrink-0 flex flex-col h-full border-r border-t-0 border-b-0 border-l-0 pt-4 pb-4 transition-all duration-300 camry-glass rounded-none ${
       isLight 
         ? 'text-zinc-800/80 border-[#E2DDD5]' 
         : 'text-white/60 border-white/10'
@@ -100,9 +100,9 @@ export const Sidebar: React.FC = () => {
         isLight ? 'border-[#E2DDD5]' : 'border-white/10'
       }`}>
         {isSidebarCollapsed ? (
-          <KamryLogo variant={isLight ? 'dark' : 'light'} size="sm" useMascot={false} layout="markOnly" />
+          <CamryLogo variant={isLight ? 'dark' : 'light'} size="sm" useMascot={false} layout="markOnly" />
         ) : (
-          <KamryLogo variant={isLight ? 'dark' : 'light'} size="md" />
+          <CamryLogo variant={isLight ? 'dark' : 'light'} size="md" />
         )}
         <Tooltip content={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"} position="right">
           <button 
@@ -167,7 +167,7 @@ export const Sidebar: React.FC = () => {
 
         {/* Getting Started Tour Button */}
         <div className={isSidebarCollapsed ? "flex justify-center" : "px-1"}>
-          <Tooltip content="Launch Guided Tour overlay of Kamry OS features" position="right" className={isSidebarCollapsed ? "" : "w-full"}>
+          <Tooltip content="Launch Guided Tour overlay of Camry OS features" position="right" className={isSidebarCollapsed ? "" : "w-full"}>
             <button
               onClick={() => startTour()}
               className={`flex items-center transition-all cursor-pointer shadow-sm group border ${

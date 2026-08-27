@@ -3,8 +3,8 @@ import { useAppContext, AVAILABLE_MODELS } from '../store/AppContext';
 import { Search, Bot, Cpu, ArrowRight, Check, Sparkles, X, Activity, Menu, Sun, Moon, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CustomSelect } from './CustomSelect';
-import { KamryOrb } from './KamryOrb';
-import { KamryLogo } from './KamryLogo';
+import { CamryOrb } from './CamryOrb';
+import { CamryLogo } from './CamryLogo';
 import { AgentLogo } from './AgentLogo';
 
 export const GlobalHeader: React.FC = () => {
@@ -90,12 +90,12 @@ export const GlobalHeader: React.FC = () => {
   const isLight = themeMode === 'light';
 
   return (
-    <header className={`h-14 px-3 sm:px-6 flex items-center justify-between z-30 flex-shrink-0 relative transition-all duration-300 border-b border-t-0 border-l-0 border-r-0 kamry-glass rounded-none ${
+    <header className={`h-14 px-3 sm:px-6 flex items-center justify-between z-30 flex-shrink-0 relative transition-all duration-300 border-b border-t-0 border-l-0 border-r-0 camry-glass rounded-none ${
       isLight 
         ? 'text-[#18181B] border-[#E2DDD5]' 
         : 'text-white border-[#2E2E38]'
     }`}>
-      {/* Left: Mobile Menu Toggle & Kamry OS Logo */}
+      {/* Left: Mobile Menu Toggle & Camry OS Logo */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -109,7 +109,7 @@ export const GlobalHeader: React.FC = () => {
 
         {/* Brand Header Status Pill */}
         <div className="flex items-center gap-2 flex-shrink-0 cursor-pointer" onClick={() => setCurrentScreen('chat')}>
-          <KamryLogo variant={isLight ? 'dark' : 'light'} size="sm" useMascot={false} layout="markOnly" />
+          <CamryLogo variant={isLight ? 'dark' : 'light'} size="sm" useMascot={false} layout="markOnly" />
         </div>
       </div>
 

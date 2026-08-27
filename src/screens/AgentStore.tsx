@@ -172,7 +172,7 @@ export const AgentStore: React.FC = () => {
     setTestInput('');
     setIsTestThinking(true);
 
-    const activePrompt = newAgentPrompt.trim() || `You are ${newAgentName.trim() || 'Custom Agent'}, a specialized AI agent on Kamry OS.`;
+    const activePrompt = newAgentPrompt.trim() || `You are ${newAgentName.trim() || 'Custom Agent'}, a specialized AI agent on Camry OS.`;
 
     try {
       const response = await fetch('/api/chat', {
@@ -206,7 +206,7 @@ export const AgentStore: React.FC = () => {
 
 Regarding your test input "${userMsg.content}":
 
-The local model on your Kamry ONE appliance has executed this dry-run query using your customized system prompt:
+The local model on your Camry ONE appliance has executed this dry-run query using your customized system prompt:
 "${activePrompt.slice(0, 100)}${activePrompt.length > 100 ? '...' : ''}"
 
 Output alignment looks excellent! No regressions detected across simulated memory space. Configure further on the left panel or install whenever you are ready!`;
@@ -269,9 +269,9 @@ Output alignment looks excellent! No regressions detected across simulated memor
 
     updateCustomAgent(editingAgentId, {
       name: editAgentName.trim(),
-      description: editAgentDesc.trim() || 'Custom functional AI agent updated on Kamry ONE.',
+      description: editAgentDesc.trim() || 'Custom functional AI agent updated on Camry ONE.',
       category: editAgentCat,
-      systemPrompt: editAgentPrompt.trim() || `You are ${editAgentName.trim()}, a specialized AI agent on Kamry OS.`,
+      systemPrompt: editAgentPrompt.trim() || `You are ${editAgentName.trim()}, a specialized AI agent on Camry OS.`,
     });
 
     setShowEditModal(false);
@@ -324,7 +324,7 @@ Refining system prompt adjustments for "${editAgentName}":
 
 Regarding: "${userMsg.content}"
 
-The Kamry ONE offline compiler has successfully validated your updated rules:
+The Camry ONE offline compiler has successfully validated your updated rules:
 "${editAgentPrompt.slice(0, 100)}${editAgentPrompt.length > 100 ? '...' : ''}"
 
 The simulated response matches expected precision parameters!`;
@@ -391,7 +391,7 @@ Using custom system instructions from agent "${currentAgent?.name}":
 
 Tested Query: "${userMsg.content}"
 
-Response parameters processed securely on-premises within your Kamry ONE hardware clusters. No internet connection was used.`;
+Response parameters processed securely on-premises within your Camry ONE hardware clusters. No internet connection was used.`;
 
         if (currentAgent?.id === 'legal') {
           simulatedText = `[Legal Assistant Sandbox Engine]
@@ -485,17 +485,17 @@ Recommendation Alignment:
     const initialVersionObj = {
       version: 'v1.0.0',
       updatedAt: new Date().toISOString().split('T')[0],
-      prompt: newAgentPrompt.trim() || `You are ${newAgentName.trim()}, a specialized AI agent on Kamry OS.`,
-      changes: 'Initial release on Kamry ONE NPU.',
+      prompt: newAgentPrompt.trim() || `You are ${newAgentName.trim()}, a specialized AI agent on Camry OS.`,
+      changes: 'Initial release on Camry ONE NPU.',
       author: 'System Owner (Admin)'
     };
 
     addCustomAgent({
       id,
       name: newAgentName.trim(),
-      description: newAgentDesc.trim() || 'Custom functional AI agent created on Kamry ONE.',
+      description: newAgentDesc.trim() || 'Custom functional AI agent created on Camry ONE.',
       category: newAgentCat,
-      systemPrompt: newAgentPrompt.trim() || `You are ${newAgentName.trim()}, a specialized AI agent on Kamry OS.`,
+      systemPrompt: newAgentPrompt.trim() || `You are ${newAgentName.trim()}, a specialized AI agent on Camry OS.`,
       status: 'active',
       statusReason: `Active processing thread running on ${activeModelId}`,
       currentVersion: 'v1.0.0',
@@ -506,24 +506,24 @@ Recommendation Alignment:
   };
 
   return (
-    <div className={`flex-1 h-full flex flex-col overflow-y-auto kamry-page-container kamry-section-gap relative transition-colors ${
-      isLight ? 'bg-kamry-paper' : 'bg-[#141418] text-white'
+    <div className={`flex-1 h-full flex flex-col overflow-y-auto camry-page-container camry-section-gap relative transition-colors ${
+      isLight ? 'bg-camry-paper' : 'bg-[#141418] text-white'
     }`}>
       {/* Header */}
       <div className={`pb-4 border-b shrink-0 space-y-4 ${
-        isLight ? 'bg-kamry-paper/50 border-black/5' : 'bg-[#141418]/80 border-white/10'
+        isLight ? 'bg-camry-paper/50 border-black/5' : 'bg-[#141418]/80 border-white/10'
       }`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Grid className={`flex-shrink-0 ${isLight ? 'text-kamry-blackout' : 'text-[#0EA5E9]'}`} size={22} />
-            <h1 className={`kamry-h1-title ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Agent Store</h1>
+            <Grid className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-[#0EA5E9]'}`} size={22} />
+            <h1 className={`camry-h1-title ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Agent Store</h1>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Search input */}
             <div className="relative flex-1 sm:flex-none">
               <Search size={14} className={`absolute left-3 top-1/2 -translate-y-1/2 ${
-                isLight ? 'text-kamry-graphite/40' : 'text-zinc-500'
+                isLight ? 'text-camry-graphite/40' : 'text-zinc-500'
               }`} />
               <input 
                 type="text"
@@ -531,7 +531,7 @@ Recommendation Alignment:
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search agents..."
                 className={`w-full sm:w-48 pl-8 pr-3 py-2 border rounded-[10px] text-xs font-familjen transition-all focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                  isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white placeholder:text-zinc-500'
+                  isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white placeholder:text-zinc-500'
                 }`}
               />
             </div>
@@ -544,10 +544,10 @@ Recommendation Alignment:
               <button 
                 key={cat}
                 onClick={() => setActiveCat(cat)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors whitespace-nowrap flex-shrink-0 cursor-pointer kamry-touch-target ${
+                className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors whitespace-nowrap flex-shrink-0 cursor-pointer camry-touch-target ${
                   activeCat === cat 
-                    ? (isLight ? 'bg-kamry-blackout text-white border-transparent' : 'bg-[#0EA5E9] text-white border-transparent')
-                    : (isLight ? 'bg-white border-black/10 text-kamry-graphite hover:bg-kamry-graphite/5' : 'bg-[#1C1C22] border-white/10 text-zinc-300 hover:bg-white/10')
+                    ? (isLight ? 'bg-camry-blackout text-white border-transparent' : 'bg-[#0EA5E9] text-white border-transparent')
+                    : (isLight ? 'bg-white border-black/10 text-camry-graphite hover:bg-camry-graphite/5' : 'bg-[#1C1C22] border-white/10 text-zinc-300 hover:bg-white/10')
                 }`}
               >
                 {cat}
@@ -561,20 +561,20 @@ Recommendation Alignment:
         {/* Grid */}
         {activeCat === 'Installed' && (
           <div className={`p-4 border rounded-[10px] flex items-center justify-between font-martian text-xs shadow-xs ${
-            isLight ? 'bg-kamry-carrier/10 border-kamry-deep-carrier/20 text-kamry-blackout' : 'bg-blue-950/40 border-blue-800/40 text-blue-200'
+            isLight ? 'bg-camry-carrier/10 border-camry-deep-carrier/20 text-camry-blackout' : 'bg-blue-950/40 border-blue-800/40 text-blue-200'
           }`}>
-            <span className={`text-xs ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+            <span className={`text-xs ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
               Installed Workspace Agents
             </span>
             <span className={`text-[10px] px-2 py-0.5 rounded-[6px] border ${
-              isLight ? 'text-kamry-graphite/60 bg-white/60 border-black/5' : 'text-zinc-300 bg-white/10 border-white/10'
+              isLight ? 'text-camry-graphite/60 bg-white/60 border-black/5' : 'text-zinc-300 bg-white/10 border-white/10'
             }`}>
               {filteredAgents.length} Installed
             </span>
           </div>
         )}
 
-        <div className="kamry-card-grid pb-8">
+        <div className="camry-card-grid pb-8">
           {filteredAgents.map(agent => {
             const isInstalled = installedAgents.includes(agent.id);
             const isDownloading = downloading === agent.id;
@@ -583,7 +583,7 @@ Recommendation Alignment:
             return (
               <div 
                 key={agent.id} 
-                className={`rounded-[10px] kamry-card-padding border transition-all flex flex-col h-full group relative ${
+                className={`rounded-[10px] camry-card-padding border transition-all flex flex-col h-full group relative ${
                   isLight ? 'bg-white border-black/5 shadow-xs hover:shadow-md' : 'bg-[#1C1C22] border-white/10 shadow-xs hover:border-white/20'
                 }`}
               >
@@ -608,16 +608,16 @@ Recommendation Alignment:
                 </div>
                 
                 <div className="flex items-center justify-between mb-1 gap-2">
-                  <h3 className={`font-bricolage text-base sm:text-lg font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{agent.name}</h3>
+                  <h3 className={`font-bricolage text-base sm:text-lg font-medium ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{agent.name}</h3>
                   <span className={`font-martian text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded flex-shrink-0 ${
-                    isLight ? 'bg-black/5 text-kamry-graphite/60' : 'bg-white/10 text-zinc-400'
+                    isLight ? 'bg-black/5 text-camry-graphite/60' : 'bg-white/10 text-zinc-400'
                   }`}>
                     {agent.currentVersion || 'v1.0.0'}
                   </span>
                 </div>
 
                 <p className={`font-familjen text-xs sm:text-sm flex-1 leading-relaxed mb-3 ${
-                  isLight ? 'text-kamry-graphite/70' : 'text-zinc-300'
+                  isLight ? 'text-camry-graphite/70' : 'text-zinc-300'
                 }`}>{agent.description}</p>
 
                 {/* Member Interactions Log */}
@@ -628,7 +628,7 @@ Recommendation Alignment:
                 }`}>
                   <div className="flex items-center gap-2">
                     <div className={`flex items-center gap-1 font-martian text-xs ${
-                      isLight ? 'text-kamry-graphite/40' : 'text-zinc-500'
+                      isLight ? 'text-camry-graphite/40' : 'text-zinc-500'
                     }`}>
                       <Heart size={13} /> {agent.likes}
                     </div>
@@ -640,7 +640,7 @@ Recommendation Alignment:
                         setShowHistoryModal(true);
                       }}
                       className={`p-1 rounded transition-colors flex items-center gap-1 text-[10px] sm:text-[11px] font-martian cursor-pointer ${
-                        isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                        isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
                       }`}
                       title="View Version History & Rollback"
                     >
@@ -665,7 +665,7 @@ Recommendation Alignment:
                   
                   {isDownloading ? (
                     <div className="w-20">
-                      <div className={`w-full h-1 rounded-full overflow-hidden ${isLight ? 'bg-kamry-graphite/10' : 'bg-white/10'}`}>
+                      <div className={`w-full h-1 rounded-full overflow-hidden ${isLight ? 'bg-camry-graphite/10' : 'bg-white/10'}`}>
                         <div className="h-full bg-[#0EA5E9] transition-all duration-200" style={{ width: `${downloadProgress}%` }} />
                       </div>
                     </div>
@@ -674,7 +674,7 @@ Recommendation Alignment:
                       <button 
                         onClick={() => handleOpen(agent.id)}
                         className={`px-3 py-1.5 rounded text-xs font-medium transition-colors cursor-pointer ${
-                          isLight ? 'bg-kamry-blackout text-white hover:bg-black' : 'bg-[#0EA5E9] text-white hover:bg-[#0EA5E9]'
+                          isLight ? 'bg-camry-blackout text-white hover:bg-black' : 'bg-[#0EA5E9] text-white hover:bg-[#0EA5E9]'
                         }`}
                       >
                         Launch
@@ -691,7 +691,7 @@ Recommendation Alignment:
                     <button 
                       onClick={() => handleInstall(agent.id)}
                       className={`px-4 py-1.5 rounded text-xs font-medium transition-colors cursor-pointer ${
-                        isLight ? 'bg-kamry-graphite/10 text-kamry-blackout hover:bg-kamry-graphite/20' : 'bg-white/10 text-white hover:bg-white/20'
+                        isLight ? 'bg-camry-graphite/10 text-camry-blackout hover:bg-camry-graphite/20' : 'bg-white/10 text-white hover:bg-white/20'
                       }`}
                     >
                       Get Agent
@@ -713,7 +713,7 @@ Recommendation Alignment:
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`rounded-2xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl border relative font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               {/* Modal Header */}
@@ -725,10 +725,10 @@ Recommendation Alignment:
                     <Bot size={20} />
                   </div>
                   <div>
-                    <h3 className={`text-lg font-bold font-bricolage leading-none ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                    <h3 className={`text-lg font-bold font-bricolage leading-none ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                       On-Device Agent Workshop
                     </h3>
-                    <p className={`text-xs mt-1 ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+                    <p className={`text-xs mt-1 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                       Design specialized agent blueprints and simulate NPU compilation.
                     </p>
                   </div>
@@ -739,7 +739,7 @@ Recommendation Alignment:
                     setShowCreateModal(false);
                   }} 
                   className={`p-1 rounded-lg transition-colors cursor-pointer ${
-                    isLight ? 'hover:bg-black/5 text-kamry-graphite/50 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                    isLight ? 'hover:bg-black/5 text-camry-graphite/50 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
                   }`}
                 >
                   <X size={18} />
@@ -756,7 +756,7 @@ Recommendation Alignment:
                       <span className="text-[10px] font-martian font-bold tracking-wider text-blue-500 uppercase block mb-1">
                         STEP 1: AGENT IDENTITY
                       </span>
-                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                         Agent Name
                       </label>
                       <input 
@@ -766,14 +766,14 @@ Recommendation Alignment:
                         value={newAgentName}
                         onChange={(e) => setNewAgentName(e.target.value)}
                         className={`w-full border rounded-lg px-3 py-2 text-sm font-familjen focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                          isLight ? 'border-black/10 bg-kamry-graphite/5 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                          isLight ? 'border-black/10 bg-camry-graphite/5 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                           Industry Category
                         </label>
                         <CustomSelect
@@ -788,12 +788,12 @@ Recommendation Alignment:
                             { value: 'Finance', label: 'Finance' },
                             { value: 'Other', label: 'Other' },
                           ]}
-                          buttonClassName={isLight ? 'bg-kamry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
+                          buttonClassName={isLight ? 'bg-camry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
                         />
                       </div>
 
                       <div>
-                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                           Short Purpose
                         </label>
                         <input 
@@ -802,7 +802,7 @@ Recommendation Alignment:
                           value={newAgentDesc}
                           onChange={(e) => setNewAgentDesc(e.target.value)}
                           className={`w-full border rounded-lg px-3 py-2 text-xs font-familjen focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                            isLight ? 'border-black/10 bg-kamry-graphite/5 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                            isLight ? 'border-black/10 bg-camry-graphite/5 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                           }`}
                         />
                       </div>
@@ -813,7 +813,7 @@ Recommendation Alignment:
                         STEP 2: SYSTEM INSTRUCTIONS
                       </span>
                       <div className="flex items-center justify-between mb-1">
-                        <label className={`block text-xs font-semibold ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                           Instruction Persona Prompt
                         </label>
                         <span className="text-[10px] text-zinc-400 font-mono">Max token budget: 4,096</span>
@@ -825,7 +825,7 @@ Recommendation Alignment:
                         value={newAgentPrompt}
                         onChange={(e) => setNewAgentPrompt(e.target.value)}
                         className={`w-full border rounded-lg px-3 py-2 text-xs font-familjen focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] resize-none leading-relaxed ${
-                          isLight ? 'border-black/10 bg-kamry-graphite/5 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                          isLight ? 'border-black/10 bg-camry-graphite/5 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
@@ -848,7 +848,7 @@ Recommendation Alignment:
                               <Sparkles size={18} className="text-emerald-500 shrink-0 mt-0.5 animate-pulse" />
                               <div className="space-y-1">
                                 <h4 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-martian uppercase tracking-wider">
-                                  <span>Kamry NPU Recommends</span>
+                                  <span>Camry NPU Recommends</span>
                                   <span className="px-1.5 py-0.5 bg-emerald-600 text-white font-mono text-[9px] rounded font-bold">
                                     {modelDetails.params} Local
                                   </span>
@@ -865,7 +865,7 @@ Recommendation Alignment:
                             {/* Dropdown Selector Override */}
                             <div>
                               <div className="flex items-center justify-between mb-1.5">
-                                <label className={`block text-xs font-semibold ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                                <label className={`block text-xs font-semibold ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                                   Target On-Device LLM (Override)
                                 </label>
                                 {customSelectedModelId && (
@@ -889,7 +889,7 @@ Recommendation Alignment:
                                     label: `${m.name} (${m.params}) ${isRec ? '★ RECOMMENDED' : ''}`
                                   };
                                 })}
-                                buttonClassName={isLight ? 'bg-kamry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
+                                buttonClassName={isLight ? 'bg-camry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
                               />
                             </div>
                           </div>
@@ -1011,7 +1011,7 @@ Recommendation Alignment:
                               }
                             }}
                             className={`flex-1 border rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-                              isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/10 bg-[#121216] text-white'
+                              isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/10 bg-[#121216] text-white'
                             }`}
                           />
                           <button 
@@ -1046,7 +1046,7 @@ Recommendation Alignment:
                         setShowCreateModal(false);
                       }}
                       className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                        isLight ? 'text-kamry-graphite hover:bg-black/5' : 'text-zinc-300 hover:bg-white/10'
+                        isLight ? 'text-camry-graphite hover:bg-black/5' : 'text-zinc-300 hover:bg-white/10'
                       }`}
                     >
                       Cancel
@@ -1075,7 +1075,7 @@ Recommendation Alignment:
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`rounded-2xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl border relative font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               {/* Modal Header */}
@@ -1087,10 +1087,10 @@ Recommendation Alignment:
                     <Sliders size={20} />
                   </div>
                   <div>
-                    <h3 className={`text-lg font-bold font-bricolage leading-none ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                    <h3 className={`text-lg font-bold font-bricolage leading-none ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                       Modify Custom Agent Blueprint
                     </h3>
-                    <p className={`text-xs mt-1 ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+                    <p className={`text-xs mt-1 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                       Update instructions, categories, or system prompts. Saves will generate a new auto-incremented version.
                     </p>
                   </div>
@@ -1101,7 +1101,7 @@ Recommendation Alignment:
                     setShowEditModal(false);
                   }} 
                   className={`p-1 rounded-lg transition-colors cursor-pointer ${
-                    isLight ? 'hover:bg-black/5 text-kamry-graphite/50 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                    isLight ? 'hover:bg-black/5 text-camry-graphite/50 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
                   }`}
                 >
                   <X size={18} />
@@ -1118,7 +1118,7 @@ Recommendation Alignment:
                       <span className="text-[10px] font-martian font-bold tracking-wider text-amber-500 uppercase block mb-1">
                         IDENTITY & DOMAIN
                       </span>
-                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                         Agent Name
                       </label>
                       <input 
@@ -1128,14 +1128,14 @@ Recommendation Alignment:
                         onChange={(e) => setEditAgentName(e.target.value)}
                         placeholder="e.g. Legal Drafter"
                         className={`w-full px-3 py-2 text-xs border rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-500 ${
-                          isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                          isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                           Taxonomy Category
                         </label>
                         <CustomSelect
@@ -1150,12 +1150,12 @@ Recommendation Alignment:
                             { value: 'Finance', label: 'Finance' },
                             { value: 'Other', label: 'Other' }
                           ]}
-                          buttonClassName={isLight ? 'bg-kamry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
+                          buttonClassName={isLight ? 'bg-camry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
                         />
                       </div>
                       
                       <div>
-                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                           Agent Status
                         </label>
                         <div className={`p-2 rounded-lg text-xs font-semibold border flex items-center gap-1.5 ${
@@ -1168,7 +1168,7 @@ Recommendation Alignment:
                     </div>
 
                     <div>
-                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                      <label className={`block text-xs font-semibold mb-1 ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                         Blueprint Purpose / Description
                       </label>
                       <input 
@@ -1177,14 +1177,14 @@ Recommendation Alignment:
                         onChange={(e) => setEditAgentDesc(e.target.value)}
                         placeholder="Provide a brief summary of what this agent does..."
                         className={`w-full px-3 py-2 text-xs border rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-500 ${
-                          isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                          isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
 
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <label className={`block text-xs font-semibold ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                        <label className={`block text-xs font-semibold ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                           System Instructions (Prompt Rules)
                         </label>
                         <span className="text-[10px] font-martian opacity-50 font-bold uppercase">Sovereign Compiler System</span>
@@ -1196,7 +1196,7 @@ Recommendation Alignment:
                         onChange={(e) => setEditAgentPrompt(e.target.value)}
                         placeholder="Explain step-by-step how the custom agent should think, react, and structure responses..."
                         className={`w-full px-3 py-2 text-xs border rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-500 font-mono ${
-                          isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                          isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                         }`}
                       />
                     </div>
@@ -1218,7 +1218,7 @@ Recommendation Alignment:
                               </div>
                               <div className="space-y-0.5">
                                 <h4 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-martian uppercase tracking-wider">
-                                  <span>Kamry NPU Recommends</span>
+                                  <span>Camry NPU Recommends</span>
                                   <span className="px-1.5 py-0.5 bg-emerald-600 text-white font-mono text-[9px] rounded font-bold">
                                     {modelDetails.params} Local
                                   </span>
@@ -1235,7 +1235,7 @@ Recommendation Alignment:
                             {/* Dropdown Selector Override */}
                             <div>
                               <div className="flex items-center justify-between mb-1.5">
-                                <label className={`block text-xs font-semibold ${isLight ? 'text-kamry-graphite/80' : 'text-zinc-300'}`}>
+                                <label className={`block text-xs font-semibold ${isLight ? 'text-camry-graphite/80' : 'text-zinc-300'}`}>
                                   Target On-Device LLM (Override)
                                 </label>
                                 {editSelectedModelId && (
@@ -1259,7 +1259,7 @@ Recommendation Alignment:
                                     label: `${m.name} (${m.params}) ${isRec ? '★ RECOMMENDED' : ''}`
                                   };
                                 })}
-                                buttonClassName={isLight ? 'bg-kamry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
+                                buttonClassName={isLight ? 'bg-camry-graphite/5 border-black/10 rounded-lg py-2 text-xs font-medium' : 'bg-[#141418] border-white/15 rounded-lg py-2 text-white text-xs font-medium'}
                               />
                             </div>
                           </div>
@@ -1381,7 +1381,7 @@ Recommendation Alignment:
                               }
                             }}
                             className={`flex-1 border rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 ${
-                              isLight ? 'border-black/10 bg-white text-kamry-blackout' : 'border-white/10 bg-[#121216] text-white'
+                              isLight ? 'border-black/10 bg-white text-camry-blackout' : 'border-white/10 bg-[#121216] text-white'
                             }`}
                           />
                           <button 
@@ -1416,7 +1416,7 @@ Recommendation Alignment:
                         setShowEditModal(false);
                       }}
                       className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                        isLight ? 'text-kamry-graphite hover:bg-black/5' : 'text-zinc-300 hover:bg-white/10'
+                        isLight ? 'text-camry-graphite hover:bg-black/5' : 'text-zinc-300 hover:bg-white/10'
                       }`}
                     >
                       Cancel
@@ -1445,19 +1445,19 @@ Recommendation Alignment:
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`rounded-2xl max-w-xl w-full p-6 shadow-2xl border relative max-h-[85vh] flex flex-col font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               <div className={`flex items-center justify-between pb-4 mb-4 border-b ${
                 isLight ? 'border-black/10' : 'border-white/10'
               }`}>
                 <div className="flex items-center gap-3">
-                  <div className={`p-2.5 rounded-xl ${isLight ? 'bg-kamry-blackout text-white' : 'bg-[#0EA5E9] text-white'}`}>
+                  <div className={`p-2.5 rounded-xl ${isLight ? 'bg-camry-blackout text-white' : 'bg-[#0EA5E9] text-white'}`}>
                     <History size={18} />
                   </div>
                   <div>
-                    <h3 className={`text-lg font-bricolage ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{selectedAgentForHistory.name} — Version History</h3>
-                    <p className={`font-familjen text-xs ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+                    <h3 className={`text-lg font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{selectedAgentForHistory.name} — Version History</h3>
+                    <p className={`font-familjen text-xs ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                       View prompt iterations and restore previous agent configurations on-device
                     </p>
                   </div>
@@ -1465,7 +1465,7 @@ Recommendation Alignment:
                 <button 
                   onClick={() => setShowHistoryModal(false)} 
                   className={`p-1 rounded-lg transition-colors cursor-pointer ${
-                    isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                    isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
                   }`}
                 >
                   <X size={18} />
@@ -1475,7 +1475,7 @@ Recommendation Alignment:
               {/* Version Timeline */}
               <div className="flex-1 overflow-y-auto space-y-4 pr-1">
                 {(selectedAgentForHistory.versionHistory || [
-                  { version: selectedAgentForHistory.currentVersion || 'v1.0.0', updatedAt: '2026-07-20', prompt: selectedAgentForHistory.systemPrompt || 'Default agent system prompt.', changes: 'Initial release on Kamry ONE NPU.', author: 'Kamry System' }
+                  { version: selectedAgentForHistory.currentVersion || 'v1.0.0', updatedAt: '2026-07-20', prompt: selectedAgentForHistory.systemPrompt || 'Default agent system prompt.', changes: 'Initial release on Camry ONE NPU.', author: 'Camry System' }
                 ]).map((ver) => {
                   const isCurrent = (selectedAgentForHistory.currentVersion || 'v1.0.0') === ver.version;
 
@@ -1485,13 +1485,13 @@ Recommendation Alignment:
                       className={`p-4 rounded-xl border transition-all ${
                         isCurrent 
                           ? (isLight ? 'bg-emerald-50/60 border-emerald-200 shadow-xs' : 'bg-emerald-950/40 border-emerald-800/40 shadow-xs')
-                          : (isLight ? 'bg-kamry-graphite/5 border-black/5 hover:border-black/15' : 'bg-[#141418] border-white/10 hover:border-white/20')
+                          : (isLight ? 'bg-camry-graphite/5 border-black/5 hover:border-black/15' : 'bg-[#141418] border-white/10 hover:border-white/20')
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <span className={`px-2.5 py-0.5 rounded font-martian text-xs font-bold ${
-                            isCurrent ? 'bg-emerald-600 text-white' : (isLight ? 'bg-kamry-blackout text-white' : 'bg-[#0EA5E9] text-white')
+                            isCurrent ? 'bg-emerald-600 text-white' : (isLight ? 'bg-camry-blackout text-white' : 'bg-[#0EA5E9] text-white')
                           }`}>
                             {ver.version}
                           </span>
@@ -1500,7 +1500,7 @@ Recommendation Alignment:
                               ACTIVE VERSION
                             </span>
                           )}
-                          <span className={`font-familjen text-xs ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+                          <span className={`font-familjen text-xs ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                             • Released {ver.updatedAt} by {ver.author}
                           </span>
                         </div>
@@ -1519,8 +1519,8 @@ Recommendation Alignment:
                         )}
                       </div>
 
-                      <div className={`text-xs font-familjen font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
-                        <span className={`font-martian text-[10px] uppercase tracking-wider block ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>Changelog:</span>
+                      <div className={`text-xs font-familjen font-medium ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
+                        <span className={`font-martian text-[10px] uppercase tracking-wider block ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>Changelog:</span>
                         {ver.changes}
                       </div>
                     </div>
@@ -1532,7 +1532,7 @@ Recommendation Alignment:
                 <button
                   onClick={() => setShowHistoryModal(false)}
                   className={`px-4 py-2 rounded-lg text-xs font-medium cursor-pointer ${
-                    isLight ? 'bg-kamry-blackout text-white hover:bg-black' : 'bg-white/10 text-white hover:bg-white/20'
+                    isLight ? 'bg-camry-blackout text-white hover:bg-black' : 'bg-white/10 text-white hover:bg-white/20'
                   }`}
                 >
                   Close History

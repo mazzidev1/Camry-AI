@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Team } from './Team';
 import { Tooltip } from '../components/Tooltip';
 import { AnimatedIcon, IconAnimationType } from '../components/AnimatedIcon';
-import { KamryLogo } from '../components/KamryLogo';
+import { CamryLogo } from '../components/CamryLogo';
 import { CustomSelect } from '../components/CustomSelect';
 
 export const Settings: React.FC = () => {
@@ -40,7 +40,7 @@ export const Settings: React.FC = () => {
   };
 
   return (
-    <div className={`flex-1 h-full flex flex-col overflow-y-auto kamry-page-container kamry-section-gap relative ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}>
+    <div className={`flex-1 h-full flex flex-col overflow-y-auto camry-page-container camry-section-gap relative ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}>
       <AnimatePresence mode="wait">
         {settingsView === 'main' && (
           <motion.div 
@@ -51,9 +51,9 @@ export const Settings: React.FC = () => {
             className="flex flex-col space-y-6"
           >
             {/* Header & Main Navigation Tabs */}
-            <div className={`pb-4 border-b shrink-0 space-y-4 ${isLight ? 'bg-kamry-paper border-black/10' : 'bg-[#141418] border-white/10'}`}>
+            <div className={`pb-4 border-b shrink-0 space-y-4 ${isLight ? 'bg-camry-paper border-black/10' : 'bg-[#141418] border-white/10'}`}>
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <h1 className={`kamry-h1-title ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Settings & System Management</h1>
+                <h1 className={`camry-h1-title ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Settings & System Management</h1>
                 <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   NPU Online • Air-Gapped
@@ -68,7 +68,7 @@ export const Settings: React.FC = () => {
                   onClick={() => setActiveTab('overview')}
                   className={`px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shrink-0 ${
                     activeTab === 'overview'
-                      ? (isLight ? 'bg-white text-kamry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
+                      ? (isLight ? 'bg-white text-camry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
                       : (isLight ? 'text-zinc-600 hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/5')
                   }`}
                 >
@@ -80,7 +80,7 @@ export const Settings: React.FC = () => {
                   onClick={() => setActiveTab('team')}
                   className={`px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shrink-0 ${
                     activeTab === 'team'
-                      ? (isLight ? 'bg-white text-kamry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
+                      ? (isLight ? 'bg-white text-camry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
                       : (isLight ? 'text-zinc-600 hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/5')
                   }`}
                 >
@@ -92,7 +92,7 @@ export const Settings: React.FC = () => {
                   onClick={() => setActiveTab('hardware')}
                   className={`px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shrink-0 ${
                     activeTab === 'hardware'
-                      ? (isLight ? 'bg-white text-kamry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
+                      ? (isLight ? 'bg-white text-camry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
                       : (isLight ? 'text-zinc-600 hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/5')
                   }`}
                 >
@@ -104,7 +104,7 @@ export const Settings: React.FC = () => {
                   onClick={() => setActiveTab('developer')}
                   className={`px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shrink-0 ${
                     activeTab === 'developer'
-                      ? (isLight ? 'bg-white text-kamry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
+                      ? (isLight ? 'bg-white text-camry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
                       : (isLight ? 'text-zinc-600 hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/5')
                   }`}
                 >
@@ -116,7 +116,7 @@ export const Settings: React.FC = () => {
                   onClick={() => setActiveTab('system')}
                   className={`px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shrink-0 ${
                     activeTab === 'system'
-                      ? (isLight ? 'bg-white text-kamry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
+                      ? (isLight ? 'bg-white text-camry-blackout shadow-xs font-bold' : 'bg-[#0EA5E9] text-white shadow-xs font-bold')
                       : (isLight ? 'text-zinc-600 hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/5')
                   }`}
                 >
@@ -144,43 +144,43 @@ export const Settings: React.FC = () => {
               {/* TAB 3: HARDWARE & POWER */}
               {activeTab === 'hardware' && (
                 <div className="space-y-6">
-                  <div className={`font-martian text-xs mb-3 px-2 tracking-wider uppercase ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>HARDWARE & PERFORMANCE</div>
+                  <div className={`font-martian text-xs mb-3 px-2 tracking-wider uppercase ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>HARDWARE & PERFORMANCE</div>
                   <div className={`border rounded-xl shadow-sm overflow-hidden ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
                     <SettingRow 
-                      icon={<Monitor size={18} className={isLight ? "text-kamry-graphite/60" : "text-zinc-400"} />}
+                      icon={<Monitor size={18} className={isLight ? "text-camry-graphite/60" : "text-zinc-400"} />}
                       title="Device Information"
                       subtitle="NPU serial number, hardware specs & firmware version"
                       tooltip="View hardware specifications"
                       iconAnimation="scale"
-                      right={<ChevronRight size={16} className={isLight ? "text-kamry-graphite/40" : "text-zinc-500"} />}
+                      right={<ChevronRight size={16} className={isLight ? "text-camry-graphite/40" : "text-zinc-500"} />}
                       onClick={() => setSettingsView('device_info')}
                     />
                     <div className={`h-[1px] ml-12 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
                     <SettingRow 
-                      icon={<HardDrive size={18} className={isLight ? "text-kamry-graphite/60" : "text-zinc-400"} />}
+                      icon={<HardDrive size={18} className={isLight ? "text-camry-graphite/60" : "text-zinc-400"} />}
                       title="Storage Space"
                       subtitle="Local NVMe SSD allocation and model weights"
                       tooltip="Manage local SSD storage"
                       iconAnimation="pulse"
                       right={
                         <div className="flex items-center gap-3">
-                          <span className={`font-martian text-xs ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>142 / 1000 GB</span>
-                          <ChevronRight size={16} className={isLight ? "text-kamry-graphite/40" : "text-zinc-500"} />
+                          <span className={`font-martian text-xs ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>142 / 1000 GB</span>
+                          <ChevronRight size={16} className={isLight ? "text-camry-graphite/40" : "text-zinc-500"} />
                         </div>
                       }
                       onClick={() => setSettingsView('storage')}
                     />
                     <div className={`h-[1px] ml-12 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
                     <SettingRow 
-                      icon={<Wifi size={18} className={isLight ? "text-kamry-graphite/60" : "text-zinc-400"} />}
+                      icon={<Wifi size={18} className={isLight ? "text-camry-graphite/60" : "text-zinc-400"} />}
                       title="Wi-Fi & Network"
                       subtitle="Wireless network connection status"
                       tooltip="Configure Wi-Fi connection"
                       iconAnimation="scale"
                       right={
                         <div className="flex items-center gap-3">
-                          <span className={`text-sm ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>Connected</span>
-                          <ChevronRight size={16} className={isLight ? "text-kamry-graphite/40" : "text-zinc-500"} />
+                          <span className={`text-sm ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>Connected</span>
+                          <ChevronRight size={16} className={isLight ? "text-camry-graphite/40" : "text-zinc-500"} />
                         </div>
                       }
                       onClick={() => setSettingsView('wifi')}
@@ -192,25 +192,25 @@ export const Settings: React.FC = () => {
               {/* TAB 4: API KEYS & DEVELOPER */}
               {activeTab === 'developer' && (
                 <div className="space-y-6">
-                  <div className={`font-martian text-xs mb-3 px-2 tracking-wider uppercase ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>DEVELOPER TOOLS & API</div>
+                  <div className={`font-martian text-xs mb-3 px-2 tracking-wider uppercase ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>DEVELOPER TOOLS & API</div>
                   <div className={`border rounded-xl shadow-sm overflow-hidden ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
                     <SettingRow 
-                      icon={<Key size={18} className={isLight ? "text-kamry-graphite/60" : "text-zinc-400"} />}
+                      icon={<Key size={18} className={isLight ? "text-camry-graphite/60" : "text-zinc-400"} />}
                       title="API Keys & Local Base URL"
                       subtitle="Base URL: http://[fd80:7:7:7::1]:80/v1 • Manage developer credentials"
                       tooltip="Manage remote API keys"
                       iconAnimation="rotate"
-                      right={<ChevronRight size={16} className={isLight ? "text-kamry-graphite/40" : "text-zinc-500"} />}
+                      right={<ChevronRight size={16} className={isLight ? "text-camry-graphite/40" : "text-zinc-500"} />}
                       onClick={() => setSettingsView('api_key')}
                     />
                     <div className={`h-[1px] ml-12 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
                     <SettingRow 
-                      icon={<Terminal size={18} className={isLight ? "text-kamry-graphite/60" : "text-zinc-400"} />}
+                      icon={<Terminal size={18} className={isLight ? "text-camry-graphite/60" : "text-zinc-400"} />}
                       title="Developer Terminal Console"
                       subtitle="Low-level system logs & kernel telemetry"
                       tooltip="Open developer terminal console"
                       iconAnimation="wiggle"
-                      right={<ChevronRight size={16} className={isLight ? "text-kamry-graphite/40" : "text-zinc-500"} />}
+                      right={<ChevronRight size={16} className={isLight ? "text-camry-graphite/40" : "text-zinc-500"} />}
                       onClick={() => setSettingsView('console')}
                     />
                   </div>
@@ -224,8 +224,8 @@ export const Settings: React.FC = () => {
                   <div className={`border rounded-xl shadow-sm overflow-hidden p-4 sm:p-5 space-y-4 ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
-                        <label className={`text-sm font-semibold block ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Access Role Simulation (View As)</label>
-                        <p className={`text-xs font-familjen ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+                        <label className={`text-sm font-semibold block ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Access Role Simulation (View As)</label>
+                        <p className={`text-xs font-familjen ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                           Simulate active workspace permissions and document access restrictions
                         </p>
                       </div>
@@ -254,37 +254,37 @@ export const Settings: React.FC = () => {
 
                   {/* Software Settings */}
                   <div>
-                    <div className={`font-martian text-xs mb-3 px-2 tracking-wider uppercase ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>SOFTWARE PREFERENCES</div>
+                    <div className={`font-martian text-xs mb-3 px-2 tracking-wider uppercase ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>SOFTWARE PREFERENCES</div>
                     <div className={`border rounded-xl shadow-sm overflow-hidden ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
                       <SettingRow 
-                        icon={<Power size={18} className={isLight ? "text-kamry-graphite/60" : "text-zinc-400"} />}
+                        icon={<Power size={18} className={isLight ? "text-camry-graphite/60" : "text-zinc-400"} />}
                         title="Auto Start"
-                        subtitle="Automatically launch Kamry OS on device boot"
+                        subtitle="Automatically launch Camry OS on device boot"
                         tooltip="Toggle auto boot behavior"
                         iconAnimation="bounce"
                         right={<Toggle defaultChecked />}
                       />
                       <div className={`h-[1px] ml-12 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
                       <SettingRow 
-                        icon={<Shield size={18} className={isLight ? "text-kamry-graphite/60" : "text-zinc-400"} />}
+                        icon={<Shield size={18} className={isLight ? "text-camry-graphite/60" : "text-zinc-400"} />}
                         title="Privacy Policy"
                         subtitle="View zero-telemetry & on-device data guarantee"
                         tooltip="Read local privacy policy"
                         iconAnimation="scale"
-                        right={<ChevronRight size={16} className={isLight ? "text-kamry-graphite/40" : "text-zinc-500"} />}
+                        right={<ChevronRight size={16} className={isLight ? "text-camry-graphite/40" : "text-zinc-500"} />}
                         onClick={() => setSettingsView('privacy')}
                       />
                       <div className={`h-[1px] ml-12 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
                       <SettingRow 
-                        icon={<ArrowLeft size={18} className={`rotate-90 ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`} />}
+                        icon={<ArrowLeft size={18} className={`rotate-90 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`} />}
                         title="Software Update"
-                        subtitle="Check for Kamry OS updates"
+                        subtitle="Check for Camry OS updates"
                         tooltip="Check for software updates"
                         iconAnimation="bounce"
                         right={
                           <div className="flex items-center gap-3">
-                            <span className={`font-martian text-xs px-2 py-1 rounded font-semibold ${isLight ? 'text-kamry-carrier bg-kamry-carrier/10' : 'text-[#0EA5E9] bg-[#0EA5E9]/20'}`}>Update available</span>
-                            <ChevronRight size={16} className={isLight ? "text-kamry-graphite/40" : "text-zinc-500"} />
+                            <span className={`font-martian text-xs px-2 py-1 rounded font-semibold ${isLight ? 'text-camry-carrier bg-camry-carrier/10' : 'text-[#0EA5E9] bg-[#0EA5E9]/20'}`}>Update available</span>
+                            <ChevronRight size={16} className={isLight ? "text-camry-graphite/40" : "text-zinc-500"} />
                           </div>
                         }
                         onClick={() => setSettingsView('update')}
@@ -294,10 +294,10 @@ export const Settings: React.FC = () => {
 
                   {/* Backup & Portability Settings */}
                   <div>
-                    <div className={`font-martian text-xs mb-3 px-2 tracking-wider uppercase ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>BACKUP & PORTABILITY</div>
+                    <div className={`font-martian text-xs mb-3 px-2 tracking-wider uppercase ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>BACKUP & PORTABILITY</div>
                     <div className={`border rounded-xl shadow-sm overflow-hidden ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
                       <SettingRow 
-                        icon={<Download size={18} className={isLight ? "text-kamry-carrier" : "text-[#0EA5E9]"} />}
+                        icon={<Download size={18} className={isLight ? "text-camry-carrier" : "text-[#0EA5E9]"} />}
                         title="Export Configuration & Agents"
                         subtitle="Save system preferences and agents to JSON file"
                         tooltip="Download backup JSON configuration"
@@ -306,7 +306,7 @@ export const Settings: React.FC = () => {
                           <Tooltip content="Export settings & agents JSON" position="left">
                             <button 
                               onClick={exportConfig}
-                              className={`px-3 py-1.5 text-xs font-martian rounded-lg transition-colors shadow-sm cursor-pointer ${isLight ? 'bg-kamry-blackout text-white hover:bg-kamry-graphite' : 'bg-[#0EA5E9] text-white hover:bg-blue-600'}`}
+                              className={`px-3 py-1.5 text-xs font-martian rounded-lg transition-colors shadow-sm cursor-pointer ${isLight ? 'bg-camry-blackout text-white hover:bg-camry-graphite' : 'bg-[#0EA5E9] text-white hover:bg-blue-600'}`}
                             >
                               Export JSON
                             </button>
@@ -315,7 +315,7 @@ export const Settings: React.FC = () => {
                       />
                       <div className={`h-[1px] ml-12 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
                       <SettingRow 
-                        icon={<Upload size={18} className={isLight ? "text-kamry-graphite/60" : "text-zinc-400"} />}
+                        icon={<Upload size={18} className={isLight ? "text-camry-graphite/60" : "text-zinc-400"} />}
                         title="Import Configuration"
                         subtitle="Restore settings from a JSON backup file"
                         tooltip="Restore configuration from local file"
@@ -324,7 +324,7 @@ export const Settings: React.FC = () => {
                           <Tooltip content="Restore system backup from JSON file" position="left">
                             <button 
                               onClick={() => fileInputRef.current?.click()}
-                              className={`px-3 py-1.5 text-xs font-martian rounded-lg transition-colors cursor-pointer ${isLight ? 'bg-kamry-graphite/10 text-kamry-blackout hover:bg-kamry-graphite/20' : 'bg-white/10 text-white hover:bg-white/20'}`}
+                              className={`px-3 py-1.5 text-xs font-martian rounded-lg transition-colors cursor-pointer ${isLight ? 'bg-camry-graphite/10 text-camry-blackout hover:bg-camry-graphite/20' : 'bg-white/10 text-white hover:bg-white/20'}`}
                             >
                               Restore
                             </button>
@@ -352,7 +352,7 @@ export const Settings: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}
+            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}
           >
             <ApiKeySubScreen onBack={() => setSettingsView('main')} />
           </motion.div>
@@ -364,7 +364,7 @@ export const Settings: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}
+            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}
           >
             <DeveloperConsoleSubScreen onBack={() => setSettingsView('main')} />
           </motion.div>
@@ -376,7 +376,7 @@ export const Settings: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}
+            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}
           >
             <DeviceInfoSubScreen onBack={() => setSettingsView('main')} />
           </motion.div>
@@ -388,7 +388,7 @@ export const Settings: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}
+            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}
           >
             <StorageSubScreen onBack={() => setSettingsView('main')} />
           </motion.div>
@@ -400,7 +400,7 @@ export const Settings: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}
+            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}
           >
             <WifiSubScreen onBack={() => setSettingsView('main')} />
           </motion.div>
@@ -412,7 +412,7 @@ export const Settings: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}
+            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}
           >
             <UpdateSubScreen onBack={() => setSettingsView('main')} />
           </motion.div>
@@ -424,7 +424,7 @@ export const Settings: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}
+            className={`absolute inset-0 z-20 flex flex-col ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}
           >
             <PrivacySubScreen onBack={() => setSettingsView('main')} />
           </motion.div>
@@ -436,7 +436,7 @@ export const Settings: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`absolute inset-0 z-20 flex flex-col overflow-hidden ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}
+            className={`absolute inset-0 z-20 flex flex-col overflow-hidden ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}
           >
             <AnalyticsSubScreen onBack={() => {
               setSettingsView('main');
@@ -453,7 +453,7 @@ export const Settings: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`absolute inset-0 z-20 flex flex-col overflow-hidden ${isLight ? 'bg-kamry-paper' : 'bg-[#141418]'}`}
+            className={`absolute inset-0 z-20 flex flex-col overflow-hidden ${isLight ? 'bg-camry-paper' : 'bg-[#141418]'}`}
           >
             <Team onBack={() => {
               setSettingsView('main');
@@ -490,27 +490,27 @@ const ApiKeySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
       <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
-        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
+        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
           <ArrowLeft size={20} />
         </button>
-        <Key size={20} className={`flex-shrink-0 ${isLight ? 'text-kamry-blackout' : 'text-white'}`} />
-        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>API key</h1>
+        <Key size={20} className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-white'}`} />
+        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>API key</h1>
       </div>
 
       <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
-        <div className={`font-martian text-xs mb-3 tracking-wider ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>API KEY</div>
+        <div className={`font-martian text-xs mb-3 tracking-wider ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>API KEY</div>
         
         <div className={`border rounded-xl shadow-sm p-4 sm:p-6 space-y-6 sm:space-y-8 ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
           
           <div>
-            <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-kamry-graphite' : 'text-zinc-300'}`}>API Base URL</label>
+            <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>API Base URL</label>
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className={`flex-1 border rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 font-martian text-xs sm:text-sm truncate ${isLight ? 'bg-kamry-graphite/5 border-black/5 text-kamry-blackout' : 'bg-white/5 border-white/10 text-white'}`}>
+              <div className={`flex-1 border rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 font-martian text-xs sm:text-sm truncate ${isLight ? 'bg-camry-graphite/5 border-black/5 text-camry-blackout' : 'bg-white/5 border-white/10 text-white'}`}>
                 {baseUrl}
               </div>
               <button 
                 onClick={handleCopyUrl}
-                className={`w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg border transition-all flex-shrink-0 ${isLight ? 'border-black/10 bg-white hover:bg-black/5 text-kamry-graphite/60' : 'border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300'}`}
+                className={`w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg border transition-all flex-shrink-0 ${isLight ? 'border-black/10 bg-white hover:bg-black/5 text-camry-graphite/60' : 'border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300'}`}
               >
                 <Copy size={18} />
               </button>
@@ -518,17 +518,17 @@ const ApiKeySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
 
           <div>
-            <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-kamry-graphite' : 'text-zinc-300'}`}>API Key</label>
+            <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>API Key</label>
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className={`flex-1 border rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 font-martian text-xs sm:text-sm flex items-center justify-between min-w-0 ${isLight ? 'bg-kamry-graphite/5 border-black/5 text-kamry-blackout' : 'bg-white/5 border-white/10 text-white'}`}>
+              <div className={`flex-1 border rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 font-martian text-xs sm:text-sm flex items-center justify-between min-w-0 ${isLight ? 'bg-camry-graphite/5 border-black/5 text-camry-blackout' : 'bg-white/5 border-white/10 text-white'}`}>
                 <span className="truncate mr-2">{showKey ? apiKey : '••••••••••••••••••••••••••••••••••••'}</span>
-                <button onClick={() => setShowKey(!showKey)} className={`flex-shrink-0 ${isLight ? 'text-kamry-graphite/40 hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
+                <button onClick={() => setShowKey(!showKey)} className={`flex-shrink-0 ${isLight ? 'text-camry-graphite/40 hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   {showKey ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               <button 
                 onClick={handleCopyKey}
-                className={`w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg border transition-all flex-shrink-0 ${isLight ? 'border-black/10 bg-white hover:bg-black/5 text-kamry-graphite/60' : 'border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300'}`}
+                className={`w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg border transition-all flex-shrink-0 ${isLight ? 'border-black/10 bg-white hover:bg-black/5 text-camry-graphite/60' : 'border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300'}`}
               >
                 <Copy size={18} />
               </button>
@@ -536,8 +536,8 @@ const ApiKeySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
 
           <div className={`pt-4 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${isLight ? 'border-black/5' : 'border-white/10'}`}>
-            <p className={`font-familjen text-xs sm:text-sm ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
-              Point any OpenAI-compatible tool at your Kamry device. Nothing leaves the building.
+            <p className={`font-familjen text-xs sm:text-sm ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
+              Point any OpenAI-compatible tool at your Camry device. Nothing leaves the building.
             </p>
             <button 
               onClick={() => setShowRegenModal(true)}
@@ -553,16 +553,16 @@ const ApiKeySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       {/* Regen Confirm Modal */}
       <AnimatePresence>
         {showRegenModal && (
-          <div className={`absolute inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm ${isLight ? 'bg-kamry-paper/80' : 'bg-black/80'}`}>
+          <div className={`absolute inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm ${isLight ? 'bg-camry-paper/80' : 'bg-black/80'}`}>
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`border rounded-xl shadow-xl p-5 sm:p-6 max-w-sm w-full ${isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'}`}
             >
-              <h3 className={`font-bricolage text-lg sm:text-xl mb-2 ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Regenerate API key?</h3>
-              <p className={`font-familjen text-xs sm:text-sm mb-6 ${isLight ? 'text-kamry-graphite/70' : 'text-zinc-400'}`}>
-                Any applications using the current key will immediately lose access to Kamry. This action cannot be undone.
+              <h3 className={`font-bricolage text-lg sm:text-xl mb-2 ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Regenerate API key?</h3>
+              <p className={`font-familjen text-xs sm:text-sm mb-6 ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
+                Any applications using the current key will immediately lose access to Camry. This action cannot be undone.
               </p>
               <div className="flex items-center gap-3 justify-end">
                 <button onClick={() => setShowRegenModal(false)} className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium ${isLight ? 'hover:bg-black/5 text-zinc-700' : 'hover:bg-white/10 text-zinc-300'}`}>Cancel</button>
@@ -627,22 +627,22 @@ const DeveloperConsoleSubScreen: React.FC<{ onBack: () => void }> = ({ onBack })
   return (
     <>
       <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3 flex-shrink-0">
-        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
+        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
           <ArrowLeft size={20} />
         </button>
-        <Terminal size={20} className={`flex-shrink-0 ${isLight ? 'text-kamry-blackout' : 'text-white'}`} />
-        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Developer Console</h1>
+        <Terminal size={20} className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-white'}`} />
+        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Developer Console</h1>
         <div className="ml-auto flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
-          <span className={`font-martian text-[10px] tracking-wider ${isLight ? 'text-kamry-graphite/70' : 'text-zinc-400'}`}>LIVE</span>
+          <span className={`font-martian text-[10px] tracking-wider ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>LIVE</span>
         </div>
       </div>
 
       <div className="flex-1 flex flex-col p-4 sm:p-8 items-center justify-start overflow-hidden">
-        <div className={`w-full max-w-4xl h-[380px] sm:h-[500px] border rounded-xl flex flex-col shadow-sm overflow-hidden relative ${isLight ? 'bg-kamry-graphite border-black/10' : 'bg-[#18181C] border-white/10'}`}>
+        <div className={`w-full max-w-4xl h-[380px] sm:h-[500px] border rounded-xl flex flex-col shadow-sm overflow-hidden relative ${isLight ? 'bg-camry-graphite border-black/10' : 'bg-[#18181C] border-white/10'}`}>
           
           <div className="flex items-center px-4 py-3 border-b border-black/20 bg-black/20 flex-shrink-0">
-            <span className="font-martian text-xs text-white/50">kamry-syslogd</span>
+            <span className="font-martian text-xs text-white/50">camry-syslogd</span>
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 font-martian text-[10px] sm:text-[11px] leading-loose text-emerald-400" ref={scrollRef}>
@@ -667,23 +667,23 @@ const DeviceInfoSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
       <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
-        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
+        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
           <ArrowLeft size={20} />
         </button>
-        <Monitor size={20} className={`flex-shrink-0 ${isLight ? 'text-kamry-blackout' : 'text-white'}`} />
-        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Device Information</h1>
+        <Monitor size={20} className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-white'}`} />
+        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Device Information</h1>
       </div>
       <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
         <div className={`border rounded-xl shadow-sm overflow-hidden ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
-          <SettingRow title="Model" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>Kamry Gen 1</span>} />
+          <SettingRow title="Model" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>Camry Gen 1</span>} />
           <div className={`h-[1px] ml-4 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
-          <SettingRow title="Serial Number" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>C1-X992-0041</span>} />
+          <SettingRow title="Serial Number" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>C1-X992-0041</span>} />
           <div className={`h-[1px] ml-4 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
-          <SettingRow title="Firmware" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>v1.0.3 (Stable)</span>} />
+          <SettingRow title="Firmware" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>v1.0.3 (Stable)</span>} />
           <div className={`h-[1px] ml-4 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
-          <SettingRow title="NPU Core" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>Tensor V2 - 40 TOPS</span>} />
+          <SettingRow title="NPU Core" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>Tensor V2 - 40 TOPS</span>} />
           <div className={`h-[1px] ml-4 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
-          <SettingRow title="RAM" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>32GB LPDDR5X</span>} />
+          <SettingRow title="RAM" right={<span className={`text-xs sm:text-sm font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>32GB LPDDR5X</span>} />
         </div>
       </div>
     </>
@@ -696,35 +696,35 @@ const StorageSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
       <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
-        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
+        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
           <ArrowLeft size={20} />
         </button>
-        <HardDrive size={20} className={`flex-shrink-0 ${isLight ? 'text-kamry-blackout' : 'text-white'}`} />
-        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Storage Space</h1>
+        <HardDrive size={20} className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-white'}`} />
+        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Storage Space</h1>
       </div>
       <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
         <div className={`border rounded-xl shadow-sm p-4 sm:p-8 ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
           <div className="flex items-end justify-between mb-2">
-            <span className={`font-bricolage text-2xl sm:text-3xl ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>142 GB</span>
-            <span className={`font-martian text-xs sm:text-sm ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>of 1000 GB used</span>
+            <span className={`font-bricolage text-2xl sm:text-3xl ${isLight ? 'text-camry-blackout' : 'text-white'}`}>142 GB</span>
+            <span className={`font-martian text-xs sm:text-sm ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>of 1000 GB used</span>
           </div>
-          <div className={`w-full h-3 rounded-full overflow-hidden flex mb-6 ${isLight ? 'bg-kamry-graphite/10' : 'bg-white/10'}`}>
+          <div className={`w-full h-3 rounded-full overflow-hidden flex mb-6 ${isLight ? 'bg-camry-graphite/10' : 'bg-white/10'}`}>
             <div className="h-full bg-[#0EA5E9]" style={{ width: '10%' }}></div>
             <div className="h-full bg-indigo-400" style={{ width: '3%' }}></div>
             <div className="h-full bg-emerald-400" style={{ width: '1.2%' }}></div>
           </div>
           <div className="space-y-4">
             <div className="flex items-center justify-between text-xs sm:text-sm">
-              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-sm bg-[#0EA5E9]"></div><span className={`font-medium ${isLight ? 'text-kamry-graphite' : 'text-zinc-200'}`}>Models</span></div>
-              <span className={`font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>100 GB</span>
+              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-sm bg-[#0EA5E9]"></div><span className={`font-medium ${isLight ? 'text-camry-graphite' : 'text-zinc-200'}`}>Models</span></div>
+              <span className={`font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>100 GB</span>
             </div>
             <div className="flex items-center justify-between text-xs sm:text-sm">
-              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-sm bg-indigo-400"></div><span className={`font-medium ${isLight ? 'text-kamry-graphite' : 'text-zinc-200'}`}>System</span></div>
-              <span className={`font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>30 GB</span>
+              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-sm bg-indigo-400"></div><span className={`font-medium ${isLight ? 'text-camry-graphite' : 'text-zinc-200'}`}>System</span></div>
+              <span className={`font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>30 GB</span>
             </div>
             <div className="flex items-center justify-between text-xs sm:text-sm">
-              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-sm bg-emerald-400"></div><span className={`font-medium ${isLight ? 'text-kamry-graphite' : 'text-zinc-200'}`}>User Data</span></div>
-              <span className={`font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>12 GB</span>
+              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-sm bg-emerald-400"></div><span className={`font-medium ${isLight ? 'text-camry-graphite' : 'text-zinc-200'}`}>User Data</span></div>
+              <span className={`font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>12 GB</span>
             </div>
           </div>
         </div>
@@ -739,23 +739,23 @@ const WifiSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
       <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
-        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
+        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
           <ArrowLeft size={20} />
         </button>
-        <Wifi size={20} className={`flex-shrink-0 ${isLight ? 'text-kamry-blackout' : 'text-white'}`} />
-        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Wi-Fi</h1>
+        <Wifi size={20} className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-white'}`} />
+        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Wi-Fi</h1>
       </div>
       <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
         <div className={`border rounded-xl shadow-sm overflow-hidden mb-6 sm:mb-8 ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
           <SettingRow title="Wi-Fi" right={<Toggle defaultChecked />} />
         </div>
-        <div className={`font-martian text-xs mb-3 px-2 tracking-wider ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>KNOWN NETWORKS</div>
+        <div className={`font-martian text-xs mb-3 px-2 tracking-wider ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>KNOWN NETWORKS</div>
         <div className={`border rounded-xl shadow-sm overflow-hidden ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
           <SettingRow title="Nuvious-Corp-5G" right={<span className="text-xs sm:text-sm font-medium text-[#0EA5E9]">Connected</span>} />
           <div className={`h-[1px] ml-4 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
-          <SettingRow title="Nuvious-Guest" right={<Lock size={16} className={isLight ? "text-kamry-graphite/40" : "text-zinc-500"} />} />
+          <SettingRow title="Nuvious-Guest" right={<Lock size={16} className={isLight ? "text-camry-graphite/40" : "text-zinc-500"} />} />
           <div className={`h-[1px] ml-4 ${isLight ? 'bg-black/5' : 'bg-white/10'}`}></div>
-          <SettingRow title="Starbucks WiFi" right={<span className={`text-xs sm:text-sm ${isLight ? 'text-kamry-graphite/40' : 'text-zinc-500'}`}>Saved</span>} />
+          <SettingRow title="Starbucks WiFi" right={<span className={`text-xs sm:text-sm ${isLight ? 'text-camry-graphite/40' : 'text-zinc-500'}`}>Saved</span>} />
         </div>
       </div>
     </>
@@ -789,23 +789,23 @@ const UpdateSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
       <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
-        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
+        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
           <ArrowLeft size={20} />
         </button>
-        <ArrowLeft size={20} className={`rotate-90 flex-shrink-0 ${isLight ? 'text-kamry-blackout' : 'text-white'}`} />
-        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Software Update</h1>
+        <ArrowLeft size={20} className={`rotate-90 flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-white'}`} />
+        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Software Update</h1>
       </div>
       <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
         <div className={`border rounded-xl shadow-sm p-5 sm:p-8 text-center ${isLight ? 'bg-white border-black/5' : 'bg-[#1C1C22] border-white/10'}`}>
-          <div className={`w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full flex items-center justify-center mb-4 ${isLight ? 'bg-kamry-graphite/5' : 'bg-white/5'}`}>
+          <div className={`w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full flex items-center justify-center mb-4 ${isLight ? 'bg-camry-graphite/5' : 'bg-white/5'}`}>
             <ArrowLeft size={28} className="text-[#0EA5E9] rotate-90" />
           </div>
-          <h2 className={`text-lg sm:text-xl font-bricolage mb-2 ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Kamry OS v1.0.4 is available</h2>
-          <p className={`text-xs sm:text-sm mb-6 sm:mb-8 ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>This update includes performance improvements for local model inference and various bug fixes.</p>
+          <h2 className={`text-lg sm:text-xl font-bricolage mb-2 ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Camry OS v1.0.4 is available</h2>
+          <p className={`text-xs sm:text-sm mb-6 sm:mb-8 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>This update includes performance improvements for local model inference and various bug fixes.</p>
           
           {isUpdating ? (
             <div className="max-w-md mx-auto">
-              <div className={`flex justify-between text-xs font-martian mb-2 ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+              <div className={`flex justify-between text-xs font-martian mb-2 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                 <span>Downloading...</span>
                 <span>{progress}%</span>
               </div>
@@ -816,7 +816,7 @@ const UpdateSubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           ) : (
             <button 
               onClick={startUpdate}
-              className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-colors cursor-pointer ${isLight ? 'bg-kamry-blackout text-white hover:bg-kamry-graphite' : 'bg-[#0EA5E9] text-white hover:bg-blue-600'}`}
+              className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-colors cursor-pointer ${isLight ? 'bg-camry-blackout text-white hover:bg-camry-graphite' : 'bg-[#0EA5E9] text-white hover:bg-blue-600'}`}
             >
               Download & Install
             </button>
@@ -833,17 +833,17 @@ const PrivacySubScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <>
       <div className="p-4 sm:p-8 pb-3 sm:pb-4 flex items-center gap-3">
-        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
+        <button onClick={onBack} className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'}`}>
           <ArrowLeft size={20} />
         </button>
-        <Shield size={20} className={`flex-shrink-0 ${isLight ? 'text-kamry-blackout' : 'text-white'}`} />
-        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Privacy Policy</h1>
+        <Shield size={20} className={`flex-shrink-0 ${isLight ? 'text-camry-blackout' : 'text-white'}`} />
+        <h1 className={`text-xl sm:text-2xl font-bricolage ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Privacy Policy</h1>
       </div>
       <div className="px-4 sm:px-8 md:px-16 pt-4 sm:pt-8 max-w-3xl w-full">
-        <div className={`border rounded-xl shadow-sm p-5 sm:p-8 ${isLight ? 'bg-white border-black/5 text-kamry-graphite' : 'bg-[#1C1C22] border-white/10 text-zinc-300'}`}>
-          <h3 className={`font-bricolage text-base sm:text-lg mb-3 ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Your Data Stays With You.</h3>
+        <div className={`border rounded-xl shadow-sm p-5 sm:p-8 ${isLight ? 'bg-white border-black/5 text-camry-graphite' : 'bg-[#1C1C22] border-white/10 text-zinc-300'}`}>
+          <h3 className={`font-bricolage text-base sm:text-lg mb-3 ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Your Data Stays With You.</h3>
           <p className="mb-3 text-xs sm:text-sm">
-            The Kamry device is designed as a local-first appliance. By default, all AI models execute locally on the device's internal Neural Processing Unit (NPU).
+            The Camry device is designed as a local-first appliance. By default, all AI models execute locally on the device's internal Neural Processing Unit (NPU).
           </p>
           <p className="mb-3 text-xs sm:text-sm">
             - <strong>No telemetry</strong> is sent to Nuvious servers.<br/>
@@ -903,13 +903,13 @@ const MiniDashboard: React.FC = () => {
             </AnimatedIcon>
           </div>
           <div>
-            <h2 className={`font-bricolage font-bold text-base sm:text-lg flex items-center gap-2 ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+            <h2 className={`font-bricolage font-bold text-base sm:text-lg flex items-center gap-2 ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
               <span>AI System & Knowledge Dashboard</span>
               <span className="text-[10px] font-martian font-bold px-2.5 py-0.5 rounded-md uppercase bg-zinc-800 text-white shadow-xs tracking-wider">
                 100% ON-DEVICE NPU
               </span>
             </h2>
-            <p className={`text-xs font-familjen ${isLight ? 'text-kamry-graphite/70' : 'text-zinc-400'}`}>
+            <p className={`text-xs font-familjen ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
               Real-time local token metrics, active agent pipelines, and top knowledge categories
             </p>
           </div>
@@ -962,7 +962,7 @@ const MiniDashboard: React.FC = () => {
           </div>
 
           <div>
-            <div className={`text-2xl font-bricolage font-bold flex items-baseline gap-2 ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+            <div className={`text-2xl font-bricolage font-bold flex items-baseline gap-2 ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
               <span>2,845,190</span>
               <span className="text-xs font-martian text-zinc-500 font-medium">+12.4% today</span>
             </div>
@@ -1005,7 +1005,7 @@ const MiniDashboard: React.FC = () => {
           </div>
 
           <div className="flex items-baseline gap-2">
-            <span className={`text-2xl font-bricolage font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{activeInstalledAgents.length}</span>
+            <span className={`text-2xl font-bricolage font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{activeInstalledAgents.length}</span>
             <span className={`text-xs font-martian ${isLight ? 'text-zinc-600' : 'text-zinc-400'}`}>Installed ({activeCount} Active)</span>
           </div>
 
@@ -1105,18 +1105,18 @@ const SettingRow = ({ icon, title, subtitle, tooltip, iconAnimation = 'scale', r
     <Component 
       onClick={onClick}
       className={`w-full flex items-center justify-between p-3.5 sm:p-4 gap-3 ${
-        onClick ? (isLight ? 'hover:bg-kamry-graphite/5 transition-colors text-left cursor-pointer group' : 'hover:bg-white/5 transition-colors text-left cursor-pointer group') : ''
+        onClick ? (isLight ? 'hover:bg-camry-graphite/5 transition-colors text-left cursor-pointer group' : 'hover:bg-white/5 transition-colors text-left cursor-pointer group') : ''
       }`}
     >
       <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
         {icon && (
-          <AnimatedIcon type={iconAnimation as IconAnimationType} className={isLight ? 'text-kamry-blackout group-hover:text-kamry-carrier' : 'text-zinc-300 group-hover:text-[#0EA5E9]'}>
+          <AnimatedIcon type={iconAnimation as IconAnimationType} className={isLight ? 'text-camry-blackout group-hover:text-camry-carrier' : 'text-zinc-300 group-hover:text-[#0EA5E9]'}>
             {icon}
           </AnimatedIcon>
         )}
         <div className="min-w-0 flex-1">
-          <div className={`font-medium text-xs sm:text-sm truncate ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{title}</div>
-          {subtitle && <div className={`text-[10px] sm:text-xs font-martian mt-0.5 truncate ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>{subtitle}</div>}
+          <div className={`font-medium text-xs sm:text-sm truncate ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{title}</div>
+          {subtitle && <div className={`text-[10px] sm:text-xs font-martian mt-0.5 truncate ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>{subtitle}</div>}
         </div>
       </div>
       <div className="flex-shrink-0 ml-2">{right}</div>
@@ -1174,7 +1174,7 @@ const AnalyticsSubScreen: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
   }, []);
 
   const [logs, setLogs] = useState<Array<{ id: string; timestamp: string; category: 'HW' | 'INF' | 'SYS' | 'WARN'; message: string }>>([
-    { id: '1', timestamp: '12:50:00', category: 'SYS', message: 'Kamry OS NPU kernel initialized (32GB Unified VRAM allocated)' },
+    { id: '1', timestamp: '12:50:00', category: 'SYS', message: 'Camry OS NPU kernel initialized (32GB Unified VRAM allocated)' },
     { id: '2', timestamp: '12:50:08', category: 'HW', message: 'Core temperature 41°C — Thermal throttle disabled' },
     { id: '3', timestamp: '12:50:15', category: 'INF', message: 'Inference thread started for agent "meeting" (Latency: 14ms)' },
     { id: '4', timestamp: '12:50:22', category: 'HW', message: 'LPDDR5X Memory bandwidth test OK — 142 GB/s verified' },
@@ -1192,7 +1192,7 @@ const AnalyticsSubScreen: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
     const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     setLastUpdated(`${timeStr} today`);
     setIsRefreshing(false);
-    showToast("Telemetry re-fetched from Kamry device");
+    showToast("Telemetry re-fetched from Camry device");
   };
 
   useEffect(() => {
@@ -1278,7 +1278,7 @@ const AnalyticsSubScreen: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
     <div className="flex-1 h-full flex flex-col overflow-hidden">
       {/* Top Header */}
       <div className={`p-4 sm:p-6 pb-3 border-b flex items-center justify-between flex-shrink-0 z-10 ${
-        isLight ? 'bg-kamry-paper border-black/10' : 'bg-[#141418] border-white/10'
+        isLight ? 'bg-camry-paper border-black/10' : 'bg-[#141418] border-white/10'
       }`}>
         <div className="flex items-center gap-3">
           {onBack && (

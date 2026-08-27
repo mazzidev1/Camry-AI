@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface KamryLogoProps {
+interface CamryLogoProps {
   variant?: 'light' | 'dark' | 'carrier';
   layout?: 'horizontal' | 'stacked' | 'markOnly';
   size?: 'sm' | 'md' | 'lg';
@@ -8,7 +8,7 @@ interface KamryLogoProps {
   useMascot?: boolean;
 }
 
-export const KamryLogo: React.FC<KamryLogoProps> = ({
+export const CamryLogo: React.FC<CamryLogoProps> = ({
   variant = 'light',
   layout = 'horizontal',
   size = 'md',
@@ -17,11 +17,11 @@ export const KamryLogo: React.FC<KamryLogoProps> = ({
 }) => {
   const getTextColor = () => {
     if (variant === 'dark') return 'text-[#121418]';
-    if (variant === 'carrier') return 'text-kamry-brand';
+    if (variant === 'carrier') return 'text-camry-brand';
     return 'text-white';
   };
 
-  const markFill = variant === 'dark' ? '#121418' : variant === 'carrier' ? 'var(--color-kamry-brand)' : '#FFFFFF';
+  const markFill = variant === 'dark' ? '#121418' : variant === 'carrier' ? 'var(--color-camry-brand)' : '#FFFFFF';
 
   const dimensions = {
     sm: { px: 22, text: 'text-base', gap: 'gap-2' },
@@ -36,27 +36,16 @@ export const KamryLogo: React.FC<KamryLogoProps> = ({
       viewBox="0 0 100 100" 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
-      className="shrink-0 select-none animate-fade-in"
+      className="shrink-0 select-none"
     >
-      {/* Vertical Spine of the "K" */}
-      <rect x="20" y="16" width="14" height="14" rx="4" fill={markFill} />
-      <rect x="20" y="34" width="14" height="14" rx="4" fill="#F59E0B" />
-      <rect x="20" y="52" width="14" height="14" rx="4" fill="var(--color-kamry-brand)" />
-      <rect x="20" y="70" width="14" height="14" rx="4" fill={markFill} />
-
-      {/* Diagonal Upper Branch of the "K" */}
-      <rect x="38" y="34" width="14" height="14" rx="4" fill={markFill} />
-      <rect x="56" y="16" width="14" height="14" rx="4" fill={markFill} />
-      <circle cx="80" cy="23" r="6" fill="var(--color-kamry-brand)" />
-
-      {/* Diagonal Lower Branch of the "K" */}
-      <rect x="38" y="52" width="14" height="14" rx="4" fill="#9CA3AF" />
-      <rect x="56" y="70" width="14" height="14" rx="4" fill={markFill} />
-      <circle cx="80" cy="77" r="6" fill={markFill} />
-
-      {/* Core Junction Nodes */}
-      <circle cx="45" cy="41" r="5" fill={markFill} opacity="0.8" />
-      <circle cx="45" cy="59" r="5" fill="var(--color-kamry-brand)" opacity="0.8" />
+      <rect x="36" y="16" width="32" height="12" rx="3" fill={markFill} />
+      <circle cx="78" cy="22" r="6" fill={markFill} />
+      <rect x="16" y="34" width="14" height="14" rx="3" fill="#D1D5DB" />
+      <circle cx="43" cy="41" r="6" fill={markFill} />
+      <rect x="16" y="52" width="14" height="14" rx="3" fill="var(--color-camry-brand)" />
+      <rect x="36" y="52" width="14" height="14" rx="3" fill="#9CA3AF" />
+      <rect x="36" y="70" width="32" height="12" rx="3" fill={markFill} />
+      <circle cx="78" cy="76" r="6" fill={markFill} />
     </svg>
   );
 
@@ -72,9 +61,9 @@ export const KamryLogo: React.FC<KamryLogoProps> = ({
         {Mark}
         <div className="flex items-center gap-1 mt-2">
           <span className={`font-display font-extrabold lowercase tracking-tight ${dimensions.text} ${getTextColor()}`}>
-            kamry
+            camry
           </span>
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-kamry-brand/10 text-kamry-brand font-semibold border border-kamry-brand/20">
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-camry-brand/10 text-camry-brand font-semibold border border-camry-brand/20">
             OS
           </span>
         </div>
@@ -87,9 +76,9 @@ export const KamryLogo: React.FC<KamryLogoProps> = ({
       {Mark}
       <div className="flex items-baseline gap-1.5">
         <span className={`font-display font-extrabold lowercase tracking-tight ${dimensions.text} ${getTextColor()}`}>
-          kamry
+          camry
         </span>
-        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-kamry-brand text-white font-bold shadow-sm shadow-kamry-brand/30">
+        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-camry-brand text-white font-bold shadow-sm shadow-camry-brand/30">
           OS
         </span>
       </div>

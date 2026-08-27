@@ -3,7 +3,7 @@ import { useAppContext } from '../store/AppContext';
 import { Sidebar } from './Sidebar';
 import { GlobalHeader } from './GlobalHeader';
 import { GuidedTourOverlay } from './GuidedTourOverlay';
-import { KamryOrb } from './KamryOrb';
+import { CamryOrb } from './CamryOrb';
 import { MessageSquare, Grid, Brain, BarChart2, Settings, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -36,15 +36,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const isLight = themeMode === 'light';
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-0 transition-colors duration-200 kamry-radial-glow relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center p-0 transition-colors duration-200 camry-radial-glow relative overflow-hidden">
       {/* 3-Layer Architecture: Layer 2: Ambient Light Source (Carrier Orbs) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 select-none">
-        <KamryOrb 
+        <CamryOrb 
           size="xl" 
           className="absolute top-[-10%] right-[15%] opacity-20 sm:opacity-30 lg:opacity-40 filter blur-3xl pointer-events-none scale-[2.5]" 
           interactive={true} 
         />
-        <KamryOrb 
+        <CamryOrb 
           size="lg" 
           className="absolute bottom-[5%] left-[-10%] opacity-15 sm:opacity-20 filter blur-3xl pointer-events-none scale-[2]" 
           interactive={true} 

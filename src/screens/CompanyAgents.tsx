@@ -218,7 +218,7 @@ export const CompanyAgents: React.FC = () => {
       return;
     }
 
-    const systemPromptText = newAgentPrompt.trim() || `You are ${newAgentName.trim()}, an enterprise AI agent deployed on Kamry NPU. Provide authoritative, concise, and structured guidance in ${newAgentCategory}.`;
+    const systemPromptText = newAgentPrompt.trim() || `You are ${newAgentName.trim()}, an enterprise AI agent deployed on Camry NPU. Provide authoritative, concise, and structured guidance in ${newAgentCategory}.`;
 
     const createdAgent: Agent = {
       id: `agent-custom-${Date.now()}`,
@@ -271,8 +271,8 @@ export const CompanyAgents: React.FC = () => {
   };
 
   return (
-    <div className={`flex-1 overflow-y-auto kamry-page-container kamry-section-gap transition-colors font-sans ${
-      isLight ? 'bg-kamry-paper text-kamry-blackout' : 'bg-[#141418] text-white'
+    <div className={`flex-1 overflow-y-auto camry-page-container camry-section-gap transition-colors font-sans ${
+      isLight ? 'bg-camry-paper text-camry-blackout' : 'bg-[#141418] text-white'
     }`}>
       
       <div className="space-y-6">
@@ -287,8 +287,8 @@ export const CompanyAgents: React.FC = () => {
               }`}>
                 <Bot size={22} />
               </div>
-              <h1 className={`kamry-h1-title ${
-                isLight ? 'text-kamry-blackout' : 'text-white'
+              <h1 className={`camry-h1-title ${
+                isLight ? 'text-camry-blackout' : 'text-white'
               }`}>
                 Company AI Agents
               </h1>
@@ -301,9 +301,9 @@ export const CompanyAgents: React.FC = () => {
           {/* Clean, fixed Create Company Agent button */}
           <button
             onClick={() => setIsCreateAgentModalOpen(true)}
-            className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-[6px] text-sm font-medium transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer shrink-0 shadow-xs kamry-touch-target ${
+            className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-[6px] text-sm font-medium transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer shrink-0 shadow-xs camry-touch-target ${
               isLight 
-                ? 'bg-kamry-blackout hover:bg-black text-white' 
+                ? 'bg-camry-blackout hover:bg-black text-white' 
                 : 'bg-[#0EA5E9] hover:bg-[#0284C7] text-white'
             }`}
           >
@@ -327,7 +327,7 @@ export const CompanyAgents: React.FC = () => {
               placeholder="Search company agents by name, category, or system instructions..."
               className={`w-full pl-10 pr-4 py-2.5 border rounded-[10px] text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
                 isLight 
-                  ? 'bg-zinc-50 border-black/10 text-kamry-blackout placeholder:text-zinc-400' 
+                  ? 'bg-zinc-50 border-black/10 text-camry-blackout placeholder:text-zinc-400' 
                   : 'bg-[#141418] border-white/15 text-white placeholder:text-zinc-500'
               }`}
             />
@@ -346,9 +346,9 @@ export const CompanyAgents: React.FC = () => {
               <button
                 key={cat}
                 onClick={() => setAgentCategoryFilter(cat)}
-                className={`px-3 py-1.5 rounded-[6px] text-xs font-medium transition-all flex-shrink-0 cursor-pointer whitespace-nowrap kamry-touch-target ${
+                className={`px-3 py-1.5 rounded-[6px] text-xs font-medium transition-all flex-shrink-0 cursor-pointer whitespace-nowrap camry-touch-target ${
                   agentCategoryFilter === cat 
-                    ? (isLight ? 'bg-kamry-blackout text-white font-semibold shadow-2xs' : 'bg-[#0EA5E9] text-white font-semibold shadow-2xs')
+                    ? (isLight ? 'bg-camry-blackout text-white font-semibold shadow-2xs' : 'bg-[#0EA5E9] text-white font-semibold shadow-2xs')
                     : (isLight ? 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200' : 'bg-white/10 text-zinc-300 hover:bg-white/15')
                 }`}
               >
@@ -360,11 +360,11 @@ export const CompanyAgents: React.FC = () => {
 
         {/* AGENTS GRID */}
         {filteredAgents.length === 0 ? (
-          <div className={`border rounded-[10px] kamry-empty-padding text-center space-y-3 ${
+          <div className={`border rounded-[10px] camry-empty-padding text-center space-y-3 ${
             isLight ? 'bg-white border-black/10 text-zinc-500' : 'bg-[#1C1C22] border-white/10 text-zinc-400'
           }`}>
             <Bot size={40} className={`mx-auto ${isLight ? 'text-zinc-300' : 'text-zinc-600'}`} />
-            <h3 className={`text-base font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+            <h3 className={`text-base font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
               No company agents match search
             </h3>
             <p className="text-xs max-w-sm mx-auto leading-relaxed">
@@ -372,14 +372,14 @@ export const CompanyAgents: React.FC = () => {
             </p>
           </div>
         ) : (
-          <div className="kamry-card-grid">
+          <div className="camry-card-grid">
             {filteredAgents.map(agent => {
               return (
                 <motion.div 
                   key={agent.id}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`border rounded-[10px] kamry-card-padding shadow-xs transition-all flex flex-col justify-between group ${
+                  className={`border rounded-[10px] camry-card-padding shadow-xs transition-all flex flex-col justify-between group ${
                     isLight 
                       ? 'bg-white border-black/10 hover:border-black/30 hover:shadow-md' 
                       : 'bg-[#1C1C22] border-white/10 hover:border-white/30 hover:shadow-md'
@@ -396,7 +396,7 @@ export const CompanyAgents: React.FC = () => {
                         </div>
                         <div>
                           <h3 className={`font-bold text-base transition-colors ${
-                            isLight ? 'text-kamry-blackout group-hover:text-[#0EA5E9]' : 'text-white group-hover:text-blue-400'
+                            isLight ? 'text-camry-blackout group-hover:text-[#0EA5E9]' : 'text-white group-hover:text-blue-400'
                           }`}>
                             {agent.name}
                           </h3>
@@ -472,7 +472,7 @@ export const CompanyAgents: React.FC = () => {
                     <button
                       onClick={() => handleLaunchAgentChat(agent)}
                       className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-all hover:scale-105 cursor-pointer ${
-                        isLight ? 'bg-kamry-blackout hover:bg-black text-white' : 'bg-[#0EA5E9] hover:bg-sky-500 text-white'
+                        isLight ? 'bg-camry-blackout hover:bg-black text-white' : 'bg-[#0EA5E9] hover:bg-sky-500 text-white'
                       }`}
                     >
                       <MessageSquare size={13} className={isLight ? 'text-sky-400' : 'text-white'} />
@@ -497,7 +497,7 @@ export const CompanyAgents: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
               className={`border rounded-2xl max-w-2xl sm:max-w-3xl w-full p-6 sm:p-7 shadow-2xl space-y-4 max-h-[90vh] flex flex-col my-auto ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               {/* Modal Header */}
@@ -509,11 +509,11 @@ export const CompanyAgents: React.FC = () => {
                     <Bot size={22} />
                   </div>
                   <div>
-                    <h2 className={`text-lg sm:text-xl font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                    <h2 className={`text-lg sm:text-xl font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                       Create Company AI Agent
                     </h2>
                     <p className={`text-xs sm:text-sm mt-0.5 ${isLight ? 'text-zinc-600' : 'text-zinc-400'}`}>
-                      Deploy a customized agent on local Kamry NPU for team workflows
+                      Deploy a customized agent on local Camry NPU for team workflows
                     </p>
                   </div>
                 </div>
@@ -541,7 +541,7 @@ export const CompanyAgents: React.FC = () => {
                     onChange={(e) => setNewAgentName(e.target.value)}
                     placeholder="e.g. Audit Compliance Officer"
                     className={`w-full px-3.5 py-2.5 border rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                      isLight ? 'bg-zinc-50 border-black/10 text-kamry-blackout' : 'bg-[#141418] border-white/15 text-white'
+                      isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
                     }`}
                   />
                 </div>
@@ -570,7 +570,7 @@ export const CompanyAgents: React.FC = () => {
                       onChange={(e) => setNewAgentVersion(e.target.value)}
                       placeholder="v1.0.0"
                       className={`w-full px-3.5 py-2.5 border rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                        isLight ? 'bg-zinc-50 border-black/10 text-kamry-blackout' : 'bg-[#141418] border-white/15 text-white'
+                        isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
                       }`}
                     />
                   </div>
@@ -586,7 +586,7 @@ export const CompanyAgents: React.FC = () => {
                     onChange={(e) => setNewAgentTagline(e.target.value)}
                     placeholder="e.g. Scans contract clauses against corporate risk policies."
                     className={`w-full px-3.5 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                      isLight ? 'bg-zinc-50 border-black/10 text-kamry-blackout' : 'bg-[#141418] border-white/15 text-white'
+                      isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
                     }`}
                   />
                 </div>
@@ -601,7 +601,7 @@ export const CompanyAgents: React.FC = () => {
                     onChange={(e) => setNewAgentPrompt(e.target.value)}
                     placeholder="You are an enterprise AI compliance specialist. Analyze contracts, flag high-risk indemnities, and respond with structured markdown analysis..."
                     className={`w-full p-3.5 border rounded-xl font-mono text-xs leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                      isLight ? 'bg-zinc-50 border-black/10 text-kamry-blackout' : 'bg-[#141418] border-white/15 text-white'
+                      isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
                     }`}
                   />
                 </div>
@@ -627,7 +627,7 @@ export const CompanyAgents: React.FC = () => {
                         <div className={`p-1.5 rounded-lg ${isLight ? 'bg-sky-100/70 text-[#0EA5E9]' : 'bg-sky-950/60 text-sky-400'}`}>
                           <Database size={17} className="shrink-0" />
                         </div>
-                        <h4 className={`text-sm sm:text-base font-bold tracking-tight whitespace-nowrap ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                        <h4 className={`text-sm sm:text-base font-bold tracking-tight whitespace-nowrap ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                           Knowledge Base & Reference Documents
                         </h4>
                       </div>
@@ -643,7 +643,7 @@ export const CompanyAgents: React.FC = () => {
                         onClick={() => fileInputRef.current?.click()}
                         className={`px-3.5 py-2 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all hover:scale-[1.01] cursor-pointer whitespace-nowrap ${
                           isLight 
-                            ? 'bg-white border-black/15 text-kamry-blackout hover:bg-zinc-100 shadow-2xs' 
+                            ? 'bg-white border-black/15 text-camry-blackout hover:bg-zinc-100 shadow-2xs' 
                             : 'bg-white/10 border-white/15 text-white hover:bg-white/15 shadow-2xs'
                         }`}
                       >
@@ -685,7 +685,7 @@ export const CompanyAgents: React.FC = () => {
                     {attachedDocs.length === 0 ? (
                       <div className="text-center py-5 px-3 space-y-2">
                         <Upload size={24} className={`mx-auto ${isLight ? 'text-zinc-400' : 'text-zinc-500'}`} />
-                        <div className={`text-xs font-semibold ${isLight ? 'text-kamry-blackout' : 'text-zinc-200'}`}>
+                        <div className={`text-xs font-semibold ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>
                           No documents attached yet
                         </div>
                         <p className={`text-xs leading-relaxed ${isLight ? 'text-zinc-600' : 'text-zinc-400'}`}>
@@ -698,7 +698,7 @@ export const CompanyAgents: React.FC = () => {
                     ) : (
                       <div className="space-y-2.5">
                         <div className="flex items-center justify-between text-xs pb-1.5 border-b border-black/5 dark:border-white/5">
-                          <span className={`font-semibold ${isLight ? 'text-kamry-blackout' : 'text-zinc-200'}`}>
+                          <span className={`font-semibold ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>
                             Attached Reference Documents ({attachedDocs.length})
                           </span>
                           <span className={isLight ? 'text-zinc-500' : 'text-zinc-400'}>
@@ -717,7 +717,7 @@ export const CompanyAgents: React.FC = () => {
                               <div className="flex items-center gap-2.5 min-w-0">
                                 {getDocTypeIcon(doc.type, 16)}
                                 <div className="min-w-0">
-                                  <div className={`font-semibold truncate text-xs ${isLight ? 'text-kamry-blackout' : 'text-white'}`} title={doc.name}>
+                                  <div className={`font-semibold truncate text-xs ${isLight ? 'text-camry-blackout' : 'text-white'}`} title={doc.name}>
                                     {doc.name}
                                   </div>
                                   <div className="flex items-center gap-2 mt-0.5">
@@ -774,7 +774,7 @@ export const CompanyAgents: React.FC = () => {
                     type="button" 
                     onClick={() => setIsCreateAgentModalOpen(false)}
                     className={`px-4 py-2.5 rounded-xl border text-xs font-semibold cursor-pointer ${
-                      isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                      isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                     }`}
                   >
                     Cancel
@@ -805,7 +805,7 @@ export const CompanyAgents: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
               className={`border rounded-2xl max-w-2xl sm:max-w-3xl w-full p-6 sm:p-7 shadow-2xl space-y-4 max-h-[85vh] flex flex-col ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               {/* Header */}
@@ -817,7 +817,7 @@ export const CompanyAgents: React.FC = () => {
                     <Database size={20} />
                   </div>
                   <div>
-                    <h3 className={`font-bold text-base sm:text-lg ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                    <h3 className={`font-bold text-base sm:text-lg ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                       Select Documents from Knowledge Base
                     </h3>
                     <p className={`text-xs sm:text-sm ${isLight ? 'text-zinc-600' : 'text-zinc-400'}`}>
@@ -849,7 +849,7 @@ export const CompanyAgents: React.FC = () => {
                       onChange={(e) => setKbSearchQuery(e.target.value)}
                       placeholder="Search Knowledge Base by name or snippet..."
                       className={`w-full pl-9 pr-3 py-2 border rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                        isLight ? 'bg-zinc-50 border-black/10 text-kamry-blackout' : 'bg-[#141418] border-white/15 text-white'
+                        isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/15 text-white'
                       }`}
                     />
                   </div>
@@ -922,7 +922,7 @@ export const CompanyAgents: React.FC = () => {
                         isLight ? 'bg-zinc-50 border-black/10 text-zinc-500' : 'bg-[#141418] border-white/10 text-zinc-400'
                       }`}>
                         <Database size={28} className={`mx-auto ${isLight ? 'text-zinc-300' : 'text-zinc-600'}`} />
-                        <div className={`text-xs font-semibold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                        <div className={`text-xs font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                           No matching knowledge base documents
                         </div>
                         <p className="text-[11px]">Try adjusting your search query or department scope filter.</p>
@@ -955,8 +955,8 @@ export const CompanyAgents: React.FC = () => {
                           <div className="min-w-0 space-y-0.5">
                             <div className={`font-semibold text-xs sm:text-sm truncate ${
                               isSelected 
-                                ? (isLight ? 'text-kamry-blackout font-bold' : 'text-white font-bold') 
-                                : (isLight ? 'text-kamry-blackout' : 'text-zinc-200')
+                                ? (isLight ? 'text-camry-blackout font-bold' : 'text-white font-bold') 
+                                : (isLight ? 'text-camry-blackout' : 'text-zinc-200')
                             }`}>
                               {doc.name}
                             </div>
@@ -1002,7 +1002,7 @@ export const CompanyAgents: React.FC = () => {
                     type="button" 
                     onClick={() => setIsKbPickerOpen(false)}
                     className={`px-4 py-2.5 rounded-xl border text-xs font-semibold cursor-pointer ${
-                      isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                      isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                     }`}
                   >
                     Cancel
@@ -1034,7 +1034,7 @@ export const CompanyAgents: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
               className={`border rounded-2xl max-w-xl w-full p-6 sm:p-7 shadow-2xl space-y-4 max-h-[85vh] flex flex-col ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               {/* Header */}
@@ -1044,7 +1044,7 @@ export const CompanyAgents: React.FC = () => {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <span className={`px-2.5 py-0.5 rounded text-xs font-semibold ${
-                      isLight ? 'bg-kamry-blackout text-white' : 'bg-[#0EA5E9] text-white'
+                      isLight ? 'bg-camry-blackout text-white' : 'bg-[#0EA5E9] text-white'
                     }`}>
                       {selectedAgentForDetails.category || 'Custom'}
                     </span>
@@ -1054,7 +1054,7 @@ export const CompanyAgents: React.FC = () => {
                       {selectedAgentForDetails.currentVersion || 'v1.0.0'}
                     </span>
                   </div>
-                  <h2 className={`text-xl font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                  <h2 className={`text-xl font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                     {selectedAgentForDetails.name}
                   </h2>
                 </div>
@@ -1097,7 +1097,7 @@ export const CompanyAgents: React.FC = () => {
                       }`}>
                         {getDocTypeIcon(doc.type, 16)}
                         <div className="min-w-0">
-                          <div className={`font-semibold truncate text-xs ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                          <div className={`font-semibold truncate text-xs ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                             {doc.name}
                           </div>
                           <div className="flex items-center gap-2 mt-0.5">
@@ -1135,7 +1135,7 @@ export const CompanyAgents: React.FC = () => {
                         isLight ? 'bg-zinc-50 border-black/10' : 'bg-[#141418] border-white/10'
                       }`}>
                         <div className="flex items-center justify-between">
-                          <span className={`font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{ver.version}</span>
+                          <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{ver.version}</span>
                           <span className={isLight ? 'text-zinc-500' : 'text-zinc-400'}>{ver.updatedAt} • By {ver.author}</span>
                         </div>
                         <p className={`leading-relaxed ${isLight ? 'text-zinc-600' : 'text-zinc-300'}`}>{ver.changes}</p>
@@ -1158,7 +1158,7 @@ export const CompanyAgents: React.FC = () => {
                 <button
                   onClick={() => handleCopy(selectedAgentForDetails.systemPrompt || '')}
                   className={`px-3.5 py-2.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 cursor-pointer ${
-                    isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                    isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                   }`}
                 >
                   <Copy size={14} />

@@ -115,7 +115,7 @@ export const KnowledgeBase: React.FC = () => {
 
     setTimeout(() => {
       updateKBDocumentStatus(docId, 'INDEXED', 100);
-      showToast(`Indexed ${docName} successfully on Kamry NPU!`, 'success');
+      showToast(`Indexed ${docName} successfully on Camry NPU!`, 'success');
     }, 4200);
   };
 
@@ -304,8 +304,8 @@ export const KnowledgeBase: React.FC = () => {
   };
 
   return (
-    <div className={`flex-1 overflow-y-auto kamry-page-container kamry-section-gap font-familjen transition-colors ${
-      isLight ? 'bg-kamry-paper/40 text-kamry-blackout' : 'bg-transparent text-white'
+    <div className={`flex-1 overflow-y-auto camry-page-container camry-section-gap font-familjen transition-colors ${
+      isLight ? 'bg-camry-paper/40 text-camry-blackout' : 'bg-transparent text-white'
     }`}>
       <div className="space-y-6">
         {/* Header Title Section */}
@@ -314,8 +314,8 @@ export const KnowledgeBase: React.FC = () => {
       }`}>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className={`kamry-h1-title ${
-              isLight ? 'text-kamry-blackout' : 'text-white'
+            <h1 className={`camry-h1-title ${
+              isLight ? 'text-camry-blackout' : 'text-white'
             }`}>
               Knowledge Base
             </h1>
@@ -323,8 +323,8 @@ export const KnowledgeBase: React.FC = () => {
               On-Premise RAG
             </span>
           </div>
-          <p className={`text-xs sm:text-sm mt-1 ${isLight ? 'text-kamry-graphite/70' : 'text-zinc-400'}`}>
-            Everything your Kamry has learned about your organization. Nothing here leaves the building.
+          <p className={`text-xs sm:text-sm mt-1 ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
+            Everything your Camry has learned about your organization. Nothing here leaves the building.
           </p>
         </div>
       </div>
@@ -332,7 +332,7 @@ export const KnowledgeBase: React.FC = () => {
       {/* ONBOARDING TIE-IN CALLOUT CARD */}
       <div className={`rounded-2xl p-5 sm:p-6 relative overflow-hidden shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4 border ${
         isLight 
-          ? 'bg-kamry-graphite text-white border-white/10' 
+          ? 'bg-camry-graphite text-white border-white/10' 
           : 'bg-[#1C1C22] text-white border-white/15'
       }`}>
         <div className="space-y-1.5 max-w-2xl relative z-10">
@@ -341,7 +341,7 @@ export const KnowledgeBase: React.FC = () => {
             NEW-HIRE READY
           </div>
           <h2 className="text-base sm:text-lg font-bricolage text-white font-medium leading-snug">
-            Because Kamry has read your knowledge base, a new employee can ask it anything about the company on day one.
+            Because Camry has read your knowledge base, a new employee can ask it anything about the company on day one.
           </h2>
           <p className="text-xs text-white/60 font-familjen">
             Answers are cited directly from indexed PDFs, policy sheets, and master agreements with zero external cloud calls.
@@ -367,7 +367,7 @@ export const KnowledgeBase: React.FC = () => {
           isDragging 
             ? 'border-[#0EA5E9] bg-[#0EA5E9]/10 shadow-lg scale-[1.005]' 
             : isLight
-            ? 'border-black/15 bg-white hover:border-black/30 hover:bg-zinc-50/80 shadow-sm text-kamry-blackout'
+            ? 'border-black/15 bg-white hover:border-black/30 hover:bg-zinc-50/80 shadow-sm text-camry-blackout'
             : 'border-white/15 bg-[#1C1C22] hover:border-white/30 hover:bg-[#25252D] shadow-xl text-white'
         }`}
       >
@@ -380,15 +380,15 @@ export const KnowledgeBase: React.FC = () => {
           accept=".pdf,.docx,.doc,.pptx,.ppt,.png,.jpg,.jpeg,.csv,.txt,.xlsx"
         />
         <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md ${
-          isLight ? 'bg-kamry-blackout text-white' : 'bg-[#0EA5E9] text-white'
+          isLight ? 'bg-camry-blackout text-white' : 'bg-[#0EA5E9] text-white'
         }`}>
           <Upload size={22} className={isDragging ? 'animate-bounce text-[#0EA5E9]' : 'text-white'} />
         </div>
-        <h3 className={`text-sm sm:text-base font-bricolage font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+        <h3 className={`text-sm sm:text-base font-bricolage font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
           Drag files here or click to upload
         </h3>
-        <p className={`text-xs mt-1 max-w-md mx-auto font-familjen ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
-          Supports PDF, DOCX, PPTX, Images, TXT, CSV. Files are chunked and embedded locally into Kamry NVMe storage.
+        <p className={`text-xs mt-1 max-w-md mx-auto font-familjen ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
+          Supports PDF, DOCX, PPTX, Images, TXT, CSV. Files are chunked and embedded locally into Camry NVMe storage.
         </p>
 
         <div className="mt-4">
@@ -404,18 +404,18 @@ export const KnowledgeBase: React.FC = () => {
 
       {/* LIVE STATS STRIP */}
       <div className={`border rounded-xl p-3.5 sm:p-4 shadow-sm flex flex-wrap items-center justify-between gap-3 font-martian text-xs ${
-        isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/10 text-white'
+        isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/10 text-white'
       }`}>
         <div className="flex items-center gap-2">
           <Layers size={15} className="text-[#0EA5E9]" />
-          <span className={`font-bold tracking-wider uppercase text-[10px] ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>INDEX STATS:</span>
+          <span className={`font-bold tracking-wider uppercase text-[10px] ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>INDEX STATS:</span>
         </div>
         <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[11px]">
-          <div>DOCUMENTS <span className={`font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{totalDocs}</span></div>
+          <div>DOCUMENTS <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{totalDocs}</span></div>
           <span className={isLight ? 'text-black/20' : 'text-white/20'}>•</span>
-          <div>PAGES <span className={`font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{totalPages.toLocaleString()}</span></div>
+          <div>PAGES <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{totalPages.toLocaleString()}</span></div>
           <span className={isLight ? 'text-black/20' : 'text-white/20'}>•</span>
-          <div>STORAGE <span className={`font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{totalStorageMb} / 256 GB</span></div>
+          <div>STORAGE <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{totalStorageMb} / 256 GB</span></div>
           <span className={isLight ? 'text-black/20' : 'text-white/20'}>•</span>
           <div className="text-emerald-400 font-semibold flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -428,7 +428,7 @@ export const KnowledgeBase: React.FC = () => {
       <div className="space-y-1.5">
         <div className="flex items-center gap-3 overflow-x-auto pb-1 scrollbar-none py-1">
           <span className={`font-martian text-[10px] uppercase tracking-wider pr-1 flex-shrink-0 ${
-            isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'
+            isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
           }`}>
             Category:
           </span>
@@ -438,13 +438,13 @@ export const KnowledgeBase: React.FC = () => {
             onClick={() => setActiveCategory('All')}
             className={`px-3 py-1.5 rounded-xl text-xs font-martian transition-all flex items-center gap-2 flex-shrink-0 cursor-pointer ${
               activeCategory === 'All' 
-                ? (isLight ? 'bg-kamry-blackout text-white shadow-sm font-bold' : 'bg-[#0EA5E9] text-white shadow-md font-bold')
-                : (isLight ? 'bg-white border border-black/10 text-kamry-graphite hover:bg-black/5 font-medium' : 'bg-[#1C1C22] border border-white/10 text-zinc-300 hover:bg-[#25252E] font-medium')
+                ? (isLight ? 'bg-camry-blackout text-white shadow-sm font-bold' : 'bg-[#0EA5E9] text-white shadow-md font-bold')
+                : (isLight ? 'bg-white border border-black/10 text-camry-graphite hover:bg-black/5 font-medium' : 'bg-[#1C1C22] border border-white/10 text-zinc-300 hover:bg-[#25252E] font-medium')
             }`}
           >
             <span>ALL</span>
             <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md font-semibold ${
-              activeCategory === 'All' ? 'bg-white/20 text-white' : (isLight ? 'bg-black/5 text-kamry-graphite' : 'bg-white/10 text-zinc-300')
+              activeCategory === 'All' ? 'bg-white/20 text-white' : (isLight ? 'bg-black/5 text-camry-graphite' : 'bg-white/10 text-zinc-300')
             }`}>
               {kbDocuments.length} DOCS
             </span>
@@ -465,10 +465,10 @@ export const KnowledgeBase: React.FC = () => {
                   onClick={() => setActiveCategory(cat.name)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-martian transition-all flex items-center gap-2 cursor-pointer ${
                     isActive 
-                      ? (isLight ? 'bg-kamry-blackout text-white shadow-sm font-bold' : 'bg-[#0EA5E9] text-white shadow-md font-bold')
+                      ? (isLight ? 'bg-camry-blackout text-white shadow-sm font-bold' : 'bg-[#0EA5E9] text-white shadow-md font-bold')
                       : isDenied
                       ? (isLight ? 'bg-zinc-100 border border-black/10 text-zinc-400 hover:bg-zinc-200' : 'bg-zinc-800/60 border border-white/10 text-zinc-500 hover:bg-zinc-800')
-                      : (isLight ? 'bg-white border border-black/10 text-kamry-blackout hover:bg-black/5 font-medium' : 'bg-[#1C1C22] border border-white/10 text-zinc-200 hover:bg-[#25252E] font-medium')
+                      : (isLight ? 'bg-white border border-black/10 text-camry-blackout hover:bg-black/5 font-medium' : 'bg-[#1C1C22] border border-white/10 text-zinc-200 hover:bg-[#25252E] font-medium')
                   }`}
                 >
                   <span 
@@ -481,7 +481,7 @@ export const KnowledgeBase: React.FC = () => {
                     <Lock size={12} className="text-amber-500 ml-0.5" title="Access Denied for current role" />
                   ) : (
                     <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md font-semibold ${
-                      isActive ? 'bg-white/20 text-white' : (isLight ? 'bg-black/5 text-kamry-graphite' : 'bg-white/10 text-zinc-300')
+                      isActive ? 'bg-white/20 text-white' : (isLight ? 'bg-black/5 text-camry-graphite' : 'bg-white/10 text-zinc-300')
                     }`}>
                       {count} DOCS
                     </span>
@@ -496,7 +496,7 @@ export const KnowledgeBase: React.FC = () => {
                       setEditingCategory(cat);
                     }}
                     className={`absolute -top-1.5 -right-1.5 p-1 rounded-full shadow-xs opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-pointer ${
-                      isLight ? 'bg-white border border-black/15 hover:bg-black hover:text-white text-kamry-graphite' : 'bg-[#25252D] border border-white/15 hover:bg-[#0EA5E9] hover:text-white text-zinc-300'
+                      isLight ? 'bg-white border border-black/15 hover:bg-black hover:text-white text-camry-graphite' : 'bg-[#25252D] border border-white/15 hover:bg-[#0EA5E9] hover:text-white text-zinc-300'
                     }`}
                     title="Edit or Delete Category"
                   >
@@ -511,7 +511,7 @@ export const KnowledgeBase: React.FC = () => {
           <button
             onClick={() => setIsNewCategoryModalOpen(true)}
             className={`px-3.5 py-1.5 rounded-xl border-2 border-dashed text-xs font-martian font-bold transition-all flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:scale-[1.02] ${
-              isLight ? 'border-kamry-deep-carrier/40 bg-kamry-carrier/5 hover:bg-kamry-carrier/15 text-kamry-deep-carrier' : 'border-[#0EA5E9]/40 bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/20 text-sky-400'
+              isLight ? 'border-camry-deep-carrier/40 bg-camry-carrier/5 hover:bg-camry-carrier/15 text-camry-deep-carrier' : 'border-[#0EA5E9]/40 bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/20 text-sky-400'
             }`}
           >
             <Plus size={14} className="text-[#0EA5E9]" />
@@ -520,7 +520,7 @@ export const KnowledgeBase: React.FC = () => {
         </div>
 
         {/* Dynamic Category Context Hint */}
-        <p className={`text-[11px] italic font-familjen pl-1 ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+        <p className={`text-[11px] italic font-familjen pl-1 ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
           Categories are yours to define — a hospital might use Departments and Patient Records; an airline might use Operations, Crew, and Maintenance.
         </p>
       </div>
@@ -534,11 +534,11 @@ export const KnowledgeBase: React.FC = () => {
           isLight ? 'bg-zinc-50 border-black/10' : 'bg-[#18181C] border-white/10'
         }`}>
           <div className="flex items-center gap-2">
-            <h3 className={`font-bricolage font-bold text-sm ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+            <h3 className={`font-bricolage font-bold text-sm ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
               Indexed Documents
             </h3>
             <span className={`font-martian text-[10px] px-2 py-0.5 rounded font-semibold ${
-              isLight ? 'bg-black/5 text-kamry-graphite' : 'bg-white/10 text-zinc-300'
+              isLight ? 'bg-black/5 text-camry-graphite' : 'bg-white/10 text-zinc-300'
             }`}>
               {filteredDocs.length} total
             </span>
@@ -556,7 +556,7 @@ export const KnowledgeBase: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-familjen">
             <thead className={`border-b font-martian text-[10px] uppercase tracking-wider ${
-              isLight ? 'bg-zinc-50/50 border-black/10 text-kamry-graphite/70' : 'bg-[#18181C] border-white/10 text-zinc-400'
+              isLight ? 'bg-zinc-50/50 border-black/10 text-camry-graphite/70' : 'bg-[#18181C] border-white/10 text-zinc-400'
             }`}>
               <tr>
                 <th className="py-3 px-4">Document Name</th>
@@ -591,7 +591,7 @@ export const KnowledgeBase: React.FC = () => {
                         </div>
                         <div>
                           <div className={`font-semibold text-xs sm:text-sm flex items-center gap-1.5 ${
-                            isLight ? 'text-kamry-blackout' : 'text-white'
+                            isLight ? 'text-camry-blackout' : 'text-white'
                           }`}>
                             <span>{doc.name}</span>
                             {isRestrictedForCurrentRole && (
@@ -602,7 +602,7 @@ export const KnowledgeBase: React.FC = () => {
                             )}
                           </div>
                           {doc.pages && (
-                            <div className={`text-[10px] font-martian ${isLight ? 'text-kamry-graphite/50' : 'text-zinc-400'}`}>
+                            <div className={`text-[10px] font-martian ${isLight ? 'text-camry-graphite/50' : 'text-zinc-400'}`}>
                               {doc.pages} pages extracted
                             </div>
                           )}
@@ -612,27 +612,27 @@ export const KnowledgeBase: React.FC = () => {
 
                     <td className="py-3 px-3">
                       <span className={`px-2 py-0.5 rounded font-martian text-[10px] font-medium ${
-                        isLight ? 'bg-black/5 text-kamry-blackout' : 'bg-white/10 text-zinc-200'
+                        isLight ? 'bg-black/5 text-camry-blackout' : 'bg-white/10 text-zinc-200'
                       }`}>
                         {doc.type}
                       </span>
                     </td>
 
                     <td className="py-3 px-3">
-                      <span className={`text-xs font-medium ${isLight ? 'text-kamry-graphite' : 'text-zinc-300'}`}>
+                      <span className={`text-xs font-medium ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>
                         {doc.category}
                       </span>
                     </td>
 
-                    <td className={`py-3 px-3 font-martian text-[11px] ${isLight ? 'text-kamry-graphite' : 'text-zinc-400'}`}>
+                    <td className={`py-3 px-3 font-martian text-[11px] ${isLight ? 'text-camry-graphite' : 'text-zinc-400'}`}>
                       {doc.size}
                     </td>
 
-                    <td className={`py-3 px-3 font-medium ${isLight ? 'text-kamry-blackout' : 'text-zinc-200'}`}>
+                    <td className={`py-3 px-3 font-medium ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>
                       {doc.uploadedBy}
                     </td>
 
-                    <td className={`py-3 px-3 font-martian text-[10px] ${isLight ? 'text-kamry-graphite/70' : 'text-zinc-400'}`}>
+                    <td className={`py-3 px-3 font-martian text-[10px] ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
                       {doc.date}
                     </td>
 
@@ -690,7 +690,7 @@ export const KnowledgeBase: React.FC = () => {
                         <button
                           onClick={() => setMenuOpenId(menuOpenId === doc.id ? null : doc.id)}
                           className={`p-1.5 rounded-lg transition-colors cursor-pointer group ${
-                            isLight ? 'hover:bg-black/5 text-kamry-graphite' : 'hover:bg-white/10 text-zinc-300'
+                            isLight ? 'hover:bg-black/5 text-camry-graphite' : 'hover:bg-white/10 text-zinc-300'
                           }`}
                         >
                           <AnimatedIcon type="rotate">
@@ -701,7 +701,7 @@ export const KnowledgeBase: React.FC = () => {
 
                       {menuOpenId === doc.id && (
                         <div className={`absolute right-3 top-10 w-48 border shadow-xl rounded-xl z-20 py-1 text-left text-xs font-familjen ${
-                          isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                          isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
                         }`}>
                           <button
                             onClick={() => {
@@ -709,10 +709,10 @@ export const KnowledgeBase: React.FC = () => {
                               setMenuOpenId(null);
                             }}
                             className={`w-full px-3 py-2 flex items-center gap-2 group cursor-pointer ${
-                              isLight ? 'hover:bg-black/5 text-kamry-blackout' : 'hover:bg-white/10 text-white'
+                              isLight ? 'hover:bg-black/5 text-camry-blackout' : 'hover:bg-white/10 text-white'
                             }`}
                           >
-                            <AnimatedIcon type="scale" className={isLight ? 'text-kamry-graphite group-hover:text-kamry-blackout' : 'text-zinc-400 group-hover:text-white'}>
+                            <AnimatedIcon type="scale" className={isLight ? 'text-camry-graphite group-hover:text-camry-blackout' : 'text-zinc-400 group-hover:text-white'}>
                               <Eye size={14} />
                             </AnimatedIcon>
                             <span>Preview extracted text</span>
@@ -724,10 +724,10 @@ export const KnowledgeBase: React.FC = () => {
                               setMenuOpenId(null);
                             }}
                             className={`w-full px-3 py-2 flex items-center gap-2 group cursor-pointer ${
-                              isLight ? 'hover:bg-black/5 text-kamry-blackout' : 'hover:bg-white/10 text-white'
+                              isLight ? 'hover:bg-black/5 text-camry-blackout' : 'hover:bg-white/10 text-white'
                             }`}
                           >
-                            <AnimatedIcon type="spin" className={isLight ? 'text-kamry-graphite group-hover:text-kamry-blackout' : 'text-zinc-400 group-hover:text-white'}>
+                            <AnimatedIcon type="spin" className={isLight ? 'text-camry-graphite group-hover:text-camry-blackout' : 'text-zinc-400 group-hover:text-white'}>
                               <RefreshCw size={14} />
                             </AnimatedIcon>
                             <span>Re-index on NPU</span>
@@ -785,7 +785,7 @@ export const KnowledgeBase: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`border rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               <div className={`flex items-center justify-between pb-3 border-b ${
@@ -796,23 +796,23 @@ export const KnowledgeBase: React.FC = () => {
                     {getFileIcon(selectedDocForPreview.type)}
                   </div>
                   <div>
-                    <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{selectedDocForPreview.name}</h3>
-                    <p className={`font-martian text-[10px] ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>{selectedDocForPreview.size} • Category: {selectedDocForPreview.category}</p>
+                    <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{selectedDocForPreview.name}</h3>
+                    <p className={`font-martian text-[10px] ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>{selectedDocForPreview.size} • Category: {selectedDocForPreview.category}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedDocForPreview(null)} className={`p-1 ${isLight ? 'text-kamry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
+                <button onClick={() => setSelectedDocForPreview(null)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
 
               <div className="space-y-2">
-                <div className={`font-martian text-[10px] font-bold uppercase tracking-wider ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+                <div className={`font-martian text-[10px] font-bold uppercase tracking-wider ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                   LOCAL VECTOR SNIPPET PREVIEW:
                 </div>
                 <div className={`p-3.5 border rounded-xl text-xs leading-relaxed font-sans font-mono whitespace-pre-wrap max-h-60 overflow-y-auto ${
-                  isLight ? 'bg-zinc-50 border-black/10 text-kamry-blackout' : 'bg-[#141418] border-white/10 text-zinc-200'
+                  isLight ? 'bg-zinc-50 border-black/10 text-camry-blackout' : 'bg-[#141418] border-white/10 text-zinc-200'
                 }`}>
-                  {selectedDocForPreview.extractedSnippet || "Full document indexed on local Kamry NVMe array."}
+                  {selectedDocForPreview.extractedSnippet || "Full document indexed on local Camry NVMe array."}
                 </div>
               </div>
 
@@ -843,7 +843,7 @@ export const KnowledgeBase: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               <div className={`flex items-center justify-between pb-3 border-b ${
@@ -851,15 +851,15 @@ export const KnowledgeBase: React.FC = () => {
               }`}>
                 <div className="flex items-center gap-2">
                   <ShieldAlert className="text-amber-500" size={18} />
-                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Restrict Document Access</h3>
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Restrict Document Access</h3>
                 </div>
-                <button onClick={() => setSelectedDocForRestrict(null)} className={`p-1 ${isLight ? 'text-kamry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
+                <button onClick={() => setSelectedDocForRestrict(null)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
 
-              <p className={`text-xs ${isLight ? 'text-kamry-graphite' : 'text-zinc-300'}`}>
-                Select roles that are <strong className="text-red-500">DENIED</strong> access to <span className={`font-semibold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{selectedDocForRestrict.name}</span>. Restricted users will not see this file or any Library outputs derived from it.
+              <p className={`text-xs ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>
+                Select roles that are <strong className="text-red-500">DENIED</strong> access to <span className={`font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{selectedDocForRestrict.name}</span>. Restricted users will not see this file or any Library outputs derived from it.
               </p>
 
               <div className="space-y-2">
@@ -869,7 +869,7 @@ export const KnowledgeBase: React.FC = () => {
                     <label key={r} className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-colors ${
                       isLight ? 'border-black/10 hover:bg-zinc-50' : 'border-white/10 hover:bg-[#25252D]'
                     }`}>
-                      <span className={`font-martian text-xs font-semibold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{r} Role</span>
+                      <span className={`font-martian text-xs font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{r} Role</span>
                       <input 
                         type="checkbox"
                         checked={!!isRestricted}
@@ -892,7 +892,7 @@ export const KnowledgeBase: React.FC = () => {
                 <button 
                   onClick={() => setSelectedDocForRestrict(null)}
                   className={`px-3.5 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
-                    isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                    isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                   }`}
                 >
                   Cancel
@@ -922,12 +922,12 @@ export const KnowledgeBase: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`border rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
-              <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Delete document from box?</h3>
-              <p className={`text-xs ${isLight ? 'text-kamry-graphite' : 'text-zinc-300'}`}>
-                Are you sure you want to delete <span className={`font-semibold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{docToDelete.name}</span>? This will remove its vector indices from Kamry NVMe storage.
+              <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Delete document from box?</h3>
+              <p className={`text-xs ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>
+                Are you sure you want to delete <span className={`font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{docToDelete.name}</span>? This will remove its vector indices from Camry NVMe storage.
               </p>
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button onClick={() => setDocToDelete(null)} className={`px-3.5 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
@@ -960,7 +960,7 @@ export const KnowledgeBase: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               <div className={`flex items-center justify-between pb-3 border-b ${
@@ -971,13 +971,13 @@ export const KnowledgeBase: React.FC = () => {
                     <FolderPlus size={18} />
                   </div>
                   <div>
-                    <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Create Category / Collection</h3>
-                    <p className={`text-xs ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>Define custom organization space for your company</p>
+                    <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Create Category / Collection</h3>
+                    <p className={`text-xs ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>Define custom organization space for your company</p>
                   </div>
                 </div>
                 <button 
                   onClick={() => setIsNewCategoryModalOpen(false)} 
-                  className={`p-1 rounded-lg ${isLight ? 'text-kamry-graphite hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/10'}`}
+                  className={`p-1 rounded-lg ${isLight ? 'text-camry-graphite hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/10'}`}
                 >
                   <X size={18} />
                 </button>
@@ -986,7 +986,7 @@ export const KnowledgeBase: React.FC = () => {
               <form onSubmit={handleCreateCategorySubmit} className="space-y-4">
                 <div>
                   <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
-                    isLight ? 'text-kamry-blackout' : 'text-zinc-200'
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
                   }`}>
                     Category Name <span className="text-red-500">*</span>
                   </label>
@@ -997,14 +997,14 @@ export const KnowledgeBase: React.FC = () => {
                     onChange={(e) => setNewCatName(e.target.value)}
                     placeholder="e.g. Clinical Records, Crew Logs, IP Rights..."
                     className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] font-familjen ${
-                      isLight ? 'border-black/15 bg-zinc-50 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                      isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                     }`}
                   />
                 </div>
 
                 <div>
                   <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
-                    isLight ? 'text-kamry-blackout' : 'text-zinc-200'
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
                   }`}>
                     Color Badge Accent
                   </label>
@@ -1025,7 +1025,7 @@ export const KnowledgeBase: React.FC = () => {
 
                 <div>
                   <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
-                    isLight ? 'text-kamry-blackout' : 'text-zinc-200'
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
                   }`}>
                     Description <span className={`font-normal ${isLight ? 'text-gray-400' : 'text-zinc-500'}`}>(Optional)</span>
                   </label>
@@ -1035,7 +1035,7 @@ export const KnowledgeBase: React.FC = () => {
                     onChange={(e) => setNewCatDescription(e.target.value)}
                     placeholder="e.g. Patient intake sheets, shift logs, or supplier contracts"
                     className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] font-familjen ${
-                      isLight ? 'border-black/15 bg-zinc-50 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                      isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                     }`}
                   />
                 </div>
@@ -1047,7 +1047,7 @@ export const KnowledgeBase: React.FC = () => {
                     type="button"
                     onClick={() => setIsNewCategoryModalOpen(false)} 
                     className={`px-4 py-2 rounded-xl border text-xs font-martian font-medium cursor-pointer ${
-                      isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                      isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                     }`}
                   >
                     Cancel
@@ -1074,23 +1074,23 @@ export const KnowledgeBase: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               <div className={`flex items-center justify-between pb-3 border-b ${
                 isLight ? 'border-black/10' : 'border-white/10'
               }`}>
                 <div className="flex items-center gap-2">
-                  <div className={`p-2 rounded-xl ${isLight ? 'bg-black/5 text-kamry-blackout' : 'bg-white/10 text-white'}`}>
+                  <div className={`p-2 rounded-xl ${isLight ? 'bg-black/5 text-camry-blackout' : 'bg-white/10 text-white'}`}>
                     <Pencil size={18} />
                   </div>
-                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                     Manage "{editingCategory.name}"
                   </h3>
                 </div>
                 <button 
                   onClick={() => setEditingCategory(null)} 
-                  className={`p-1 rounded-lg ${isLight ? 'text-kamry-graphite hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/10'}`}
+                  className={`p-1 rounded-lg ${isLight ? 'text-camry-graphite hover:text-black hover:bg-black/5' : 'text-zinc-400 hover:text-white hover:bg-white/10'}`}
                 >
                   <X size={18} />
                 </button>
@@ -1099,7 +1099,7 @@ export const KnowledgeBase: React.FC = () => {
               <form onSubmit={handleEditCategorySubmit} className="space-y-4">
                 <div>
                   <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
-                    isLight ? 'text-kamry-blackout' : 'text-zinc-200'
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
                   }`}>
                     Category Name
                   </label>
@@ -1109,14 +1109,14 @@ export const KnowledgeBase: React.FC = () => {
                     value={editingCategory.name}
                     onChange={(e) => setEditingCategory({ ...editingCategory, name: e.target.value })}
                     className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                      isLight ? 'border-black/15 bg-zinc-50 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                      isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                     }`}
                   />
                 </div>
 
                 <div>
                   <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
-                    isLight ? 'text-kamry-blackout' : 'text-zinc-200'
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
                   }`}>
                     Color Badge Accent
                   </label>
@@ -1137,7 +1137,7 @@ export const KnowledgeBase: React.FC = () => {
 
                 <div>
                   <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
-                    isLight ? 'text-kamry-blackout' : 'text-zinc-200'
+                    isLight ? 'text-camry-blackout' : 'text-zinc-200'
                   }`}>
                     Description
                   </label>
@@ -1146,7 +1146,7 @@ export const KnowledgeBase: React.FC = () => {
                     value={editingCategory.description || ''}
                     onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
                     className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                      isLight ? 'border-black/15 bg-zinc-50 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                      isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                     }`}
                   />
                 </div>
@@ -1174,7 +1174,7 @@ export const KnowledgeBase: React.FC = () => {
                       type="button"
                       onClick={() => setEditingCategory(null)} 
                       className={`px-3.5 py-2 rounded-xl border text-xs font-martian font-medium cursor-pointer ${
-                        isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                        isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                       }`}
                     >
                       Cancel
@@ -1202,7 +1202,7 @@ export const KnowledgeBase: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               <div className={`flex items-center justify-between pb-3 border-b ${
@@ -1210,22 +1210,22 @@ export const KnowledgeBase: React.FC = () => {
               }`}>
                 <div className="flex items-center gap-2">
                   <Trash2 className="text-red-500" size={18} />
-                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                     Delete "{categoryToDelete.name}"?
                   </h3>
                 </div>
-                <button onClick={() => setCategoryToDelete(null)} className={`p-1 ${isLight ? 'text-kamry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
+                <button onClick={() => setCategoryToDelete(null)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
 
-              <p className={`text-xs ${isLight ? 'text-kamry-graphite' : 'text-zinc-300'}`}>
-                Deleting this category will not delete your documents. Please select where existing documents in <span className={`font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{categoryToDelete.name}</span> should be moved:
+              <p className={`text-xs ${isLight ? 'text-camry-graphite' : 'text-zinc-300'}`}>
+                Deleting this category will not delete your documents. Please select where existing documents in <span className={`font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{categoryToDelete.name}</span> should be moved:
               </p>
 
               <div>
                 <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
-                  isLight ? 'text-kamry-blackout' : 'text-zinc-200'
+                  isLight ? 'text-camry-blackout' : 'text-zinc-200'
                 }`}>
                   Reassign Documents To:
                 </label>
@@ -1233,7 +1233,7 @@ export const KnowledgeBase: React.FC = () => {
                   value={reassignCategoryTarget}
                   onChange={(e) => setReassignCategoryTarget(e.target.value)}
                   className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-martian focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                    isLight ? 'border-black/15 bg-zinc-50 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                    isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                   }`}
                 >
                   {categories.filter(c => c.id !== categoryToDelete.id).map(c => (
@@ -1248,7 +1248,7 @@ export const KnowledgeBase: React.FC = () => {
                 <button 
                   onClick={() => setCategoryToDelete(null)} 
                   className={`px-3.5 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
-                    isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                    isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                   }`}
                 >
                   Cancel
@@ -1274,7 +1274,7 @@ export const KnowledgeBase: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className={`border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 font-familjen ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               <div className={`flex items-center justify-between pb-3 border-b ${
@@ -1282,11 +1282,11 @@ export const KnowledgeBase: React.FC = () => {
               }`}>
                 <div className="flex items-center gap-2">
                   <Upload className="text-[#0EA5E9]" size={18} />
-                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                     Assign Category for {pendingFiles.length} {pendingFiles.length === 1 ? 'File' : 'Files'}
                   </h3>
                 </div>
-                <button onClick={() => setPendingFiles(null)} className={`p-1 ${isLight ? 'text-kamry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
+                <button onClick={() => setPendingFiles(null)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
@@ -1294,9 +1294,9 @@ export const KnowledgeBase: React.FC = () => {
               <div className={`space-y-1 p-3 rounded-xl border max-h-36 overflow-y-auto ${
                 isLight ? 'bg-zinc-50 border-black/10' : 'bg-[#141418] border-white/10'
               }`}>
-                <div className={`text-[10px] font-martian font-bold uppercase ${isLight ? 'text-kamry-graphite' : 'text-zinc-400'}`}>Files to index:</div>
+                <div className={`text-[10px] font-martian font-bold uppercase ${isLight ? 'text-camry-graphite' : 'text-zinc-400'}`}>Files to index:</div>
                 {pendingFiles.map((f, idx) => (
-                  <div key={idx} className={`text-xs font-mono truncate flex items-center gap-1.5 ${isLight ? 'text-kamry-blackout' : 'text-zinc-200'}`}>
+                  <div key={idx} className={`text-xs font-mono truncate flex items-center gap-1.5 ${isLight ? 'text-camry-blackout' : 'text-zinc-200'}`}>
                     <FileText size={12} className="text-[#0EA5E9]" />
                     <span>{f.name}</span>
                   </div>
@@ -1305,7 +1305,7 @@ export const KnowledgeBase: React.FC = () => {
 
               <div>
                 <label className={`block text-xs font-martian font-bold mb-1.5 uppercase ${
-                  isLight ? 'text-kamry-blackout' : 'text-zinc-200'
+                  isLight ? 'text-camry-blackout' : 'text-zinc-200'
                 }`}>
                   Select Destination Category
                 </label>
@@ -1316,7 +1316,7 @@ export const KnowledgeBase: React.FC = () => {
                       value={uploadCategory}
                       onChange={(e) => setUploadCategory(e.target.value)}
                       className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-martian font-semibold focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
-                        isLight ? 'border-black/15 bg-zinc-50 text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                        isLight ? 'border-black/15 bg-zinc-50 text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                       }`}
                     >
                       {categories.map(c => (
@@ -1338,7 +1338,7 @@ export const KnowledgeBase: React.FC = () => {
                     isLight ? 'bg-blue-50/50 border-blue-200' : 'bg-blue-950/20 border-blue-800/40'
                   }`}>
                     <div className={`flex items-center justify-between text-xs font-martian font-bold ${
-                      isLight ? 'text-kamry-blackout' : 'text-white'
+                      isLight ? 'text-camry-blackout' : 'text-white'
                     }`}>
                       <span>New Category Name</span>
                       <button 
@@ -1356,7 +1356,7 @@ export const KnowledgeBase: React.FC = () => {
                       value={inlineCatName}
                       onChange={(e) => setInlineCatName(e.target.value)}
                       className={`w-full px-3 py-2 rounded-lg border text-xs font-familjen focus:outline-none ${
-                        isLight ? 'border-black/15 bg-white text-kamry-blackout' : 'border-white/15 bg-[#141418] text-white'
+                        isLight ? 'border-black/15 bg-white text-camry-blackout' : 'border-white/15 bg-[#141418] text-white'
                       }`}
                     />
                   </div>
@@ -1369,7 +1369,7 @@ export const KnowledgeBase: React.FC = () => {
                 <button 
                   onClick={() => setPendingFiles(null)} 
                   className={`px-3.5 py-2 rounded-xl border text-xs font-martian cursor-pointer ${
-                    isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                    isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                   }`}
                 >
                   Cancel

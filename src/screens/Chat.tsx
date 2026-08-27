@@ -6,17 +6,17 @@ import {
   Hand, Download, Eye, Files, Sparkles, ExternalLink, Plus
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { KamryLoadingIcon } from '../components/KamryLoadingIcon';
+import { CamryLoadingIcon } from '../components/CamryLoadingIcon';
 import { DocumentViewer } from '../components/DocumentViewer';
-import { KamryOrb } from '../components/KamryOrb';
+import { CamryOrb } from '../components/CamryOrb';
 import { AgentLogo } from '../components/AgentLogo';
 import { Icon } from '@iconify/react';
 
 const SUGGESTIONS = [
-  { icon: <Scale size={20} className="text-kamry-graphite/60 group-hover:text-kamry-blackout transition-colors" />, text: 'Summarize the key obligations in this contract.' },
-  { icon: <FileText size={20} className="text-kamry-graphite/60 group-hover:text-kamry-blackout transition-colors" />, text: 'Draft a formal prompt for Kamry desktop app design.' },
-  { icon: <Search size={20} className="text-kamry-graphite/60 group-hover:text-kamry-blackout transition-colors" />, text: 'Extract every date and deadline from this document.' },
-  { icon: <Folder size={20} className="text-kamry-graphite/60 group-hover:text-kamry-blackout transition-colors" />, text: 'Turn these meeting notes into action items.' },
+  { icon: <Scale size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Summarize the key obligations in this contract.' },
+  { icon: <FileText size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Draft a formal prompt for Camry desktop app design.' },
+  { icon: <Search size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Extract every date and deadline from this document.' },
+  { icon: <Folder size={20} className="text-camry-graphite/60 group-hover:text-camry-blackout transition-colors" />, text: 'Turn these meeting notes into action items.' },
 ];
 
 const VoiceWaveIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = "" }) => (
@@ -362,7 +362,7 @@ export const Chat: React.FC = () => {
       }
     } catch (fetchErr) {
       console.warn("Fetch failed, using local engine fallback:", fetchErr);
-      responseText = `Processed on Kamry Local Engine.\n\nRegarding "${text}":\n\nQuery executed on-device.`;
+      responseText = `Processed on Camry Local Engine.\n\nRegarding "${text}":\n\nQuery executed on-device.`;
     }
 
     setIsThinking(false);
@@ -458,7 +458,7 @@ export const Chat: React.FC = () => {
       }`}>
         
         {/* Top Header Bar for Chat Section (Includes Document Icon in Top Right) */}
-        <div className={`h-12 border-b border-t-0 border-l-0 border-r-0 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-10 transition-all duration-300 kamry-glass rounded-none ${
+        <div className={`h-12 border-b border-t-0 border-l-0 border-r-0 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-10 transition-all duration-300 camry-glass rounded-none ${
           isLight ? 'border-[#E2DDD5]' : 'border-white/5'
         }`}>
           <div className="flex items-center gap-2">
@@ -533,7 +533,7 @@ export const Chat: React.FC = () => {
                       <div className="text-center py-6 space-y-2">
                         <FileText size={28} className="mx-auto opacity-40 text-sky-500" />
                         <p className="font-sans text-xs font-medium">No documents generated in this session yet.</p>
-                        <p className="font-mono text-[10px] text-zinc-400">Ask Kamry to draft a contract, design prompt, or spec!</p>
+                        <p className="font-mono text-[10px] text-zinc-400">Ask Camry to draft a contract, design prompt, or spec!</p>
                       </div>
                     ) : (
                       <div className="max-h-72 overflow-y-auto space-y-2 pr-1">
@@ -604,9 +604,9 @@ export const Chat: React.FC = () => {
                 />
               ) : (
                 <div className="relative mb-6 flex flex-col items-center">
-                  <KamryOrb size="lg" interactive={true} />
+                  <CamryOrb size="lg" interactive={true} />
                   <div className="mt-4 px-3 py-1 rounded-full text-xs font-mono font-semibold border shadow-sm bg-sky-500/10 text-sky-500 border-sky-500/20">
-                    Kamry OS · Local NPU AI
+                    Camry OS · Local NPU AI
                   </div>
                 </div>
               )}
@@ -887,7 +887,7 @@ export const Chat: React.FC = () => {
         } to-transparent ${isEmpty ? 'top-1/4' : ''}`}>
           <div className="max-w-2xl w-full relative">
             
-            <div className={`relative rounded-2xl shadow-sm border flex flex-col transition-all duration-300 focus-within:shadow-md p-2.5 sm:p-3.5 kamry-glass ${
+            <div className={`relative rounded-2xl shadow-sm border flex flex-col transition-all duration-300 focus-within:shadow-md p-2.5 sm:p-3.5 camry-glass ${
               isLight 
                 ? 'border-[#E2DDD5] focus-within:border-sky-500' 
                 : 'border-[#2E2E38] focus-within:border-sky-500'

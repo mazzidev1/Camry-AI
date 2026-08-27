@@ -171,9 +171,9 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are an expert corporate legal assistant. Provide structured legal analysis, risk ratings, and contract clause advice.',
     currentVersion: 'v1.2.0',
     versionHistory: [
-      { version: 'v1.2.0', updatedAt: '2026-07-24', prompt: 'You are an expert corporate legal assistant. Provide structured legal analysis, risk ratings, and contract clause advice.', changes: 'Added risk rating guidelines and contract clause recommendations.', author: 'Kamry System' },
-      { version: 'v1.1.0', updatedAt: '2026-07-10', prompt: 'You are an expert corporate legal assistant. Provide structured legal analysis and contract clause advice.', changes: 'Optimized for 30B parameter local model latency.', author: 'Kamry System' },
-      { version: 'v1.0.0', updatedAt: '2026-06-01', prompt: 'You are a legal assistant. Help draft and review contracts.', changes: 'Initial release on Kamry ONE NPU.', author: 'Kamry System' }
+      { version: 'v1.2.0', updatedAt: '2026-07-24', prompt: 'You are an expert corporate legal assistant. Provide structured legal analysis, risk ratings, and contract clause advice.', changes: 'Added risk rating guidelines and contract clause recommendations.', author: 'Camry System' },
+      { version: 'v1.1.0', updatedAt: '2026-07-10', prompt: 'You are an expert corporate legal assistant. Provide structured legal analysis and contract clause advice.', changes: 'Optimized for 30B parameter local model latency.', author: 'Camry System' },
+      { version: 'v1.0.0', updatedAt: '2026-06-01', prompt: 'You are a legal assistant. Help draft and review contracts.', changes: 'Initial release on Camry ONE NPU.', author: 'Camry System' }
     ]
   },
   { 
@@ -187,8 +187,8 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are an agreement redline specialist. Identify liabilities and suggest replacement terms.',
     currentVersion: 'v1.1.0',
     versionHistory: [
-      { version: 'v1.1.0', updatedAt: '2026-07-18', prompt: 'You are an agreement redline specialist. Identify liabilities and suggest replacement terms.', changes: 'Added liability cap detection rule.', author: 'Kamry System' },
-      { version: 'v1.0.0', updatedAt: '2026-06-15', prompt: 'You review contracts and highlight risky terms.', changes: 'Initial release.', author: 'Kamry System' }
+      { version: 'v1.1.0', updatedAt: '2026-07-18', prompt: 'You are an agreement redline specialist. Identify liabilities and suggest replacement terms.', changes: 'Added liability cap detection rule.', author: 'Camry System' },
+      { version: 'v1.0.0', updatedAt: '2026-06-15', prompt: 'You review contracts and highlight risky terms.', changes: 'Initial release.', author: 'Camry System' }
     ]
   },
   { 
@@ -202,8 +202,8 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are a medical scribe. Convert clinical inputs into clear SOAP notes format.',
     currentVersion: 'v1.0.1',
     versionHistory: [
-      { version: 'v1.0.1', updatedAt: '2026-07-02', prompt: 'You are a medical scribe. Convert clinical inputs into clear SOAP notes format.', changes: 'Standardized SOAP note sections.', author: 'Kamry System' },
-      { version: 'v1.0.0', updatedAt: '2026-05-20', prompt: 'You convert clinical consultations into notes.', changes: 'Initial release.', author: 'Kamry System' }
+      { version: 'v1.0.1', updatedAt: '2026-07-02', prompt: 'You are a medical scribe. Convert clinical inputs into clear SOAP notes format.', changes: 'Standardized SOAP note sections.', author: 'Camry System' },
+      { version: 'v1.0.0', updatedAt: '2026-05-20', prompt: 'You convert clinical consultations into notes.', changes: 'Initial release.', author: 'Camry System' }
     ]
   },
   { 
@@ -217,7 +217,7 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are a government regulatory compliance officer. Structure official filings and verify standards.',
     currentVersion: 'v1.0.0',
     versionHistory: [
-      { version: 'v1.0.0', updatedAt: '2026-06-10', prompt: 'You are a government regulatory compliance officer. Structure official filings and verify standards.', changes: 'Initial release.', author: 'Kamry System' }
+      { version: 'v1.0.0', updatedAt: '2026-06-10', prompt: 'You are a government regulatory compliance officer. Structure official filings and verify standards.', changes: 'Initial release.', author: 'Camry System' }
     ]
   },
   { 
@@ -231,7 +231,7 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are an industrial field systems co-pilot. Help troubleshoot equipment, read schematics, and parse logs.',
     currentVersion: 'v1.0.0',
     versionHistory: [
-      { version: 'v1.0.0', updatedAt: '2026-06-12', prompt: 'You are an industrial field systems co-pilot. Help troubleshoot equipment, read schematics, and parse logs.', changes: 'Initial release.', author: 'Kamry System' }
+      { version: 'v1.0.0', updatedAt: '2026-06-12', prompt: 'You are an industrial field systems co-pilot. Help troubleshoot equipment, read schematics, and parse logs.', changes: 'Initial release.', author: 'Camry System' }
     ]
   },
   { 
@@ -245,7 +245,7 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are a financial controller. Provide ledger reconciliation, financial ratio calculations, and audit summaries.',
     currentVersion: 'v1.0.0',
     versionHistory: [
-      { version: 'v1.0.0', updatedAt: '2026-06-18', prompt: 'You are a financial controller. Provide ledger reconciliation, financial ratio calculations, and audit summaries.', changes: 'Initial release.', author: 'Kamry System' }
+      { version: 'v1.0.0', updatedAt: '2026-06-18', prompt: 'You are a financial controller. Provide ledger reconciliation, financial ratio calculations, and audit summaries.', changes: 'Initial release.', author: 'Camry System' }
     ]
   },
   { 
@@ -259,8 +259,8 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are an executive meeting recorder. Extract decisions, action items, and owners from transcriptions.',
     currentVersion: 'v1.2.0',
     versionHistory: [
-      { version: 'v1.2.0', updatedAt: '2026-07-22', prompt: 'You are an executive meeting recorder. Extract decisions, action items, and owners from transcriptions.', changes: 'Added owner assignment formatting.', author: 'Kamry System' },
-      { version: 'v1.1.0', updatedAt: '2026-07-05', prompt: 'You transcribe meetings and summarize key decisions.', changes: 'Improved summary layout.', author: 'Kamry System' }
+      { version: 'v1.2.0', updatedAt: '2026-07-22', prompt: 'You are an executive meeting recorder. Extract decisions, action items, and owners from transcriptions.', changes: 'Added owner assignment formatting.', author: 'Camry System' },
+      { version: 'v1.1.0', updatedAt: '2026-07-05', prompt: 'You transcribe meetings and summarize key decisions.', changes: 'Improved summary layout.', author: 'Camry System' }
     ]
   },
   { 
@@ -274,7 +274,7 @@ export const INITIAL_AGENTS: Agent[] = [
     systemPrompt: 'You are a multilingual local translator specializing in West African and European languages.',
     currentVersion: 'v1.0.0',
     versionHistory: [
-      { version: 'v1.0.0', updatedAt: '2026-06-25', prompt: 'You are a multilingual local translator specializing in West African and European languages.', changes: 'Initial release.', author: 'Kamry System' }
+      { version: 'v1.0.0', updatedAt: '2026-06-25', prompt: 'You are a multilingual local translator specializing in West African and European languages.', changes: 'Initial release.', author: 'Camry System' }
     ]
   },
 ];
@@ -345,7 +345,7 @@ export const INITIAL_AGENT_INTERACTIONS: AgentInteraction[] = [
     messageCount: 6,
     chatHistory: [
       { id: 'm4-1', role: 'user', content: 'Extract action items and assignees from Q3 strategy meeting audio.', model: 'Qwen3-30B-Instruct-2507' },
-      { id: 'm4-2', role: 'assistant', content: 'Action Items:\n1. Tunde - Finalize Kamry NPU cluster expansion by Friday\n2. Amina - Audit knowledge base vector indexing categories', model: 'Qwen3-30B-Instruct-2507' }
+      { id: 'm4-2', role: 'assistant', content: 'Action Items:\n1. Tunde - Finalize Camry NPU cluster expansion by Friday\n2. Amina - Audit knowledge base vector indexing categories', model: 'Qwen3-30B-Instruct-2507' }
     ]
   },
   {
@@ -501,7 +501,7 @@ interface AppContextType {
 
 const INITIAL_SAMPLE_DOC: GeneratedDocument = {
   id: 'doc-1',
-  title: 'Kamry app design prompt',
+  title: 'Camry app design prompt',
   type: 'MD',
   createdAt: 'Just now',
   messageId: 'msg-2',
@@ -512,7 +512,7 @@ const INITIAL_SAMPLE_DOC: GeneratedDocument = {
 ---
 
 ### 0. WHAT YOU ARE BUILDING
-Build a **clickable desktop-application prototype** for **Kamry** — the desktop client (macOS/Windows) that a business installs on their computers to talk to the Kamry AI appliance: a headless on-premise AI box sitting on the office network. The box has **no screen of its own**; this app is the entire interface to it.
+Build a **clickable desktop-application prototype** for **Camry** — the desktop client (macOS/Windows) that a business installs on their computers to talk to the Camry AI appliance: a headless on-premise AI box sitting on the office network. The box has **no screen of its own**; this app is the entire interface to it.
 
 The app is a **local client for a networked device**. It talks to the box over the local network via an OpenAI-compatible API at a local IP. Every "device" control in the app (Wi-Fi, storage, power, updates) is the app reaching into the box and controlling it remotely. Keep this mental model visible in the design: the user always feels they are operating *their own machine in the building*, not a cloud service.
 
@@ -529,7 +529,7 @@ Build **six primary screens** plus their sub-states:
 ---
 
 ### 1. BRAND SYSTEM (APPLY THROUGHOUT — THIS IS NON-NEGOTIABLE)
-Kamry's identity is disciplined, engineering-serious, quiet. The opposite of playful. Think "precision instrument," not "consumer gadget."
+Camry's identity is disciplined, engineering-serious, quiet. The opposite of playful. Think "precision instrument," not "consumer gadget."
 
 **Colors:**
 - Backgrounds: Warm Paper \`#EDEBE4\` and Dark Graphite \`#121418\`
@@ -547,7 +547,7 @@ const INITIAL_SAMPLE_CHAT: Message[] = [
   {
     id: 'msg-2',
     role: 'assistant',
-    content: "Here's a version that fits the 3-4 sentence limit while hitting all four asks (idea, problem, market, why you):\n\nKamry builds on-premise AI appliances for African businesses — a device you plug into your office network that gives your whole team private AI, paid for once, with no subscriptions and no data ever leaving the building. The problem is that African enterprises are being pushed to cloud AI that is expensive, laggy, and risky for sensitive client data.",
+    content: "Here's a version that fits the 3-4 sentence limit while hitting all four asks (idea, problem, market, why you):\n\nCamry builds on-premise AI appliances for African businesses — a device you plug into your office network that gives your whole team private AI, paid for once, with no subscriptions and no data ever leaving the building. The problem is that African enterprises are being pushed to cloud AI that is expensive, laggy, and risky for sensitive client data.",
     model: 'gpt-oss-120b',
     document: INITIAL_SAMPLE_DOC
   }
@@ -564,7 +564,7 @@ export const INITIAL_KB_DOCUMENTS: KBDocument[] = [
     date: '12 JUN 2026',
     status: 'INDEXED',
     pages: 42,
-    extractedSnippet: 'Kamry Inc Employee Guide 2026: Working hours, remote conduct, hardware usage policies, and code of ethics.'
+    extractedSnippet: 'Camry Inc Employee Guide 2026: Working hours, remote conduct, hardware usage policies, and code of ethics.'
   },
   {
     id: 'kb-2',
@@ -614,7 +614,7 @@ export const INITIAL_KB_DOCUMENTS: KBDocument[] = [
     date: '02 MAY 2026',
     status: 'INDEXED',
     pages: 1,
-    extractedSnippet: 'Server room physical security layout, badge access zones, and Kamry hardware enclosure rack location.'
+    extractedSnippet: 'Server room physical security layout, badge access zones, and Camry hardware enclosure rack location.'
   },
   {
     id: 'kb-6',
@@ -686,7 +686,7 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
     type: 'PDF',
     category: 'Contracts',
     snippet: 'Key risks identified in Section 8 (Indemnity limits capped at $50k) and Section 14 (Governing law in foreign jurisdiction). Recommend standard redline terms.',
-    content: `# Contract Risk Analysis — Acme MSA\n\n### Summary\nThe Acme Master Services Agreement contains two high-priority risk clauses that require legal redlining before executive signature.\n\n### Key Risk Observations\n1. **Section 8 (Indemnification Cap)**: Liability is currently capped at $50,000, which does not adequately protect against potential hardware outage losses.\n2. **Section 14 (Jurisdiction)**: Governed by external arbitration rules. Recommend changing to local commercial court.\n3. **Data Security**: Compliant with on-premise execution rules. Zero external API calls detected.\n\n### Recommended Action\nReplace Clause 8.2 with Kamry standard indemnification wording.`,
+    content: `# Contract Risk Analysis — Acme MSA\n\n### Summary\nThe Acme Master Services Agreement contains two high-priority risk clauses that require legal redlining before executive signature.\n\n### Key Risk Observations\n1. **Section 8 (Indemnification Cap)**: Liability is currently capped at $50,000, which does not adequately protect against potential hardware outage losses.\n2. **Section 14 (Jurisdiction)**: Governed by external arbitration rules. Recommend changing to local commercial court.\n3. **Data Security**: Compliant with on-premise execution rules. Zero external API calls detected.\n\n### Recommended Action\nReplace Clause 8.2 with Camry standard indemnification wording.`,
     author: 'Amford',
     modelUsed: 'gpt-oss-120b',
     agentName: 'Legal Assistant',
@@ -697,8 +697,8 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
     title: 'Client Enterprise Pitch Proposal.doc',
     type: 'Doc',
     category: 'Client Files',
-    snippet: 'Dear Client, Following our discussion on on-premise AI security, Kamry ONE operates completely offline inside your firewall...',
-    content: `Subject: Private On-Premise AI for Your Enterprise — Kamry ONE\n\nDear Client,\n\nFollowing our recent discussion on data privacy and AI adoption, I am sharing details on **Kamry ONE**.\n\nUnlike cloud AI providers that process your corporate data on external servers, Kamry ONE is a dedicated hardware appliance that sits directly inside your office server room.\n\nKey Highlights:\n- **100% On-Premise**: Your contracts, financial ledgers, and patient records never touch the public internet.\n- **Flat-Rate Hardware**: Pay once for the appliance with zero monthly token fees.\n- **Local NPU Acceleration**: Instant responses with sub-15ms local latency.\n\nLet us know when you would like a live hardware demonstration in your office.\n\nBest regards,\nSarah Jenkins`,
+    snippet: 'Dear Client, Following our discussion on on-premise AI security, Camry ONE operates completely offline inside your firewall...',
+    content: `Subject: Private On-Premise AI for Your Enterprise — Camry ONE\n\nDear Client,\n\nFollowing our recent discussion on data privacy and AI adoption, I am sharing details on **Camry ONE**.\n\nUnlike cloud AI providers that process your corporate data on external servers, Camry ONE is a dedicated hardware appliance that sits directly inside your office server room.\n\nKey Highlights:\n- **100% On-Premise**: Your contracts, financial ledgers, and patient records never touch the public internet.\n- **Flat-Rate Hardware**: Pay once for the appliance with zero monthly token fees.\n- **Local NPU Acceleration**: Instant responses with sub-15ms local latency.\n\nLet us know when you would like a live hardware demonstration in your office.\n\nBest regards,\nSarah Jenkins`,
     author: 'Sarah',
     modelUsed: 'Qwen3-30B-Instruct-2507',
     agentName: 'General Assistant',
@@ -710,7 +710,7 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
     type: 'MD',
     category: 'Finance',
     snippet: 'Decisions: 1. Approved $1.2M VRAM expansion. 2. Finalized Q3 hiring plan. 3. Approved local audit protocol.',
-    content: `# Q2 Executive Board Meeting Summary\n\n**Date:** July 22, 2026\n**Attendees:** Amford, Francis, Sarah, David\n\n### Key Decisions\n1. **Capital Allocation**: Approved $1.2M budget for additional Kamry NPU cluster expansion.\n2. **Q3 Recruitment**: Approved hiring 4 senior hardware engineers and 2 compliance leads.\n3. **Data Governance**: Formally adopted zero-cloud policy across all regional offices.\n\n### Action Items\n- [ ] Amford: Finalize hardware supplier procurement.\n- [ ] Sarah: Publish updated Onboarding Guide in Knowledge Base.`,
+    content: `# Q2 Executive Board Meeting Summary\n\n**Date:** July 22, 2026\n**Attendees:** Amford, Francis, Sarah, David\n\n### Key Decisions\n1. **Capital Allocation**: Approved $1.2M budget for additional Camry NPU cluster expansion.\n2. **Q3 Recruitment**: Approved hiring 4 senior hardware engineers and 2 compliance leads.\n3. **Data Governance**: Formally adopted zero-cloud policy across all regional offices.\n\n### Action Items\n- [ ] Amford: Finalize hardware supplier procurement.\n- [ ] Sarah: Publish updated Onboarding Guide in Knowledge Base.`,
     author: 'Amford',
     modelUsed: 'gpt-oss-120b',
     agentName: 'Meeting Notetaker',
@@ -732,11 +732,11 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   },
   {
     id: 'lib-5',
-    title: 'Kamry NPU Dual-Die Topology.png',
+    title: 'Camry NPU Dual-Die Topology.png',
     type: 'Image',
     category: 'Client Files',
-    snippet: 'Conceptual rendering of Kamry NPU dual-die module layout with active cooling fins and local NVMe caching array.',
-    content: 'Conceptual high-performance rendering of Kamry NPU hardware topology generated on local image model.',
+    snippet: 'Conceptual rendering of Camry NPU dual-die module layout with active cooling fins and local NVMe caching array.',
+    content: 'Conceptual high-performance rendering of Camry NPU hardware topology generated on local image model.',
     author: 'Francis',
     modelUsed: 'Z-Image-Turbo',
     agentName: 'Image Creator',
@@ -749,7 +749,7 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
     type: 'Video',
     category: 'Internal Policies',
     snippet: 'Offline video walkthrough demonstrating physical rack installation, power redundancy, and dual 10GbE local network wiring.',
-    content: 'Step-by-step video instructions for unboxing, rack mounting, and network provisioning of the Kamry ONE appliance.',
+    content: 'Step-by-step video instructions for unboxing, rack mounting, and network provisioning of the Camry ONE appliance.',
     author: 'Amford',
     modelUsed: 'gpt-oss-120b',
     agentName: 'Industrial Copilot',
@@ -761,8 +761,8 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
     title: 'New Employee Onboarding FAQ Guide.pdf',
     type: 'PDF',
     category: 'HR',
-    snippet: 'Welcome to Kamry! Your hardware box is pre-loaded with company policies. Here is how to query the Knowledge Base on Day 1...',
-    content: `# New Employee Onboarding FAQ\n\nWelcome to the team! All company policies, benefits, and handbooks are indexed locally on your Kamry box.\n\n### FAQ\n**Q: How do I ask Kamry about company policies?**\nA: Open the Chat interface and ask natural questions. Kamry reads directly from the Knowledge Base.\n\n**Q: Is my chat private?**\nA: Yes. All inference runs locally on the Kamry NPU in your building. No data ever leaves the hardware.`,
+    snippet: 'Welcome to Camry! Your hardware box is pre-loaded with company policies. Here is how to query the Knowledge Base on Day 1...',
+    content: `# New Employee Onboarding FAQ\n\nWelcome to the team! All company policies, benefits, and handbooks are indexed locally on your Camry box.\n\n### FAQ\n**Q: How do I ask Camry about company policies?**\nA: Open the Chat interface and ask natural questions. Camry reads directly from the Knowledge Base.\n\n**Q: Is my chat private?**\nA: Yes. All inference runs locally on the Camry NPU in your building. No data ever leaves the hardware.`,
     author: 'Sarah',
     modelUsed: 'gpt-oss-120b',
     agentName: 'HR Copilot',
@@ -785,8 +785,8 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
     title: 'Product Technical Specs Summary.md',
     type: 'MD',
     category: 'Case Law',
-    snippet: 'Kamry ONE Specs: Dual NPU array, 256GB unified RAM, 2TB PCIe 5.0 local storage, zero external telemetry ports.',
-    content: `# Kamry ONE Appliance Specifications\n\n- **Compute:** Dual Custom NPU Accelerators (480 TOPS FP16)\n- **Memory:** 256 GB LPDDR5 Unified System RAM\n- **Storage:** 2 TB NVMe PCIe 5.0 Encrypted Local Flash\n- **Networking:** Dual 10GbE RJ45 Local LAN Ports (Air-gapped capable)\n- **Security:** Hardware TPM 2.0, AES-256 Flash Encryption`,
+    snippet: 'Camry ONE Specs: Dual NPU array, 256GB unified RAM, 2TB PCIe 5.0 local storage, zero external telemetry ports.',
+    content: `# Camry ONE Appliance Specifications\n\n- **Compute:** Dual Custom NPU Accelerators (480 TOPS FP16)\n- **Memory:** 256 GB LPDDR5 Unified System RAM\n- **Storage:** 2 TB NVMe PCIe 5.0 Encrypted Local Flash\n- **Networking:** Dual 10GbE RJ45 Local LAN Ports (Air-gapped capable)\n- **Security:** Hardware TPM 2.0, AES-256 Flash Encryption`,
     author: 'Francis',
     modelUsed: 'Qwen3-Coder-30B',
     agentName: 'Industrial Copilot',
@@ -798,7 +798,7 @@ export const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
     type: 'Doc',
     category: 'Contracts',
     snippet: 'Accord de Niveau de Service Commercial : Les parties conviennent par la présente de maintenir un temps de fonctionnement de 99.9%...',
-    content: `# Accord de Niveau de Service Commercial (SLA)\n\n**parties :** Kamry Hardware Systems & Client Enterprise\n**Statut :** Traduction certifiée sur NPU local\n\n### Clause 1. Service et Disponibilité\nLes parties conviennent par la présente de maintenir un temps de fonctionnement minimal de 99,9% pour l'équipement d'intelligence artificielle sur site.\n\n### Clause 2. Confidentialité des Données\nToutes les opérations d'inférence doivent demeurer au sein du réseau local de l'entreprise sans transmission externe.`,
+    content: `# Accord de Niveau de Service Commercial (SLA)\n\n**parties :** Camry Hardware Systems & Client Enterprise\n**Statut :** Traduction certifiée sur NPU local\n\n### Clause 1. Service et Disponibilité\nLes parties conviennent par la présente de maintenir un temps de fonctionnement minimal de 99,9% pour l'équipement d'intelligence artificielle sur site.\n\n### Clause 2. Confidentialité des Données\nToutes les opérations d'inférence doivent demeurer au sein du réseau local de l'entreprise sans transmission externe.`,
     author: 'Francis',
     modelUsed: 'Qwen3-Coder-30B',
     agentName: 'Translator (Local)',
@@ -1276,11 +1276,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   // Export configuration and agent settings to JSON file
   const exportConfig = () => {
     const backupData = {
-      app: "Kamry OS",
+      app: "Camry OS",
       version: "1.0.4",
       exportedAt: new Date().toISOString(),
       device: {
-        model: "Kamry Gen 1",
+        model: "Camry Gen 1",
         serial: "C1-X992-0041",
         firmware: "v1.0.3"
       },
@@ -1300,7 +1300,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `kamry-os-config-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = `camry-os-config-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

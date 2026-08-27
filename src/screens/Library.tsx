@@ -69,7 +69,7 @@ export const Library: React.FC = () => {
           content: doc.content,
           author: doc.author || 'You',
           modelUsed: doc.modelUsed || 'gpt-oss-120b',
-          agentName: doc.agentName || 'Kamry Assistant',
+          agentName: doc.agentName || 'Camry Assistant',
           date: doc.createdAt || 'Just now'
         });
       }
@@ -242,8 +242,8 @@ export const Library: React.FC = () => {
   };
 
   return (
-    <div className={`flex-1 overflow-y-auto kamry-page-container kamry-section-gap transition-colors font-sans ${
-      isLight ? 'bg-kamry-paper text-kamry-blackout' : 'bg-[#141418] text-white'
+    <div className={`flex-1 overflow-y-auto camry-page-container camry-section-gap transition-colors font-sans ${
+      isLight ? 'bg-camry-paper text-camry-blackout' : 'bg-[#141418] text-white'
     }`}>
       <div className="space-y-6">
         {/* HEADER SECTION */}
@@ -257,8 +257,8 @@ export const Library: React.FC = () => {
             }`}>
               <FolderArchive size={22} />
             </div>
-            <h1 className={`kamry-h1-title ${
-              isLight ? 'text-kamry-blackout' : 'text-white'
+            <h1 className={`camry-h1-title ${
+              isLight ? 'text-camry-blackout' : 'text-white'
             }`}>
               Files Library
             </h1>
@@ -278,7 +278,7 @@ export const Library: React.FC = () => {
             <span className="text-xs font-semibold uppercase tracking-wider">Total Files</span>
             <FileText size={16} className="text-sky-500" />
           </div>
-          <div className={`text-2xl font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+          <div className={`text-2xl font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
             {allUnifiedFiles.length}
           </div>
           <div className="text-[11px] text-zinc-400 mt-0.5">Across all formats</div>
@@ -291,7 +291,7 @@ export const Library: React.FC = () => {
             <span className="text-xs font-semibold uppercase tracking-wider">AI Created</span>
             <Bot size={16} className="text-emerald-500" />
           </div>
-          <div className={`text-2xl font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+          <div className={`text-2xl font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
             {allUnifiedFiles.filter(f => f.agentName).length}
           </div>
           <div className="text-[11px] text-emerald-600 font-medium mt-0.5">On-premise NPU</div>
@@ -304,7 +304,7 @@ export const Library: React.FC = () => {
             <span className="text-xs font-semibold uppercase tracking-wider">User Created</span>
             <User size={16} className="text-indigo-500" />
           </div>
-          <div className={`text-2xl font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+          <div className={`text-2xl font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
             {allUnifiedFiles.filter(f => !f.agentName || f.author !== 'System').length}
           </div>
           <div className="text-[11px] text-zinc-400 mt-0.5">Workspace contributors</div>
@@ -317,7 +317,7 @@ export const Library: React.FC = () => {
             <span className="text-xs font-semibold uppercase tracking-wider">Models</span>
             <Cpu size={16} className="text-sky-500" />
           </div>
-          <div className={`text-2xl font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+          <div className={`text-2xl font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
             {new Set(allUnifiedFiles.map(f => f.modelUsed)).size}
           </div>
           <div className="text-[11px] text-zinc-400 mt-0.5">100% Offline inference</div>
@@ -341,7 +341,7 @@ export const Library: React.FC = () => {
               placeholder="Search files by title, creator, category, or content..."
               className={`w-full pl-10 pr-4 py-2.5 border rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] ${
                 isLight 
-                  ? 'bg-zinc-50 border-black/10 text-kamry-blackout placeholder:text-zinc-400' 
+                  ? 'bg-zinc-50 border-black/10 text-camry-blackout placeholder:text-zinc-400' 
                   : 'bg-[#141418] border-white/15 text-white placeholder:text-zinc-500'
               }`}
             />
@@ -434,7 +434,7 @@ export const Library: React.FC = () => {
                 onClick={() => setTypeFilter(t)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex-shrink-0 cursor-pointer whitespace-nowrap ${
                   typeFilter.toLowerCase() === t.toLowerCase()
-                    ? (isLight ? 'bg-kamry-blackout text-white font-semibold shadow-2xs' : 'bg-[#0EA5E9] text-white font-semibold shadow-2xs')
+                    ? (isLight ? 'bg-camry-blackout text-white font-semibold shadow-2xs' : 'bg-[#0EA5E9] text-white font-semibold shadow-2xs')
                     : (isLight ? 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200' : 'bg-white/10 text-zinc-300 hover:bg-white/15')
                 }`}
               >
@@ -455,7 +455,7 @@ export const Library: React.FC = () => {
           isLight ? 'bg-white border-black/10 text-zinc-500' : 'bg-[#1C1C22] border-white/10 text-zinc-400'
         }`}>
           <FolderArchive size={40} className={`mx-auto ${isLight ? 'text-zinc-300' : 'text-zinc-600'}`} />
-          <h3 className={`text-base font-bold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+          <h3 className={`text-base font-bold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
             No files found
           </h3>
           <p className="text-xs max-w-sm mx-auto leading-relaxed">
@@ -504,7 +504,7 @@ export const Library: React.FC = () => {
                   <h3 
                     onClick={() => setSelectedItem(item)}
                     className={`font-bold text-base line-clamp-2 cursor-pointer transition-colors ${
-                      isLight ? 'text-kamry-blackout hover:text-[#0EA5E9]' : 'text-white hover:text-sky-400'
+                      isLight ? 'text-camry-blackout hover:text-[#0EA5E9]' : 'text-white hover:text-sky-400'
                     }`}
                   >
                     {item.title}
@@ -555,12 +555,12 @@ export const Library: React.FC = () => {
                       {item.agentName ? (
                         <>
                           <Bot size={14} className="text-sky-500 shrink-0" />
-                          <span className={isLight ? 'text-kamry-blackout' : 'text-white'}>{item.agentName}</span>
+                          <span className={isLight ? 'text-camry-blackout' : 'text-white'}>{item.agentName}</span>
                         </>
                       ) : (
                         <>
                           <User size={14} className="text-indigo-500 shrink-0" />
-                          <span className={isLight ? 'text-kamry-blackout' : 'text-white'}>{item.author}</span>
+                          <span className={isLight ? 'text-camry-blackout' : 'text-white'}>{item.author}</span>
                         </>
                       )}
                     </div>
@@ -648,7 +648,7 @@ export const Library: React.FC = () => {
                     <td className="p-3.5 pl-5 font-semibold" onClick={() => setSelectedItem(item)}>
                       <div className="flex items-center gap-2.5 min-w-0">
                         {getTypeIcon(item.type, 16)}
-                        <span className={`truncate max-w-xs sm:max-w-sm ${isLight ? 'text-kamry-blackout font-bold' : 'text-white font-bold'}`}>
+                        <span className={`truncate max-w-xs sm:max-w-sm ${isLight ? 'text-camry-blackout font-bold' : 'text-white font-bold'}`}>
                           {item.title}
                         </span>
                       </div>
@@ -741,7 +741,7 @@ export const Library: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
               className={`border rounded-2xl max-w-3xl w-full p-6 sm:p-7 shadow-2xl space-y-4 max-h-[90vh] flex flex-col ${
-                isLight ? 'bg-white border-black/10 text-kamry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
+                isLight ? 'bg-white border-black/10 text-camry-blackout' : 'bg-[#1C1C22] border-white/15 text-white'
               }`}
             >
               {/* Header */}
@@ -765,7 +765,7 @@ export const Library: React.FC = () => {
                   </div>
 
                   <h2 className={`text-xl sm:text-2xl font-bold truncate ${
-                    isLight ? 'text-kamry-blackout' : 'text-white'
+                    isLight ? 'text-camry-blackout' : 'text-white'
                   }`}>
                     {selectedItem.title}
                   </h2>
@@ -791,12 +791,12 @@ export const Library: React.FC = () => {
                     {selectedItem.agentName ? (
                       <>
                         <Bot size={15} className="text-sky-500 shrink-0" />
-                        <span className={isLight ? 'text-kamry-blackout' : 'text-white'}>{selectedItem.agentName}</span>
+                        <span className={isLight ? 'text-camry-blackout' : 'text-white'}>{selectedItem.agentName}</span>
                       </>
                     ) : (
                       <>
                         <User size={15} className="text-indigo-500 shrink-0" />
-                        <span className={isLight ? 'text-kamry-blackout' : 'text-white'}>{selectedItem.author}</span>
+                        <span className={isLight ? 'text-camry-blackout' : 'text-white'}>{selectedItem.author}</span>
                       </>
                     )}
                   </div>
@@ -850,7 +850,7 @@ export const Library: React.FC = () => {
                   <button
                     onClick={() => handleCopyContent(selectedItem.content, selectedItem.title)}
                     className={`px-3.5 py-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 cursor-pointer ${
-                      isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                      isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                     }`}
                   >
                     <Copy size={14} />
@@ -860,7 +860,7 @@ export const Library: React.FC = () => {
                   <button
                     onClick={() => handleDownloadFile(selectedItem)}
                     className={`px-3.5 py-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 cursor-pointer ${
-                      isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                      isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                     }`}
                   >
                     <Download size={14} />

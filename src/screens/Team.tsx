@@ -90,7 +90,7 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
   const roleDescriptions: Record<UserRole, { title: string; desc: string; badgeStyle: string; cardAccent: string }> = {
     Admin: {
       title: 'Full Hardware Administrator',
-      desc: 'Complete control over Kamry NPU hardware, team provisioning, model updates, and all KB categories.',
+      desc: 'Complete control over Camry NPU hardware, team provisioning, model updates, and all KB categories.',
       badgeStyle: isLight ? 'bg-zinc-900 text-white border border-black' : 'bg-zinc-800 text-zinc-100 border border-zinc-700',
       cardAccent: 'border-t-4 border-t-zinc-900'
     },
@@ -149,7 +149,7 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
   };
 
   return (
-    <div className={`flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 font-familjen ${isLight ? 'bg-kamry-paper/40' : 'bg-[#141418]'}`}>
+    <div className={`flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 font-familjen ${isLight ? 'bg-camry-paper/40' : 'bg-[#141418]'}`}>
       
       {/* Header */}
       <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b ${isLight ? 'border-black/5' : 'border-white/10'}`}>
@@ -157,7 +157,7 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
           {onBack && (
             <button 
               onClick={onBack} 
-              className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-kamry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'} mt-0.5`}
+              className={`p-2 rounded-full transition-colors ${isLight ? 'hover:bg-black/5 text-camry-graphite/60 hover:text-black' : 'hover:bg-white/10 text-zinc-400 hover:text-white'} mt-0.5`}
               title="Back to Settings"
             >
               <ArrowLeft size={20} />
@@ -165,14 +165,14 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
           )}
           <div>
             <div className="flex items-center gap-2">
-              <h1 className={`text-2xl sm:text-3xl font-bricolage font-bold tracking-tight ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+              <h1 className={`text-2xl sm:text-3xl font-bricolage font-bold tracking-tight ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                 Team & Access Control
               </h1>
               <span className={`px-2.5 py-0.5 rounded-full font-martian text-[10px] font-bold uppercase tracking-wider ${isLight ? 'bg-sky-100 text-sky-700 border border-sky-200/80' : 'bg-sky-950/80 text-sky-300 border border-sky-800/50'}`}>
                 {teamMembers.length} Members
               </span>
             </div>
-            <p className={`text-xs sm:text-sm mt-1 ${isLight ? 'text-kamry-graphite/70' : 'text-zinc-400'}`}>
+            <p className={`text-xs sm:text-sm mt-1 ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
               Manage local device access, role permissions, and Knowledge Base security scopes.
             </p>
           </div>
@@ -302,7 +302,7 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
                     </div>
                   </td>
 
-                  <td className={`py-3.5 px-3 font-martian text-[10px] ${isLight ? 'text-kamry-graphite/70' : 'text-zinc-400'}`}>
+                  <td className={`py-3.5 px-3 font-martian text-[10px] ${isLight ? 'text-camry-graphite/70' : 'text-zinc-400'}`}>
                     {member.lastActive}
                   </td>
 
@@ -311,10 +311,10 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
                       <button
                         onClick={() => setSelectedMemberForEdit(member)}
                         className={`px-2.5 py-1 rounded-lg border text-xs font-martian font-medium transition-colors cursor-pointer inline-flex items-center gap-1 group ${
-                          isLight ? 'border-black/10 hover:bg-black/5 text-kamry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
+                          isLight ? 'border-black/10 hover:bg-black/5 text-camry-blackout' : 'border-white/10 hover:bg-white/10 text-white'
                         }`}
                       >
-                        <AnimatedIcon type="scale" className={isLight ? 'text-kamry-graphite group-hover:text-kamry-blackout' : 'text-zinc-400 group-hover:text-white'}>
+                        <AnimatedIcon type="scale" className={isLight ? 'text-camry-graphite group-hover:text-camry-blackout' : 'text-zinc-400 group-hover:text-white'}>
                           <Settings size={12} />
                         </AnimatedIcon>
                         <span>Permissions</span>
@@ -332,15 +332,15 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
       <div className={`border rounded-2xl p-5 shadow-sm space-y-4 ${isLight ? 'bg-white border-black/10' : 'bg-[#1C1C22] border-white/10'}`}>
         <div className={`flex items-center justify-between border-b pb-3 ${isLight ? 'border-black/10' : 'border-white/10'}`}>
           <div className="flex items-center gap-2">
-            <Key size={18} className={isLight ? 'text-kamry-deep-carrier' : 'text-[#0EA5E9]'} />
-            <h2 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Role Capability Matrix</h2>
+            <Key size={18} className={isLight ? 'text-camry-deep-carrier' : 'text-[#0EA5E9]'} />
+            <h2 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Role Capability Matrix</h2>
           </div>
-          <span className={`font-martian text-[10px] uppercase ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>Enforced by local hardware security module</span>
+          <span className={`font-martian text-[10px] uppercase ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>Enforced by local hardware security module</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-familjen">
-            <thead className={`border-b font-martian text-[10px] uppercase ${isLight ? 'bg-zinc-50 border-black/10 text-kamry-graphite/70' : 'bg-white/5 border-white/10 text-zinc-400'}`}>
+            <thead className={`border-b font-martian text-[10px] uppercase ${isLight ? 'bg-zinc-50 border-black/10 text-camry-graphite/70' : 'bg-white/5 border-white/10 text-zinc-400'}`}>
               <tr>
                 <th className="py-2.5 px-3">System Capability</th>
                 <th className="py-2.5 px-3 text-center">Admin</th>
@@ -351,42 +351,42 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
             </thead>
             <tbody className={`divide-y text-xs ${isLight ? 'divide-black/5' : 'divide-white/5'}`}>
               <tr>
-                <td className={`py-3 px-3 font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Chat & Run Local Models</td>
+                <td className={`py-3 px-3 font-medium ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Chat & Run Local Models</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
               </tr>
               <tr>
-                <td className={`py-3 px-3 font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Upload to Knowledge Base</td>
+                <td className={`py-3 px-3 font-medium ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Upload to Knowledge Base</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-red-500 font-bold">✕</td>
               </tr>
               <tr>
-                <td className={`py-3 px-3 font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Install Marketplace Agents</td>
+                <td className={`py-3 px-3 font-medium ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Install Marketplace Agents</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-red-500 font-bold">✕</td>
                 <td className="text-center py-3 text-red-500 font-bold">✕</td>
               </tr>
               <tr>
-                <td className={`py-3 px-3 font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Access Company AI Agents & Prompts</td>
+                <td className={`py-3 px-3 font-medium ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Access Company AI Agents & Prompts</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓ (Scoped)</td>
               </tr>
               <tr>
-                <td className={`py-3 px-3 font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Manage Models & NPU VRAM</td>
+                <td className={`py-3 px-3 font-medium ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Manage Models & NPU VRAM</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-red-500 font-bold">✕</td>
                 <td className="text-center py-3 text-red-500 font-bold">✕</td>
                 <td className="text-center py-3 text-red-500 font-bold">✕</td>
               </tr>
               <tr>
-                <td className={`py-3 px-3 font-medium ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Invite Team Members</td>
+                <td className={`py-3 px-3 font-medium ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Invite Team Members</td>
                 <td className="text-center py-3 text-emerald-500 font-bold">✓</td>
                 <td className="text-center py-3 text-red-500 font-bold">✕</td>
                 <td className="text-center py-3 text-red-500 font-bold">✕</td>
@@ -409,41 +409,41 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
             >
               <div className={`flex items-center justify-between pb-3 border-b ${isLight ? 'border-black/10' : 'border-white/10'}`}>
                 <div className="flex items-center gap-2">
-                  <UserPlus size={18} className={isLight ? 'text-kamry-deep-carrier' : 'text-[#0EA5E9]'} />
-                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Invite New Team Member</h3>
+                  <UserPlus size={18} className={isLight ? 'text-camry-deep-carrier' : 'text-[#0EA5E9]'} />
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Invite New Team Member</h3>
                 </div>
-                <button onClick={() => setIsInviteModalOpen(false)} className={`p-1 ${isLight ? 'text-kamry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
+                <button onClick={() => setIsInviteModalOpen(false)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
 
               <form onSubmit={handleInviteSubmit} className="space-y-4">
                 <div className="space-y-1">
-                  <label className={`font-martian text-xs font-semibold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Full Name</label>
+                  <label className={`font-martian text-xs font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Full Name</label>
                   <input 
                     type="text"
                     required
                     value={inviteName}
                     onChange={(e) => setInviteName(e.target.value)}
                     placeholder="e.g. Marcus Vance"
-                    className={`w-full px-3 py-2 border rounded-xl text-xs font-familjen focus:outline-none ${isLight ? 'bg-zinc-50 border-black/10 text-black focus:border-kamry-deep-carrier focus:bg-white' : 'bg-white/5 border-white/10 text-white focus:border-[#0EA5E9]'}`}
+                    className={`w-full px-3 py-2 border rounded-xl text-xs font-familjen focus:outline-none ${isLight ? 'bg-zinc-50 border-black/10 text-black focus:border-camry-deep-carrier focus:bg-white' : 'bg-white/5 border-white/10 text-white focus:border-[#0EA5E9]'}`}
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className={`font-martian text-xs font-semibold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Work Email</label>
+                  <label className={`font-martian text-xs font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Work Email</label>
                   <input 
                     type="email"
                     required
                     value={inviteEmail}
                     onChange={(e) => setInviteEmail(e.target.value)}
                     placeholder="marcus@company.com"
-                    className={`w-full px-3 py-2 border rounded-xl text-xs font-familjen focus:outline-none ${isLight ? 'bg-zinc-50 border-black/10 text-black focus:border-kamry-deep-carrier focus:bg-white' : 'bg-white/5 border-white/10 text-white focus:border-[#0EA5E9]'}`}
+                    className={`w-full px-3 py-2 border rounded-xl text-xs font-familjen focus:outline-none ${isLight ? 'bg-zinc-50 border-black/10 text-black focus:border-camry-deep-carrier focus:bg-white' : 'bg-white/5 border-white/10 text-white focus:border-[#0EA5E9]'}`}
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className={`font-martian text-xs font-semibold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Assigned Role</label>
+                  <label className={`font-martian text-xs font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Assigned Role</label>
                   <CustomSelect
                     fullWidth
                     value={inviteRole}
@@ -460,10 +460,10 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
 
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <label className={`font-martian text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                    <label className={`font-martian text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                       Knowledge Access Scopes
                     </label>
-                    <span className={`text-[10px] font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+                    <span className={`text-[10px] font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                       {inviteCategories.length} / {categories.length} Allowed
                     </span>
                   </div>
@@ -476,8 +476,8 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
                           <div className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: cat.color }} />
                             <div>
-                              <span className={`font-martian text-xs font-bold block leading-none ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{cat.name}</span>
-                              {cat.description && <span className={`text-[10px] ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>{cat.description}</span>}
+                              <span className={`font-martian text-xs font-bold block leading-none ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{cat.name}</span>
+                              {cat.description && <span className={`text-[10px] ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>{cat.description}</span>}
                             </div>
                           </div>
 
@@ -521,7 +521,7 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
                   </button>
                   <button 
                     type="submit"
-                    className={`px-4 py-2 rounded-xl text-white text-xs font-martian font-semibold ${isLight ? 'bg-kamry-blackout hover:bg-kamry-graphite' : 'bg-[#0EA5E9] hover:bg-blue-600'}`}
+                    className={`px-4 py-2 rounded-xl text-white text-xs font-martian font-semibold ${isLight ? 'bg-camry-blackout hover:bg-camry-graphite' : 'bg-[#0EA5E9] hover:bg-blue-600'}`}
                   >
                     Send Invitation
                   </button>
@@ -544,17 +544,17 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
             >
               <div className={`flex items-center justify-between pb-3 border-b ${isLight ? 'border-black/10' : 'border-white/10'}`}>
                 <div>
-                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>Member Permissions</h3>
-                  <p className={`font-martian text-[10px] ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>{selectedMemberForEdit.name} • {selectedMemberForEdit.email}</p>
+                  <h3 className={`font-bricolage font-bold text-base ${isLight ? 'text-camry-blackout' : 'text-white'}`}>Member Permissions</h3>
+                  <p className={`font-martian text-[10px] ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>{selectedMemberForEdit.name} • {selectedMemberForEdit.email}</p>
                 </div>
-                <button onClick={() => setSelectedMemberForEdit(null)} className={`p-1 ${isLight ? 'text-kamry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
+                <button onClick={() => setSelectedMemberForEdit(null)} className={`p-1 ${isLight ? 'text-camry-graphite hover:text-black' : 'text-zinc-400 hover:text-white'}`}>
                   <X size={18} />
                 </button>
               </div>
 
               <div className="space-y-3">
                 <div className="space-y-1">
-                  <label className={`font-martian text-xs font-semibold ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>User Role</label>
+                  <label className={`font-martian text-xs font-semibold ${isLight ? 'text-camry-blackout' : 'text-white'}`}>User Role</label>
                   <CustomSelect
                     fullWidth
                     disabled={!canManageTeam}
@@ -576,10 +576,10 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
 
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <label className={`font-martian text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>
+                    <label className={`font-martian text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-camry-blackout' : 'text-white'}`}>
                       Knowledge Access Scopes
                     </label>
-                    <span className={`text-[10px] font-martian ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>
+                    <span className={`text-[10px] font-martian ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>
                       {selectedMemberForEdit.allowedCategories.length} / {categories.length} Allowed
                     </span>
                   </div>
@@ -592,8 +592,8 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
                           <div className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: cat.color }} />
                             <div>
-                              <span className={`font-martian text-xs font-bold block leading-none ${isLight ? 'text-kamry-blackout' : 'text-white'}`}>{cat.name}</span>
-                              {cat.description && <span className={`text-[10px] ${isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'}`}>{cat.description}</span>}
+                              <span className={`font-martian text-xs font-bold block leading-none ${isLight ? 'text-camry-blackout' : 'text-white'}`}>{cat.name}</span>
+                              {cat.description && <span className={`text-[10px] ${isLight ? 'text-camry-graphite/60' : 'text-zinc-400'}`}>{cat.description}</span>}
                             </div>
                           </div>
 
@@ -661,7 +661,7 @@ export const Team: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
                     showToast(`Saved access settings for ${selectedMemberForEdit.name}`);
                     setSelectedMemberForEdit(null);
                   }}
-                  className={`px-4 py-2 rounded-xl text-white text-xs font-martian font-semibold ml-auto ${isLight ? 'bg-kamry-blackout hover:bg-kamry-graphite' : 'bg-[#0EA5E9] hover:bg-blue-600'}`}
+                  className={`px-4 py-2 rounded-xl text-white text-xs font-martian font-semibold ml-auto ${isLight ? 'bg-camry-blackout hover:bg-camry-graphite' : 'bg-[#0EA5E9] hover:bg-blue-600'}`}
                 >
                   Done
                 </button>

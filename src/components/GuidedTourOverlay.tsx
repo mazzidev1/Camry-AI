@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppContext } from '../store/AppContext';
 import { AnimatedIcon } from './AnimatedIcon';
-import { KamryOrb } from './KamryOrb';
+import { CamryOrb } from './CamryOrb';
 import { 
   X, 
   ChevronRight, 
@@ -65,7 +65,7 @@ export const GuidedTourOverlay: React.FC = () => {
       title: '100% Air-Gapped NPU AI Workstation',
       subtitle: 'Your private, on-premises AI intelligence appliance',
       icon: <Cpu size={24} className={isLight ? "text-sky-600" : "text-sky-400"} />,
-      description: 'Kamry OS runs entirely inside your local network hardware. All document indexing, vector searches, and LLM inferences occur on your local NPU with zero internet dependencies or external data leakage.',
+      description: 'Camry OS runs entirely inside your local network hardware. All document indexing, vector searches, and LLM inferences occur on your local NPU with zero internet dependencies or external data leakage.',
       highlights: [
         'Local NPU Acceleration with ~1,480 tokens/sec throughput',
         'Strict Air-Gapped Security & Zero Cloud Telemetry',
@@ -144,7 +144,7 @@ export const GuidedTourOverlay: React.FC = () => {
       setTourStep(tourStep + 1);
     } else {
       closeTour();
-      showToast('Tour completed! Welcome to Kamry OS.', 'success');
+      showToast('Tour completed! Welcome to Camry OS.', 'success');
     }
   };
 
@@ -223,7 +223,7 @@ export const GuidedTourOverlay: React.FC = () => {
             {/* Title & Icon Header */}
             <div className="flex items-start gap-3.5">
               {tourStep === 1 ? (
-                <KamryOrb size="md" interactive={true} className="shrink-0" />
+                <CamryOrb size="md" interactive={true} className="shrink-0" />
               ) : (
                 <div className="w-12 h-12 rounded-xl border flex items-center justify-center shrink-0 shadow-sm bg-sky-500/10 border-sky-500/20 text-sky-500">
                   <AnimatedIcon type="scale">

@@ -1,14 +1,14 @@
 import React from 'react';
 import { motion } from 'motion/react';
 
-interface KamryOrbProps {
+interface CamryOrbProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   interactive?: boolean;
   useMascot?: boolean;
 }
 
-export const KamryOrb: React.FC<KamryOrbProps> = ({
+export const CamryOrb: React.FC<CamryOrbProps> = ({
   size = 'md',
   className = '',
   interactive = true,
@@ -37,25 +37,14 @@ export const KamryOrb: React.FC<KamryOrbProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className="z-10 drop-shadow-md select-none shrink-0"
     >
-      {/* Vertical Spine of the "K" */}
-      <rect x="20" y="16" width="14" height="14" rx="4" fill="#FFFFFF" />
-      <rect x="20" y="34" width="14" height="14" rx="4" fill="#F59E0B" />
-      <rect x="20" y="52" width="14" height="14" rx="4" fill="var(--color-kamry-brand)" />
-      <rect x="20" y="70" width="14" height="14" rx="4" fill="#FFFFFF" />
-
-      {/* Diagonal Upper Branch of the "K" */}
-      <rect x="38" y="34" width="14" height="14" rx="4" fill="#FFFFFF" />
-      <rect x="56" y="16" width="14" height="14" rx="4" fill="#FFFFFF" />
-      <circle cx="80" cy="23" r="6" fill="var(--color-kamry-brand)" />
-
-      {/* Diagonal Lower Branch of the "K" */}
-      <rect x="38" y="52" width="14" height="14" rx="4" fill="#9CA3AF" />
-      <rect x="56" y="70" width="14" height="14" rx="4" fill="#FFFFFF" />
-      <circle cx="80" cy="77" r="6" fill="#FFFFFF" />
-
-      {/* Core Junction Nodes */}
-      <circle cx="45" cy="41" r="5" fill="#FFFFFF" opacity="0.8" />
-      <circle cx="45" cy="59" r="5" fill="var(--color-kamry-brand)" opacity="0.8" />
+      <rect x="36" y="16" width="32" height="12" rx="3" fill="#FFFFFF" />
+      <circle cx="78" cy="22" r="6" fill="#FFFFFF" />
+      <rect x="16" y="34" width="14" height="14" rx="3" fill="#D1D5DB" />
+      <circle cx="43" cy="41" r="6" fill="#FFFFFF" />
+      <rect x="16" y="52" width="14" height="14" rx="3" fill="#FFFFFF" />
+      <rect x="36" y="52" width="14" height="14" rx="3" fill="#9CA3AF" />
+      <rect x="36" y="70" width="32" height="12" rx="3" fill="#FFFFFF" />
+      <circle cx="78" cy="76" r="6" fill="#FFFFFF" />
     </svg>
   );
 

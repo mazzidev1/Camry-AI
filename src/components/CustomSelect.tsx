@@ -74,7 +74,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center justify-between gap-2 border rounded-lg font-martian shadow-xs transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]/40 ${
           isLight 
-            ? 'bg-white/95 border-black/10 text-kamry-blackout hover:bg-white hover:border-black/20' 
+            ? 'bg-white/95 border-black/10 text-camry-blackout hover:bg-white hover:border-black/20' 
             : 'bg-[#222228] border-white/10 text-white hover:bg-[#2A2A32] hover:border-white/20'
         } ${
           isSmall ? 'px-2.5 py-1 text-xs' : 'px-3 py-2 text-xs sm:text-sm font-semibold'
@@ -83,7 +83,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         <div className="flex items-center gap-1.5 truncate min-w-0">
           {label && (
             <span className={`uppercase tracking-wider font-medium text-[10px] sm:text-xs shrink-0 ${
-              isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'
+              isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
             }`}>
               {label}
             </span>
@@ -96,7 +96,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         <ChevronDown 
           size={isSmall ? 14 : 16} 
           className={`shrink-0 transition-transform duration-200 ${
-            isLight ? 'text-kamry-graphite/60' : 'text-zinc-400'
+            isLight ? 'text-camry-graphite/60' : 'text-zinc-400'
           } ${isOpen ? 'rotate-180 text-[#0EA5E9]' : ''}`} 
         />
       </button>
@@ -111,7 +111,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
             transition={{ duration: 0.15 }}
             className={`absolute z-50 mt-1 min-w-[200px] max-h-64 overflow-y-auto border rounded-xl shadow-2xl p-1.5 font-martian text-xs ${
               isLight 
-                ? 'bg-kamry-blackout text-white border-white/10' 
+                ? 'bg-camry-blackout text-white border-white/10' 
                 : 'bg-[#18181C] text-white border-white/15'
             } ${
               fullWidth ? 'w-full' : 'right-0 sm:left-0'
